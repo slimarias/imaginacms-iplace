@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="add2ae90-195e-4114-8516-6f962c86362a" name="pruebasim.imaginacolombia.com" url="http://pruebasim.imaginacolombia.com">
+        <fileTransfer host="pruebasim.imaginacolombia.com" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" accurateTimestamps="NEVER" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

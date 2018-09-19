@@ -1,0 +1,17 @@
+{
+    "name": "Iplaces",
+    "alias": "iplaces",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 1,
+    "providers": [
+        "Modules\\Iplaces\\Providers\\IplacesServiceProvider",
+        "Modules\\Iplaces\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        
+    ],
+    "requires": []
+}
