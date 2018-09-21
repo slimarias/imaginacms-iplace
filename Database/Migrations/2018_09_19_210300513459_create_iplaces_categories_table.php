@@ -14,7 +14,15 @@ class CreateIplacesCategoriesTable extends Migration
     {
         Schema::create('iplaces__categories', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->increments('id')->unsigned();
+
+            $table->integer('lft')->unsigned()->nullable();
+            $table->integer('rgt')->unsigned()->nullable();
+            $table->integer('depth')->unsigned()->nullable();
+            //fields
+
+            $table->text('options')->nullable();
+
             // Your fields
             $table->timestamps();
         });

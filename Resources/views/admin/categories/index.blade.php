@@ -29,14 +29,32 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>{{ trans('iplaces::places.table.id') }}</th>
+                                <th>{{ trans('iplaces::places.table.title') }}</th>
+                                <th>{{ trans('iplaces::places.table.slug') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (isset($categories)): ?>
-                            <?php foreach ($categories as $category): ?>
+                           @if (isset($categories))
+                            @foreach ($categories as $category)
                             <tr>
+                                <td>
+                                    <a href="{{ route('admin.iplaces.category.edit', [$category->id]) }}">
+                                        {{ $category->id }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.iplaces.category.edit', [$category->id]) }}">
+                                        {{ $category->title }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.iplaces.category.edit', [$category->id]) }}">
+                                        {{ $category->slug }}
+                                    </a>
+                                </td>
                                 <td>
                                     <a href="{{ route('admin.iplaces.category.edit', [$category->id]) }}">
                                         {{ $category->created_at }}
@@ -49,11 +67,14 @@
                                     </div>
                                 </td>
                             </tr>
-                            <?php endforeach; ?>
-                            <?php endif; ?>
+                            @endforeach
+                            @endif
                             </tbody>
                             <tfoot>
                             <tr>
+                                <th>{{ trans('iplaces::places.table.id') }}</th>
+                                <th>{{ trans('iplaces::places.table.title') }}</th>
+                                <th>{{ trans('iplaces::places.table.slug') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th>{{ trans('core::core.table.actions') }}</th>
                             </tr>

@@ -3,7 +3,7 @@
 use Illuminate\Routing\Router;
 /** @var Router $router */
 
-$router->group(['prefix' =>'/iplaces'], function (Router $router) {
+$router->group(['prefix' =>'/places'], function (Router $router) {
     $router->bind('place', function ($id) {
         return app('Modules\Iplaces\Repositories\PlaceRepository')->find($id);
     });
@@ -37,40 +37,43 @@ $router->group(['prefix' =>'/iplaces'], function (Router $router) {
         'uses' => 'PlaceController@destroy',
         'middleware' => 'can:iplaces.places.destroy'
     ]);
-    $router->bind('category', function ($id) {
-        return app('Modules\Iplaces\Repositories\CategoryRepository')->find($id);
-    });
-    $router->get('categories', [
-        'as' => 'admin.iplaces.category.index',
-        'uses' => 'CategoryController@index',
-        'middleware' => 'can:iplaces.categories.index'
-    ]);
-    $router->get('categories/create', [
-        'as' => 'admin.iplaces.category.create',
-        'uses' => 'CategoryController@create',
-        'middleware' => 'can:iplaces.categories.create'
-    ]);
-    $router->post('categories', [
-        'as' => 'admin.iplaces.category.store',
-        'uses' => 'CategoryController@store',
-        'middleware' => 'can:iplaces.categories.create'
-    ]);
-    $router->get('categories/{category}/edit', [
-        'as' => 'admin.iplaces.category.edit',
-        'uses' => 'CategoryController@edit',
-        'middleware' => 'can:iplaces.categories.edit'
-    ]);
-    $router->put('categories/{category}', [
-        'as' => 'admin.iplaces.category.update',
-        'uses' => 'CategoryController@update',
-        'middleware' => 'can:iplaces.categories.edit'
-    ]);
-    $router->delete('categories/{category}', [
-        'as' => 'admin.iplaces.category.destroy',
-        'uses' => 'CategoryController@destroy',
-        'middleware' => 'can:iplaces.categories.destroy'
-    ]);
+
+    $router->group(['prefix' => '/categories'], function (Router $router) {
+
+        $router->bind('category', function ($id) {
+            return app('Modules\Iplaces\Repositories\CategoryRepository')->find($id);
+        });
+        $router->get('categories', [
+            'as' => 'admin.iplaces.category.index',
+            'uses' => 'CategoryController@index',
+            'middleware' => 'can:iplaces.categories.index'
+        ]);
+        $router->get('categories/create', [
+            'as' => 'admin.iplaces.category.create',
+            'uses' => 'CategoryController@create',
+            'middleware' => 'can:iplaces.categories.create'
+        ]);
+        $router->post('categories', [
+            'as' => 'admin.iplaces.category.store',
+            'uses' => 'CategoryController@store',
+            'middleware' => 'can:iplaces.categories.create'
+        ]);
+        $router->get('categories/{category}/edit', [
+            'as' => 'admin.iplaces.category.edit',
+            'uses' => 'CategoryController@edit',
+            'middleware' => 'can:iplaces.categories.edit'
+        ]);
+        $router->put('categories/{category}', [
+            'as' => 'admin.iplaces.category.update',
+            'uses' => 'CategoryController@update',
+            'middleware' => 'can:iplaces.categories.edit'
+        ]);
+        $router->delete('categories/{category}', [
+            'as' => 'admin.iplaces.category.destroy',
+            'uses' => 'CategoryController@destroy',
+            'middleware' => 'can:iplaces.categories.destroy'
+        ]);
 // append
 
-
+    });
 });

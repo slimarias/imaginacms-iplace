@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class PlaceTranslation extends Model
 {
     public $timestamps = false;
-    protected $fillable = [];
+    protected $fillable = ['title','description','slug'];
     protected $table = 'iplaces__place_translations';
 }

@@ -9,6 +9,7 @@ use Modules\Iplaces\Http\Requests\CreatePlaceRequest;
 use Modules\Iplaces\Http\Requests\UpdatePlaceRequest;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\Iplaces\Entities\Status;
 
 class PlaceController extends AdminBaseController
 {
@@ -16,12 +17,14 @@ class PlaceController extends AdminBaseController
      * @var PlaceRepository
      */
     private $place;
+    public $status;
 
-    public function __construct(PlaceRepository $place)
+    public function __construct(PlaceRepository $place, Status $status)
     {
         parent::__construct();
 
         $this->place = $place;
+        $this->status = $status;
     }
 
     /**
@@ -31,9 +34,9 @@ class PlaceController extends AdminBaseController
      */
     public function index()
     {
-        //$places = $this->place->all();
+        $places = $this->place->paginate(20);
 
-        return view('iplaces::admin.places.index', compact(''));
+        return view('iplaces::admin.places.index', compact('places'));
     }
 
     /**
@@ -43,7 +46,8 @@ class PlaceController extends AdminBaseController
      */
     public function create()
     {
-        return view('iplaces::admin.places.create');
+        $statuses = $this->status->lists();
+        return view('iplaces::admin.places.create',compact('places','statuses'));
     }
 
     /**
@@ -54,10 +58,16 @@ class PlaceController extends AdminBaseController
      */
     public function store(CreatePlaceRequest $request)
     {
-        $this->place->create($request->all());
+        try{
+        $this->place->create($request->paginate(20));
 
         return redirect()->route('admin.iplaces.place.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::places.title.places')]));
+    }catch (\Exception $e){
+            \Log::error($e);
+            return redirect()->back()
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]));
+        }
     }
 
     /**
@@ -68,7 +78,8 @@ class PlaceController extends AdminBaseController
      */
     public function edit(Place $place)
     {
-        return view('iplaces::admin.places.edit', compact('place'));
+        $statuses = $this->status->lists();
+        return view('iplaces::admin.places.edit', compact('place','statuses'));
     }
 
     /**
@@ -80,10 +91,16 @@ class PlaceController extends AdminBaseController
      */
     public function update(Place $place, UpdatePlaceRequest $request)
     {
-        $this->place->update($place, $request->all());
+        try{
+        $this->place->update($place, $request->paginate(20));
 
         return redirect()->route('admin.iplaces.place.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('iplaces::places.title.places')]));
+    }catch (\Exception $e){
+            \Log::error($e);
+            return redirect()->back()
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]));
+        }
     }
 
     /**
@@ -94,9 +111,17 @@ class PlaceController extends AdminBaseController
      */
     public function destroy(Place $place)
     {
-        $this->place->destroy($place);
+        try{
+            $this->place->destroy($place);
 
-        return redirect()->route('admin.iplaces.place.index')
-            ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('iplaces::places.title.places')]));
+            return redirect()->route('admin.iplaces.place.index')
+                ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('iplaces::places.title.places')]));
+
+        }catch (\Exception $e){
+            \Log::error($e);
+            return redirect()->back()
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]));
+        }
+
     }
 }

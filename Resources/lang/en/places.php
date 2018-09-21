@@ -14,8 +14,17 @@ return [
         'create place' => 'Create a place',
     ],
     'table' => [
+        'id'=> 'Id',
+        'title'=>'Title',
+        'slug'=>'Slug',
+        'status'=>'Status',
+
     ],
     'form' => [
+        'title'=>'Title',
+        'description'=>'Description',
+        'slug'=>'Slug',
+        'summary'=>'Summary',
     ],
     'messages' => [
     ],

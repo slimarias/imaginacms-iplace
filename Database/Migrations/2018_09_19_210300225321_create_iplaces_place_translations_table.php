@@ -15,6 +15,9 @@ class CreateIplacesPlaceTranslationsTable extends Migration
         Schema::create('iplaces__place_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->string('title');
+            $table->string('slug');
+            $table->text('description');
             // Your translatable fields
 
             $table->integer('place_id')->unsigned();

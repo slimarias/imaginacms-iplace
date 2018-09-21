@@ -14,7 +14,7 @@
 @section('content')
     {!! Form::open(['route' => ['admin.iplaces.category.store'], 'method' => 'post']) !!}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="nav-tabs-custom">
                 @include('partials.form-tab-headers')
                 <div class="tab-content">
@@ -25,14 +25,44 @@
                             @include('iplaces::admin.categories.partials.create-fields', ['lang' => $locale])
                         </div>
                     @endforeach
+                        <div class="box-body">
+                            <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
+                                <div>
+                                    <label>{{trans('iplaces::status.title')}}</label>
+                                </div>
+                                <label class="radio-inline" for="{{trans('iplaces::status.inactive')}}">
+                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    {{trans('iplaces::status.inactive')}}
+                                </label>
+                                <label class="radio-inline" for="{{trans('iplaces::status.active')}}">
+                                    <input type="radio" id="status" name="status" value="1">
+                                    {{trans('iplaces::status.active')}}
+                                </label>
+                            </div>
+
+                        </div>
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.category.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.category.index')}}">
+                            <i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
         </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" name="title">
+                    @foreach ($categories as $category)
+                        <option value="{{$category}}" >
+
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
     </div>
     {!! Form::close() !!}
 @stop
@@ -62,6 +92,7 @@
             $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
+
             });
         });
     </script>

@@ -29,14 +29,38 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>{{ trans('iplaces::places.table.id') }}</th>
+                                <th>{{ trans('iplaces::places.table.title') }}</th>
+                                <th>{{ trans('iplaces::places.table.slug') }}</th>
+                                <th>{{ trans('iplaces::places.table.status') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (isset($places)): ?>
-                            <?php foreach ($places as $place): ?>
+                            @if (isset($places))
+                             @foreach ($places as $place)
                             <tr>
+                                <td>
+                                    <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                        {{ $place->id }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                        {{ $place->title }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                        {{ $place->slug }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                        {{ $place->status }}
+                                    </a>
+                                </td>
                                 <td>
                                     <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
                                         {{ $place->created_at }}
@@ -49,13 +73,18 @@
                                     </div>
                                 </td>
                             </tr>
-                            <?php endforeach; ?>
-                            <?php endif; ?>
+                            @endforeach
+                           @endif
                             </tbody>
                             <tfoot>
                             <tr>
+                                <th>{{ trans('iplaces::places.table.id') }}</th>
+                                <th>{{ trans('iplaces::places.table.title') }}</th>
+                                <th>{{ trans('iplaces::places.table.slug') }}</th>
+                                <th>{{ trans('iplaces::places.table.status') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th>{{ trans('core::core.table.actions') }}</th>
+
                             </tr>
                             </tfoot>
                         </table>

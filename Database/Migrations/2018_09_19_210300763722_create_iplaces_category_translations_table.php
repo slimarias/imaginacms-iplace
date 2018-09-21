@@ -15,6 +15,9 @@ class CreateIplacesCategoryTranslationsTable extends Migration
         Schema::create('iplaces__category_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('description')->nullable();
             // Your translatable fields
 
             $table->integer('category_id')->unsigned();

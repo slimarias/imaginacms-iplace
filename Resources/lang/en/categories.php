@@ -14,8 +14,15 @@ return [
         'create category' => 'Create a category',
     ],
     'table' => [
+        'id'=>'Id',
+        'title'=>'Title',
+        'slug'=>'Slug',
+
     ],
     'form' => [
+        'title'=>'Title',
+        'description'=>'Description',
+        'status'=>'Status',
     ],
     'messages' => [
     ],

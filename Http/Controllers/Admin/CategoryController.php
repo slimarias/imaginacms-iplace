@@ -9,6 +9,7 @@ use Modules\Iplaces\Http\Requests\CreateCategoryRequest;
 use Modules\Iplaces\Http\Requests\UpdateCategoryRequest;
 use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\Iplaces\Entities\Status;
 
 class CategoryController extends AdminBaseController
 {
@@ -16,12 +17,14 @@ class CategoryController extends AdminBaseController
      * @var CategoryRepository
      */
     private $category;
+    public $status;
 
-    public function __construct(CategoryRepository $category)
+    public function __construct(CategoryRepository $category, Status $status)
     {
         parent::__construct();
 
         $this->category = $category;
+        $this->status=$status;
     }
 
     /**
@@ -31,9 +34,9 @@ class CategoryController extends AdminBaseController
      */
     public function index()
     {
-        //$categories = $this->category->all();
+        $categories = $this->category->paginate(20);
 
-        return view('iplaces::admin.categories.index', compact(''));
+        return view('iplaces::admin.categories.index', compact('categories'));
     }
 
     /**
@@ -42,8 +45,10 @@ class CategoryController extends AdminBaseController
      * @return Response
      */
     public function create()
-    {
-        return view('iplaces::admin.categories.create');
+
+    {   $statuses = $this->status->lists();
+        $categories = $this->category->paginate(20);
+        return view('iplaces::admin.categories.create',compact('categories','statuses'));
     }
 
     /**
@@ -54,10 +59,19 @@ class CategoryController extends AdminBaseController
      */
     public function store(CreateCategoryRequest $request)
     {
-        $this->category->create($request->all());
+        try{
+            $this->category->create($request->paginate(20));
 
-        return redirect()->route('admin.iplaces.category.index')
-            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::categories.title.categories')]));
+            return redirect()->route('admin.iplaces.category.index')
+                ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::categories.title.categories')]));
+
+        }catch (\Exception $e){
+            \Log::error($e);
+            return redirect()->back()
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::categories.title.categories')]));
+
+        }
+
     }
 
     /**
@@ -68,7 +82,8 @@ class CategoryController extends AdminBaseController
      */
     public function edit(Category $category)
     {
-        return view('iplaces::admin.categories.edit', compact('category'));
+        $statuses = $this->status->lists();
+        return view('iplaces::admin.categories.edit', compact('category', 'statuses'));
     }
 
     /**
@@ -80,10 +95,20 @@ class CategoryController extends AdminBaseController
      */
     public function update(Category $category, UpdateCategoryRequest $request)
     {
-        $this->category->update($category, $request->all());
 
-        return redirect()->route('admin.iplaces.category.index')
-            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('iplaces::categories.title.categories')]));
+        try{
+            $this->category->update($category, $request->paginate(20));
+
+            return redirect()->route('admin.iplaces.category.index')
+                ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('iplaces::categories.title.categories')]));
+
+        }catch (\Exception $e){
+            \Log::error($e);
+            return redirect()->back()
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::categories.title.categories')]));
+
+    }
+
     }
 
     /**
@@ -94,9 +119,17 @@ class CategoryController extends AdminBaseController
      */
     public function destroy(Category $category)
     {
-        $this->category->destroy($category);
+        try{
+            $this->category->destroy($category);
 
-        return redirect()->route('admin.iplaces.category.index')
-            ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('iplaces::categories.title.categories')]));
+            return redirect()->route('admin.iplaces.category.index')
+                ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('iplaces::categories.title.categories')]));
+
+        }catch (\Exception $e){
+            \Log::error($e);
+            return redirect()->back()
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::categories.title.categories')]));
+        }
+
     }
 }

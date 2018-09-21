@@ -14,7 +14,15 @@ class CreateIplacesPlacesTable extends Migration
     {
         Schema::create('iplaces__places', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->increments('id')->unsigned();
+            // fields
+            $table->text('summary');
+            $table->text('options')->default('')->nullable();
+            $table->integer('status')->default(0)->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->integer('category_id')->unsigned();
+            $table->text('address');
+            $table->foreign('user_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
             // Your fields
             $table->timestamps();
         });

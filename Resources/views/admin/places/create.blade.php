@@ -14,7 +14,7 @@
 @section('content')
     {!! Form::open(['route' => ['admin.iplaces.place.store'], 'method' => 'post']) !!}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="nav-tabs-custom">
                 @include('partials.form-tab-headers')
                 <div class="tab-content">
@@ -25,6 +25,25 @@
                             @include('iplaces::admin.places.partials.create-fields', ['lang' => $locale])
                         </div>
                     @endforeach
+                        <div class="box-body">
+                            <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
+                                <div>
+                                    <label>{{trans('iplaces::status.title')}}</label>
+                                </div>
+                                <label class="radio-inline" for="{{trans('iplaces::status.inactive')}}">
+                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    {{trans('iplaces::status.inactive')}}
+                                </label>
+                                <label class="radio-inline" for="{{trans('iplaces::status.active')}}">
+                                    <input type="radio" id="status" name="status" value="1">
+                                    {{trans('iplaces::status.active')}}
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1 ">Email address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                            </div>
+                        </div>
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
@@ -32,6 +51,17 @@
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" name="title">
+                    @foreach ($categories as $category)
+                    <option value="{{$category}}">
+                    </option>
+                        @endforeach
+                </select>
+            </div>
         </div>
     </div>
     {!! Form::close() !!}

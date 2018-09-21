@@ -25,6 +25,24 @@
                             @include('iplaces::admin.categories.partials.edit-fields', ['lang' => $locale])
                         </div>
                     @endforeach
+                        <div class="box-body">
+                            <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
+                                <div>
+                                    <label>{{trans('iplaces::status.title')}}</label>
+                                </div>
+                                <label class="radio-inline" for="{{trans('iplaces::status.inactive')}}">
+                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    {{trans('iplaces::status.inactive')}}
+                                </label>
+                                <label class="radio-inline" for="{{trans('iplaces::status.active')}}">
+                                    <input type="radio" id="status" name="status" value="1">
+                                    {{trans('iplaces::status.active')}}
+                                </label>
+                            </div>
+
+                        </div>
+
+
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
