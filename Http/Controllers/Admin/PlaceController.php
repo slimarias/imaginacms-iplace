@@ -4,12 +4,15 @@ namespace Modules\Iplaces\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Iplaces\Entities\Category;
 use Modules\Iplaces\Entities\Place;
 use Modules\Iplaces\Http\Requests\CreatePlaceRequest;
 use Modules\Iplaces\Http\Requests\UpdatePlaceRequest;
 use Modules\Iplaces\Repositories\PlaceRepository;
+use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Iplaces\Entities\Status;
+use Modules\User\Repositories\UserRepository;
 
 class PlaceController extends AdminBaseController
 {
@@ -18,13 +21,17 @@ class PlaceController extends AdminBaseController
      */
     private $place;
     public $status;
+    private $category;
+    private $user;
 
-    public function __construct(PlaceRepository $place, Status $status)
+    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user)
     {
         parent::__construct();
 
         $this->place = $place;
         $this->status = $status;
+        $this->category=$category;
+        $this->user=$user;
     }
 
     /**
@@ -47,7 +54,11 @@ class PlaceController extends AdminBaseController
     public function create()
     {
         $statuses = $this->status->lists();
-        return view('iplaces::admin.places.create',compact('places','statuses'));
+       // $place = $this->place->paginate(20);
+        $categories=$this->category->all();
+        $users=$this->user->all();
+
+        return view('iplaces::admin.places.create',compact('categories','statuses','users'));
     }
 
     /**
@@ -57,9 +68,9 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function store(CreatePlaceRequest $request)
-    {
+    { //dd($request);
         try{
-        $this->place->create($request->paginate(20));
+        $this->place->create($request->all());//envia todas las categorias
 
         return redirect()->route('admin.iplaces.place.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::places.title.places')]));
@@ -79,7 +90,9 @@ class PlaceController extends AdminBaseController
     public function edit(Place $place)
     {
         $statuses = $this->status->lists();
-        return view('iplaces::admin.places.edit', compact('place','statuses'));
+        $categories=$this->category->all();
+        $users=$this->user->all();
+        return view('iplaces::admin.places.edit', compact('place','statuses','categories','users'));
     }
 
     /**

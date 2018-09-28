@@ -48,7 +48,7 @@ class CategoryController extends AdminBaseController
 
     {   $statuses = $this->status->lists();
         $categories = $this->category->paginate(20);
-        return view('iplaces::admin.categories.create',compact('categories','statuses'));
+        return view('iplaces::admin.categories.create',compact('categories','statuses','categories'));
     }
 
     /**
@@ -59,13 +59,14 @@ class CategoryController extends AdminBaseController
      */
     public function store(CreateCategoryRequest $request)
     {
+
         try{
-            $this->category->create($request->paginate(20));
+            $this->category->create($request->all());
 
             return redirect()->route('admin.iplaces.category.index')
                 ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::categories.title.categories')]));
-
-        }catch (\Exception $e){
+        }
+        catch (\Exception $e){
             \Log::error($e);
             return redirect()->back()
                 ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::categories.title.categories')]));
@@ -82,6 +83,7 @@ class CategoryController extends AdminBaseController
      */
     public function edit(Category $category)
     {
+     //   dd($category);
         $statuses = $this->status->lists();
         return view('iplaces::admin.categories.edit', compact('category', 'statuses'));
     }
@@ -95,9 +97,9 @@ class CategoryController extends AdminBaseController
      */
     public function update(Category $category, UpdateCategoryRequest $request)
     {
-
+//dd($request);
         try{
-            $this->category->update($category, $request->paginate(20));
+            $this->category->update($category, $request->all());
 
             return redirect()->route('admin.iplaces.category.index')
                 ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('iplaces::categories.title.categories')]));

@@ -5,7 +5,8 @@
         {{ trans('iplaces::places.title.places') }}
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
+        <li><a href="{{ route('dashboard.index') }}"><i
+                        class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
         <li class="active">{{ trans('iplaces::places.title.places') }}</li>
     </ol>
 @stop
@@ -15,7 +16,8 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                    <a href="{{ route('admin.iplaces.place.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
+                    <a href="{{ route('admin.iplaces.place.create') }}" class="btn btn-primary btn-flat"
+                       style="padding: 4px 10px;">
                         <i class="fa fa-pencil"></i> {{ trans('iplaces::places.button.create place') }}
                     </a>
                 </div>
@@ -39,42 +41,46 @@
                             </thead>
                             <tbody>
                             @if (isset($places))
-                             @foreach ($places as $place)
-                            <tr>
-                                <td>
-                                    <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
-                                        {{ $place->id }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
-                                        {{ $place->title }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
-                                        {{ $place->slug }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
-                                        {{ $place->status }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
-                                        {{ $place->created_at }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.iplaces.place.destroy', [$place->id]) }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                           @endif
+                                @foreach ($places as $place)
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                                {{ $place->id }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                                {{ $place->title }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                                {{ $place->slug }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                                {{ $place->status }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                                {{ $place->created_at }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}"
+                                                   class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
+                                                <button class="btn btn-danger btn-flat" data-toggle="modal"
+                                                        data-target="#modal-delete-confirmation"
+                                                        data-action-target="{{ route('admin.iplaces.place.destroy', [$place->id]) }}">
+                                                    <i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                             </tbody>
                             <tfoot>
                             <tr>
@@ -110,10 +116,10 @@
 
 @push('js-stack')
     <script type="text/javascript">
-        $( document ).ready(function() {
+        $(document).ready(function () {
             $(document).keypressAction({
                 actions: [
-                    { key: 'c', route: "<?= route('admin.iplaces.place.create') ?>" }
+                    {key: 'c', route: "<?= route('admin.iplaces.place.create') ?>"}
                 ]
             });
         });
@@ -128,7 +134,7 @@
                 "sort": true,
                 "info": true,
                 "autoWidth": true,
-                "order": [[ 0, "desc" ]],
+                "order": [[0, "desc"]],
                 "language": {
                     "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
                 }

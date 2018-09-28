@@ -25,17 +25,20 @@
                             @include('iplaces::admin.categories.partials.edit-fields', ['lang' => $locale])
                         </div>
                     @endforeach
+
                         <div class="box-body">
+
+
                             <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
                                 <div>
                                     <label>{{trans('iplaces::status.title')}}</label>
                                 </div>
                                 <label class="radio-inline" for="{{trans('iplaces::status.inactive')}}">
-                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    <input type="radio" id="status" name="status" value="0" {{$category->status == 0 ? 'checked':''}}>
                                     {{trans('iplaces::status.inactive')}}
                                 </label>
                                 <label class="radio-inline" for="{{trans('iplaces::status.active')}}">
-                                    <input type="radio" id="status" name="status" value="1">
+                                    <input type="radio" id="status" name="status" value="1" {{$category->status == 1 ? 'checked':''}}>
                                     {{trans('iplaces::status.active')}}
                                 </label>
                             </div>
@@ -77,10 +80,13 @@
     </script>
     <script>
         $( document ).ready(function() {
-            $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
+            $('input[type="checkbox"], input[type="radio"]').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
             });
         });
+
+
+
     </script>
 @endpush

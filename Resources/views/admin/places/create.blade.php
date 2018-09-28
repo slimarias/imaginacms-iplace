@@ -13,8 +13,8 @@
 
 @section('content')
     {!! Form::open(['route' => ['admin.iplaces.place.store'], 'method' => 'post']) !!}
-    <div class="row">
-        <div class="col-md-6">
+    <div class="row ">
+        <div class="col-md-8 ">
             <div class="nav-tabs-custom">
                 @include('partials.form-tab-headers')
                 <div class="tab-content">
@@ -25,7 +25,7 @@
                             @include('iplaces::admin.places.partials.create-fields', ['lang' => $locale])
                         </div>
                     @endforeach
-                        <div class="box-body">
+                        <div class="box-body ">
                             <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
                                 <div>
                                     <label>{{trans('iplaces::status.title')}}</label>
@@ -47,22 +47,71 @@
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.place.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.place.index')}}">
+                            <i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
         </div>
-        <div class="col-md-6">
+
+        <div class="col-md-4">
             <div class="form-group">
                 <label>Category</label>
-                <select class="form-control" name="title">
+                <select class="form-control" name="category_id">
+                    @if(count($categories))
                     @foreach ($categories as $category)
-                    <option value="{{$category}}">
+                    <option value="{{$category->id}}"> {{$category->title}}
                     </option>
                         @endforeach
-                </select>
+                    @endif
+                </select><br>
+
+                <label>User</label>
+              {{--  <select class="form-control" name="user_id">
+                    <option value="0">
+                        -
+                    </option>
+                    @if(count($users))
+                        @foreach ($users as $user)
+                            <option value="{{$user->id}}"> {{$user->title}}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>--}}
+                <select name="user_id" id="user" class="form-control">
+                    @foreach ($users as $user)
+                        <option value="{{$user->id }}" {{$user->id == $currentUser->id ? 'selected' : ''}}>{{$user->present()->fullname()}}
+                            - ({{$user->email}})
+                        </option>
+                    @endforeach
+                </select><br>
+
             </div>
         </div>
+
+        {{--
+        <div class="row">
+            <div class="col-md-4">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">{{trans('iplaces::places.form.Place Image')}}</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="nav-tabs-custom">
+                            <div class="tab-content">
+                                @mediaSingle('thumbnail')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        --}}
     </div>
     {!! Form::close() !!}
 @stop
@@ -92,6 +141,7 @@
             $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
+
             });
         });
     </script>

@@ -5,18 +5,24 @@ namespace Modules\Iplaces\Entities;
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Iplaces\Entities\Category;
+use Laracasts\Presenter\PresentableTrait;
+use Modules\Iplace\Presenters\PlacePresenter;
+use Modules\Core\Traits\NamespacedEntity;
+
 
 class Place extends Model
 {
-    use Translatable;
+    use Translatable,PresentableTrait, NamespacedEntity;
 
     protected $table = 'iplaces__places';
     public $translatedAttributes = ['title','description','slug'];
     protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at'];
     protected $fakeColumns = ['options'];
+    protected $presenter = PlacePresenter::class;
 
     protected $casts = [
-        'options' => 'array'
+        'options' => 'array',
+        'status'=>'int'
     ];
 
     /*

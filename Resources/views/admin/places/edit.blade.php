@@ -26,6 +26,26 @@
                         </div>
                     @endforeach
 
+                        <div class="box-body">
+
+                            <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
+                                <div>
+                                    <label>{{trans('iplaces::status.title')}}</label>
+                                </div>
+                                <label class="radio-inline" for="{{trans('iplaces::status.inactive')}}">
+                                    <input type="radio" id="status" name="status" value="0" {{$place->status == 0 ? 'checked':''}}>
+                                    {{trans('iplaces::status.inactive')}}
+                                </label>
+                                <label class="radio-inline" for="{{trans('iplaces::status.active')}}">
+                                    <input type="radio" id="status" name="status" value="1" {{$place->status == 1 ? 'checked':''}}>
+                                    {{trans('iplaces::status.active')}}
+                                </label>
+                            </div>
+
+                        </div>
+
+
+
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
                         <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.place.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
@@ -59,7 +79,7 @@
     </script>
     <script>
         $( document ).ready(function() {
-            $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
+            $('input[type="checkbox"], input[type="radio"]').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
             });

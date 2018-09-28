@@ -5,8 +5,11 @@
         {{ trans('iplaces::categories.title.create category') }}
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li><a href="{{ route('admin.iplaces.category.index') }}">{{ trans('iplaces::categories.title.categories') }}</a></li>
+        <li><a href="{{ route('dashboard.index') }}"><i
+                        class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
+        <li>
+            <a href="{{ route('admin.iplaces.category.index') }}">{{ trans('iplaces::categories.title.categories') }}</a>
+        </li>
         <li class="active">{{ trans('iplaces::categories.title.create category') }}</li>
     </ol>
 @stop
@@ -25,25 +28,26 @@
                             @include('iplaces::admin.categories.partials.create-fields', ['lang' => $locale])
                         </div>
                     @endforeach
-                        <div class="box-body">
-                            <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
-                                <div>
-                                    <label>{{trans('iplaces::status.title')}}</label>
-                                </div>
-                                <label class="radio-inline" for="{{trans('iplaces::status.inactive')}}">
-                                    <input type="radio" id="status" name="status" value="0" checked>
-                                    {{trans('iplaces::status.inactive')}}
-                                </label>
-                                <label class="radio-inline" for="{{trans('iplaces::status.active')}}">
-                                    <input type="radio" id="status" name="status" value="1">
-                                    {{trans('iplaces::status.active')}}
-                                </label>
+                    <div class="box-body">
+                        <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
+                            <div>
+                                <label>{{trans('iplaces::status.title')}}</label>
                             </div>
-
+                            <label class="radio-inline" for="{{trans('iplaces::status.inactive')}}">
+                                <input type="radio" id="status" name="status" value="0" checked>
+                                {{trans('iplaces::status.inactive')}}
+                            </label>
+                            <label class="radio-inline" for="{{trans('iplaces::status.active')}}">
+                                <input type="radio" id="status" name="status" value="1">
+                                {{trans('iplaces::status.active')}}
+                            </label>
                         </div>
 
+                    </div>
+
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
+                        <button type="submit"
+                                class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
                         <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.category.index')}}">
                             <i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                     </div>
@@ -53,15 +57,106 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>Category</label>
-                <select class="form-control" name="title">
-                    @foreach ($categories as $category)
-                        <option value="{{$category}}" >
-
-                        </option>
-                    @endforeach
+                <select class="form-control" name="parent_id">
+                    <option value="0">
+                        -
+                    </option>
+                    @if(count($categories))
+                        @foreach ($categories as $category)
+                            <option value="{{$category->id}}"> {{$category->title}}
+                            </option>
+                        @endforeach
+                    @endif
                 </select>
             </div>
         </div>
+
+            <div class="col-md-4">
+
+            </div>
+
+        @push('js-stack')
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                    $('#image').each(function (index) {
+                        // Find DOM elements under this form-group element
+                        var $mainImage = $(this).find('#mainImage');
+                        var $uploadImage = $(this).find("#mainimage");
+                        var $hiddenImage = $(this).find("#hiddenImage");
+                        //var $remove = $(this).find("#remove")
+                        // Options either global for all image type fields, or use 'data-*' elements for options passed in via the CRUD controller
+                        var options = {
+                            viewMode: 2,
+                            checkOrientation: false,
+                            autoCropArea: 1,
+                            responsive: true,
+                            preview: $(this).attr('data-preview'),
+                            aspectRatio: $(this).attr('data-aspectRatio')
+                        };
+
+
+                        // Hide 'Remove' button if there is no image saved
+                        if (!$mainImage.attr('src')) {
+                            //$remove.hide();
+                        }
+                        // Initialise hidden form input in case we submit with no change
+                        //$.val($mainImage.attr('src'));
+
+                        // Only initialize cropper plugin if crop is set to true
+
+                        $uploadImage.change(function () {
+                            var fileReader = new FileReader(),
+                                files = this.files,
+                                file;
+
+                            if (!files.length) {
+                                return;
+                            }
+                            file = files[0];
+
+                            if (/^image\/\w+$/.test(file.type)) {
+                                fileReader.readAsDataURL(file);
+                                fileReader.onload = function () {
+                                    $uploadImage.val("");
+                                    $mainImage.attr('src', this.result);
+                                    $hiddenImage.val(this.result);
+                                    $('#hiddenImage').val(this.result);
+
+                                };
+                            } else {
+                                alert("Por favor seleccione una imagen.");
+                            }
+                        });
+
+                    });
+                });
+            </script>
+        @endpush
+
+
+        {{--   <div class="row">
+               <div class="col-md-4">
+                   <div class="box box-primary">
+                       <div class="box-header">
+                           <h3 class="box-title">{{trans('iplaces::places.form.Place Image')}}</h3>
+                           <div class="box-tools pull-right">
+                               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                           class="fa fa-minus"></i>
+                               </button>
+                           </div>
+                       </div>
+                       <div class="box-body">
+                           <div class="nav-tabs-custom">
+                               <div class="tab-content">
+                                   @mediaSingle('thumbnail')
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           --}}
 
     </div>
     {!! Form::close() !!}
@@ -79,16 +174,16 @@
 
 @push('js-stack')
     <script type="text/javascript">
-        $( document ).ready(function() {
+        $(document).ready(function () {
             $(document).keypressAction({
                 actions: [
-                    { key: 'b', route: "<?= route('admin.iplaces.category.index') ?>" }
+                    {key: 'b', route: "<?= route('admin.iplaces.category.index') ?>"}
                 ]
             });
         });
     </script>
     <script>
-        $( document ).ready(function() {
+        $(document).ready(function () {
             $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'

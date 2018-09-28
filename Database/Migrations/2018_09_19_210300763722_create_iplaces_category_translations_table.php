@@ -16,11 +16,15 @@ class CreateIplacesCategoryTranslationsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->text('description')->nullable();
+            $table->string('metatitle');
+            $table->text('metakeywords');
+            $table->text('metadescription');
             // Your translatable fields
 
             $table->integer('category_id')->unsigned();
+
             $table->string('locale')->index();
             $table->unique(['category_id', 'locale']);
             $table->foreign('category_id')->references('id')->on('iplaces__categories')->onDelete('cascade');
