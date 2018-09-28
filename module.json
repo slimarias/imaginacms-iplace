@@ -3,6 +3,7 @@
     "alias": "iplaces",
     "description": "",
     "keywords": [],
+    "version": "dev",
     "active": 1,
     "order": 1,
     "providers": [

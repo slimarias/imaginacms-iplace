@@ -60,7 +60,7 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
-                                                {{ $place->status }}
+                                                {{ $place->present()->status()}}
                                             </a>
                                         </td>
                                         <td>

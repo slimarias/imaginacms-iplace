@@ -6,13 +6,13 @@ use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Iplaces\Entities\Category;
 use Laracasts\Presenter\PresentableTrait;
-use Modules\Iplace\Presenters\PlacePresenter;
+use Modules\Iplaces\Presenters\PlacePresenter;
 use Modules\Core\Traits\NamespacedEntity;
 
 
 class Place extends Model
 {
-    use Translatable,PresentableTrait, NamespacedEntity;
+    use Translatable, PresentableTrait, NamespacedEntity;
 
     protected $table = 'iplaces__places';
     public $translatedAttributes = ['title','description','slug'];
