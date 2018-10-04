@@ -7,9 +7,11 @@ use Illuminate\Http\Response;
 use Modules\Iplaces\Entities\Category;
 use Modules\Iplaces\Http\Requests\CreateCategoryRequest;
 use Modules\Iplaces\Http\Requests\UpdateCategoryRequest;
+use Modules\Iplaces\Events\CategoryWasCreated;
 use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Iplaces\Entities\Status;
+
 
 class CategoryController extends AdminBaseController
 {
@@ -18,6 +20,7 @@ class CategoryController extends AdminBaseController
      */
     private $category;
     public $status;
+   // public $file;
 
     public function __construct(CategoryRepository $category, Status $status)
     {
@@ -25,6 +28,7 @@ class CategoryController extends AdminBaseController
 
         $this->category = $category;
         $this->status=$status;
+       // $this->file = $file;
     }
 
     /**
@@ -59,9 +63,11 @@ class CategoryController extends AdminBaseController
      */
     public function store(CreateCategoryRequest $request)
     {
-
+       // dd($request);
         try{
+
             $this->category->create($request->all());
+           // event(new CategoryWasCreated($this->data['entry'], $request->all()));
 
             return redirect()->route('admin.iplaces.category.index')
                 ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::categories.title.categories')]));
@@ -73,6 +79,7 @@ class CategoryController extends AdminBaseController
 
         }
 
+
     }
 
     /**
@@ -83,9 +90,11 @@ class CategoryController extends AdminBaseController
      */
     public function edit(Category $category)
     {
-     //   dd($category);
+    //dd($category->mainimage);
         $statuses = $this->status->lists();
-        return view('iplaces::admin.categories.edit', compact('category', 'statuses'));
+        $categories = $this->category->paginate(20);
+      //  $thumbnail = $this->file->findFileByZoneForEntity('thumbnail', $category);
+        return view('iplaces::admin.categories.edit', compact('category', 'statuses', 'categories'));
     }
 
     /**
@@ -97,10 +106,12 @@ class CategoryController extends AdminBaseController
      */
     public function update(Category $category, UpdateCategoryRequest $request)
     {
-//dd($request);
+// dd($request);
         try{
-            $this->category->update($category, $request->all());
 
+            isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/iplaces/category/" . $category->id . ".jpg") : false;
+            $request['options'] = json_encode($options);
+            $this->category->update($category, $request->all());
             return redirect()->route('admin.iplaces.category.index')
                 ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('iplaces::categories.title.categories')]));
 

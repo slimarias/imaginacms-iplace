@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Iplaces\Entities\Category;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Iplaces\Presenters\PlacePresenter;
+use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Core\Traits\NamespacedEntity;
+
 
 
 class Place extends Model
@@ -63,7 +65,15 @@ class Place extends Model
 
     public function getMainimageAttribute(){
 
-        return ($this->options->mainimage ?? 'modules/iplace/img/place/default.jpg').'?v='.format_date($this->updated_at,'%u%w%g%k%M%S');
+        $image=$this->options->mainimage ?? 'modules/iplaces/img/place/default.jpg';
+        $v=strftime('%u%w%g%k%M%S', strtotime($this->updated_at));
+        // dd($v) ;
+        return url($image.'?v='.$v);
+        //return ($this->options->mainimage ?? 'modules/iplace/img/place/default.jpg').'?v='.format_date($this->updated_at,'%u%w%g%k%M%S');
+
+
+
+
     }
     public function getMediumimageAttribute(){
 
@@ -83,6 +93,12 @@ class Place extends Model
         return url($this->slug);
 
         //return \URL::route(\LaravelLocalization::getCurrentLocale() . '.iplaces.slug', [$this->category->slug,$this->slug]);
+    }
+    public function getOptionsAttribute($value)
+    {
+
+        return json_decode(json_decode($value));
+
     }
 
     /*

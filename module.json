@@ -8,11 +8,12 @@
     "order": 1,
     "providers": [
         "Modules\\Iplaces\\Providers\\IplacesServiceProvider",
-        "Modules\\Iplaces\\Providers\\RouteServiceProvider"
+        "Modules\\Iplaces\\Providers\\RouteServiceProvider",
+        "Modules\\Iplaces\\Providers\\EventServiceProvider"
     ],
     "aliases": {},
     "files": [
-        
+        "helpers.php"
     ],
     "requires": []
 }

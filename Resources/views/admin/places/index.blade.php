@@ -34,6 +34,7 @@
                                 <th>{{ trans('iplaces::places.table.id') }}</th>
                                 <th>{{ trans('iplaces::places.table.title') }}</th>
                                 <th>{{ trans('iplaces::places.table.slug') }}</th>
+                                <th>{{ trans('iplaces::categories.title.categories') }}</th>
                                 <th>{{ trans('iplaces::places.table.status') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
@@ -59,10 +60,21 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
-                                                {{ $place->present()->status()}}
+                                            <a href="{{ route('admin.iplaces.category.edit', [$place->category->id]) }}">
+                                                {{ $place->category->title }}
                                             </a>
                                         </td>
+
+
+                                        <td>
+                                            <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
+                                            <span class="label {{ $place->present()->statusLabelClass}}">
+                                            {{ $place->present()->status}}
+                                    </span>
+                                            </a>
+                                        </td>
+
+
                                         <td>
                                             <a href="{{ route('admin.iplaces.place.edit', [$place->id]) }}">
                                                 {{ $place->created_at }}
@@ -87,6 +99,7 @@
                                 <th>{{ trans('iplaces::places.table.id') }}</th>
                                 <th>{{ trans('iplaces::places.table.title') }}</th>
                                 <th>{{ trans('iplaces::places.table.slug') }}</th>
+                                <th>{{ trans('iplaces::categories.title.categories') }}</th>
                                 <th>{{ trans('iplaces::places.table.status') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th>{{ trans('core::core.table.actions') }}</th>

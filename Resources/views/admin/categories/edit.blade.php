@@ -14,7 +14,8 @@
 @section('content')
     {!! Form::open(['route' => ['admin.iplaces.category.update', $category->id], 'method' => 'put']) !!}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12 col-md-9">
+            <div class="box box-primary">
             <div class="nav-tabs-custom">
                 @include('partials.form-tab-headers')
                 <div class="tab-content">
@@ -25,10 +26,7 @@
                             @include('iplaces::admin.categories.partials.edit-fields', ['lang' => $locale])
                         </div>
                     @endforeach
-
                         <div class="box-body">
-
-
                             <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
                                 <div>
                                     <label>{{trans('iplaces::status.title')}}</label>
@@ -43,9 +41,8 @@
                                 </label>
                             </div>
 
+
                         </div>
-
-
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
@@ -53,7 +50,53 @@
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
+            </div>
         </div>
+        <div class="col-xs-12 col-md-3">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                    </div>
+                    <div class="box-body">
+                        <select class="form-control" name="parent_id">
+                            <option value="0">
+                                -
+                            </option>
+                            @if(count($categories))
+                                @foreach ($categories as $cat)
+                                    <option value="{{$cat->id}}"> {{$cat->title}}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Image</label>
+                    </div>
+                    <div class="box-body">
+                        @include('iplaces::admin.categories.partials.image')
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
     {!! Form::close() !!}
 @stop
@@ -86,7 +129,18 @@
             });
         });
 
-
-
     </script>
 @endpush
+<style>
+
+    .nav-tabs-custom > .nav-tabs > li.active {
+        border-top-color:white !important;
+        border-bottom-color: #3c8dbc !important;
+    }
+    .nav-tabs-custom > .nav-tabs > li.active > a, .nav-tabs-custom > .nav-tabs > li.active:hover > a {
+        background-color: aliceblue !important;
+
+    }
+
+
+</style>

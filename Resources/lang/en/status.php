@@ -8,6 +8,7 @@ return [
 
     ],
     'table' => [
+
         'updated at'=>'Updated At'
 
     ],

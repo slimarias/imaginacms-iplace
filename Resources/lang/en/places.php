@@ -25,7 +25,7 @@ return [
         'description'=>'Description',
         'slug'=>'Slug',
         'summary'=>'Summary',
-        'Place Image'=>'Place Image'
+        'select photo'=>'Select photo'
     ],
     'messages' => [
     ],

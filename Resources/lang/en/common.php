@@ -1,0 +1,5 @@
+<?php
+return [
+
+    'iplaces'=>'Places'
+];

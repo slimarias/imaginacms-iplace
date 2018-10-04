@@ -17,7 +17,8 @@
 @section('content')
     {!! Form::open(['route' => ['admin.iplaces.category.store'], 'method' => 'post']) !!}
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-xs-12 col-md-9">
+            <div class="box box-primary">
             <div class="nav-tabs-custom">
                 @include('partials.form-tab-headers')
                 <div class="tab-content">
@@ -42,7 +43,6 @@
                                 {{trans('iplaces::status.active')}}
                             </label>
                         </div>
-
                     </div>
 
                     <div class="box-footer">
@@ -53,10 +53,20 @@
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
+            </div>
         </div>
-        <div class="col-md-4">
+
+        <div class="col-xs-12 col-md-3">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
             <div class="form-group">
                 <label>Category</label>
+            </div>
+                    <div class="box-body">
                 <select class="form-control" name="parent_id">
                     <option value="0">
                         -
@@ -68,12 +78,28 @@
                         @endforeach
                     @endif
                 </select>
+                    </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+            <div class="form-group">
+                <label>Image</label>
+            </div>
+                    <div class="box-body">
+            @include('iplaces::admin.categories.partials.image')
+                    </div>
+        </div>
             </div>
         </div>
 
-            <div class="col-md-4">
 
-            </div>
 
         @push('js-stack')
             <script type="text/javascript">
@@ -132,6 +158,20 @@
                     });
                 });
             </script>
+            <style>
+
+                .nav-tabs-custom > .nav-tabs > li.active {
+                    border-top-color:white !important;
+                    border-bottom-color: #3c8dbc !important;
+                }
+                .nav-tabs-custom > .nav-tabs > li.active > a, .nav-tabs-custom > .nav-tabs > li.active:hover > a {
+                    background-color: aliceblue !important;
+
+                }
+
+
+            </style>
+
         @endpush
 
 

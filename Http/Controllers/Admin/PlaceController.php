@@ -8,6 +8,7 @@ use Modules\Iplaces\Entities\Category;
 use Modules\Iplaces\Entities\Place;
 use Modules\Iplaces\Http\Requests\CreatePlaceRequest;
 use Modules\Iplaces\Http\Requests\UpdatePlaceRequest;
+use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
@@ -68,7 +69,7 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function store(CreatePlaceRequest $request)
-    { //dd($request);
+    {// dd($request);
         try{
         $this->place->create($request->all());//envia todas las categorias
 
@@ -88,7 +89,7 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function edit(Place $place)
-    {
+    {//dd($place);
         $statuses = $this->status->lists();
         $categories=$this->category->all();
         $users=$this->user->all();
@@ -103,9 +104,12 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function update(Place $place, UpdatePlaceRequest $request)
-    {
+    {//dd($request);
         try{
-        $this->place->update($place, $request->paginate(20));
+            isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/iplaces/place/" . $place->id . ".jpg") : false;
+
+            $request['options'] = json_encode($options);
+            $this->category->update($place, $request->all());
 
         return redirect()->route('admin.iplaces.place.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('iplaces::places.title.places')]));

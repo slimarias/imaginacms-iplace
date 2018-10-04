@@ -14,7 +14,8 @@
 @section('content')
     {!! Form::open(['route' => ['admin.iplaces.place.update', $place->id], 'method' => 'put']) !!}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12 col-md-8">
+            <div class="box box-primary">
             <div class="nav-tabs-custom">
                 @include('partials.form-tab-headers')
                 <div class="tab-content">
@@ -53,6 +54,71 @@
                 </div>
             </div> {{-- end nav-tabs-custom --}}
         </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <select class="form-control" name="category_id">
+                        @if(count($categories))
+                            @foreach ($categories as $category)
+                                <option value="{{$category->id}}"> {{$category->title}}
+                                </option>
+                            @endforeach
+                        @endif
+                    </select><br>
+                </div>
+                <div class="box-header">
+                    <label>User</label>
+                </div>
+                {{--  <select class="form-control" name="user_id">
+                      <option value="0">
+                          -
+                      </option>
+                      @if(count($users))
+                          @foreach ($users as $user)
+                              <option value="{{$user->id}}"> {{$user->title}}
+                              </option>
+                          @endforeach
+                      @endif
+                  </select>--}}
+                <div class="box-body">
+                    <select name="user_id" id="user" class="form-control">
+                        @foreach ($users as $user)
+                            <option value="{{$user->id }}" {{$user->id == $currentUser->id ? 'selected' : ''}}>{{$user->present()->fullname()}}
+                                - ({{$user->email}})
+                            </option>
+                        @endforeach
+                    </select><br>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Image</label>
+                    </div>
+                    <div class="box-body">
+                        @include('iplaces::admin.places.partials.image')
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     </div>
     {!! Form::close() !!}
 @stop
@@ -86,3 +152,16 @@
         });
     </script>
 @endpush
+<style>
+
+    .nav-tabs-custom > .nav-tabs > li.active {
+        border-top-color:white !important;
+        border-bottom-color: #3c8dbc !important;
+    }
+    .nav-tabs-custom > .nav-tabs > li.active > a, .nav-tabs-custom > .nav-tabs > li.active:hover > a {
+        background-color: aliceblue !important;
+
+    }
+
+
+</style>

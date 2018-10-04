@@ -17,6 +17,7 @@ return [
         'id'=>'Id',
         'title'=>'Title',
         'slug'=>'Slug',
+        'status'=>'Status'
 
     ],
     'form' => [

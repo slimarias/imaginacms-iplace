@@ -1,26 +1,31 @@
 <div id="image">
     <div class="bgimg-profile">
 
-        @if(isset($category->options->mainimage)&&!empty($category->options->mainimage))
+        @if(isset($category->mainimage)&&!empty($category->mainimage))
             <img id="mainImage"
-                 class="image profile-user-img img-responsive img-circle"
+                 class="image profile-user-img "
                  width="100%"
-                 src="{{url($category->options->mainimage)}}?v={{$category->updated_at}}"/>
+                 src="{{$category->mainimage}}'?v='{{str_random(4)}}"/>
         @else
             <img id="mainImage"
-                 class="image profile-user-img img-responsive img-circle"
+                 class="image profile-user-img img-responsive"
                  width="100%"
-                 src="{{url('modules/iplace/img/category/default.jpg')}}"/>
+                 src="{{url('modules/iplaces/img/category/default.jpg')}}"/>
         @endif
     </div>
     <div class="btn-group bt-upload">
         <label class="btn btn-primary btn-file">
-            <i class="fa fa-picture-o"></i> {{trans('iplaces::places.form.select photo')}}
+            <i class="fa fa-picture-o"></i> {{trans('iplaces::category.form.select photo')}}
             <input
                     type="file" accept="image/*" id="mainimage"
                     name="mainimage"
                     value="mainimage"
                     class="form-control" style="display:none;">
+            <input
+                    type="hidden"
+                    id="hiddenImage"
+                    name="mainimage"
+                    required>
 
         </label>
     </div>
@@ -78,9 +83,28 @@
                     } else {
                         alert("Por favor seleccione una imagen.");
                     }
-                });
+                });3318162755
 
             });
         });
     </script>
+
+    <style>
+        .profile-user-img {
+            margin: 0 auto;
+            width: 100px;
+            padding: 3px;
+            /* border: 3px solid #d2d6de; */
+            font-size: 118px;
+        }
+
+        .carousel-inner > .item > a > img, .carousel-inner > .item > img, .img-responsive, .thumbnail a > img, .thumbnail > img {
+            display: flex;
+            /* max-width: 105%; */
+            height: auto;
+            width: auto;
+        }
+    </style>
+
+
 @endpush

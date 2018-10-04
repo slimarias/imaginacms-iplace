@@ -3,19 +3,25 @@
 namespace Modules\Iplaces\Entities;
 
 use Dimsav\Translatable\Translatable;
+use http\Url;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Modules\Iplaces\Presenters\CategoryPresenter;
+use Modules\Iplaces\Events\CategoryWasCreated;
+use Modules\Core\Traits\NamespacedEntity;
+use Laracasts\Presenter\PresentableTrait;
 
 
 class Category extends Model
 {
-    use Translatable;
+    use Translatable, PresentableTrait, NamespacedEntity;
     //use Sluggable;
 
     protected $table = 'iplaces__categories';
     public $translatedAttributes = ['title', 'description', 'slug'];
     protected $fillable = ['title', 'description', 'slug', 'parent_id', 'options','status'];
     protected $fakeColumns = ['options'];
+    protected $presenter = CategoryPresenter::class;
 
     protected $casts = [
         'options' => 'array'
@@ -67,20 +73,23 @@ class Category extends Model
 
     public function getMainimageAttribute()
     {
+        $image=$this->options->mainimage ?? 'modules/iplaces/img/category/default.jpg';
+        $v=strftime('%u%w%g%k%M%S', strtotime($this->updated_at));
+      // dd($v) ;
+        return url($image.'?v='.$v);
 
-        return ($this->options->mainimage ?? 'modules/iplace/img/category/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
     }
 
     public function getMediumimageAttribute()
     {
 
-        return str_replace('.jpg', '_mediumThumb.jpg', $this->options->mainimage ?? 'modules/iplace/img/category/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
+        return str_replace('.jpg', '_mediumThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/category/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
     }
 
     public function getThumbailsAttribute()
     {
 
-        return str_replace('.jpg', '_smallThumb.jpg', $this->options->mainimage ?? 'modules/iplace/img/category/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
+        return str_replace('.jpg', '_smallThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/category/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
     }
 
     public function getMetadescriptionAttribute()
@@ -102,6 +111,13 @@ class Category extends Model
     {
 
         return url($this->slug);
+
+    }
+
+    public function getOptionsAttribute($value)
+    {
+
+        return json_decode(json_decode($value));
 
     }
 

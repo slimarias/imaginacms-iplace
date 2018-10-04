@@ -16,8 +16,8 @@ class Status
     public function __construct()
     {
         $this->statuses = [
-            self::INACTIVE => trans('iplace::status.inactive'),
-            self::ACTIVE => trans('iplace::status.active'),
+            self::INACTIVE => trans('iplaces::status.inactive'),
+            self::ACTIVE => trans('iplaces::status.active'),
 
         ];
     }

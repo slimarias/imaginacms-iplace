@@ -1,26 +1,31 @@
 <div id="image">
     <div class="bgimg-profile">
 
-        @if(isset($profile->options->mainimage)&&!empty($profile->options->mainimage))
+        @if(isset($place->mainimage)&&!empty($place->mainimage))
             <img id="mainImage"
-                 class="image profile-user-img img-responsive img-circle"
+                 class="image profile-user-img "
                  width="100%"
-                 src="{{url($profile->options->mainimage)}}?v={{$profile->updated_at}}"/>
+                 src="{{$place->mainimage}}'?v='{{str_random(4)}}"/>
         @else
             <img id="mainImage"
-                 class="image profile-user-img img-responsive img-circle"
+                 class="image profile-user-img img-responsive"
                  width="100%"
-                 src="{{url('modules/iprofile/img/default.jpg')}}"/>
+                 src="{{url('modules/iplace/img/place/default.jpg')}}"/>
         @endif
     </div>
     <div class="btn-group bt-upload">
         <label class="btn btn-primary btn-file">
-            <i class="fa fa-picture-o"></i> {{trans('iprofile::profiles.form.select photo')}}
+            <i class="fa fa-picture-o"></i> {{trans('iplaces::place.form.select photo')}}
             <input
                     type="file" accept="image/*" id="mainimage"
                     name="mainimage"
                     value="mainimage"
                     class="form-control" style="display:none;">
+            <input
+                    type="hidden"
+                    id="hiddenImage"
+                    name="mainimage"
+                    required>
 
         </label>
     </div>
@@ -83,4 +88,23 @@
             });
         });
     </script>
+
+    <style>
+        .profile-user-img {
+            margin: 0 auto;
+            width: 100px;
+            padding: 3px;
+            /* border: 3px solid #d2d6de; */
+            font-size: 118px;
+        }
+
+        .carousel-inner > .item > a > img, .carousel-inner > .item > img, .img-responsive, .thumbnail a > img, .thumbnail > img {
+            display: flex;
+            /* max-width: 105%; */
+            height: auto;
+            width: auto;
+        }
+    </style>
+
+
 @endpush

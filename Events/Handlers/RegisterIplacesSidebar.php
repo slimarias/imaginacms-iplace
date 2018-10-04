@@ -37,14 +37,14 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
     public function extendWith(Menu $menu)
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
-            $group->item(trans('iplaces::iplaces.title.iplaces'), function (Item $item) {
-                $item->icon('fa fa-copy');
+            $group->item(trans('iplaces::common.iplaces'), function (Item $item) {
+                $item->icon('fa fa-globe');
                 $item->weight(10);
                 $item->authorize(
                      /* append */
                 );
                 $item->item(trans('iplaces::places.title.places'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-globe');
                     $item->weight(0);
                     $item->append('admin.iplaces.place.create');
                     $item->route('admin.iplaces.place.index');
@@ -53,7 +53,7 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
                 $item->item(trans('iplaces::categories.title.categories'), function (Item $item) {
-                    $item->icon('fa fa-copy');
+                    $item->icon('fa fa-globe');
                     $item->weight(0);
                     $item->append('admin.iplaces.category.create');
                     $item->route('admin.iplaces.category.index');
