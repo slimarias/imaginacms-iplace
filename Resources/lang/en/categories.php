@@ -18,13 +18,16 @@ return [
         'title'=>'Title',
         'slug'=>'Slug',
 
+
     ],
     'form' => [
         'title'=>'Title',
         'description'=>'Description',
         'status'=>'Status',
         'slug'=>'Slug',
-        'content'=>'Content'
+        'content'=>'Content',
+        'metatitle'=>'MetaTitle',
+        'metakeywords'=>'Metakeywords'
     ],
     'messages' => [
     ],

@@ -9,6 +9,7 @@ return [
         'places' => 'Place',
         'create place' => 'Create a place',
         'edit place' => 'Edit a place',
+        'categories'=>'Category'
     ],
     'button' => [
         'create place' => 'Create a place',
@@ -18,6 +19,7 @@ return [
         'title'=>'Title',
         'slug'=>'Slug',
         'status'=>'Status',
+        'categories'=>'Categories'
 
     ],
     'form' => [
@@ -25,7 +27,14 @@ return [
         'description'=>'Description',
         'slug'=>'Slug',
         'summary'=>'Summary',
-        'select photo'=>'Select photo'
+        'select photo'=>'Select photo',
+        'address'=>'Address',
+        'principal'=>'Principal',
+        'metatitle'=>'MetaTitle',
+        'metadescription'=>'MetaDescription',
+        'metakeywords'=>'Metakeywords',
+        'metadata'=>'Meta Data'
+
     ],
     'messages' => [
     ],

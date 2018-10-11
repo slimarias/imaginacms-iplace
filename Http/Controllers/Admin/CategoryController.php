@@ -10,6 +10,7 @@ use Modules\Iplaces\Http\Requests\UpdateCategoryRequest;
 use Modules\Iplaces\Events\CategoryWasCreated;
 use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Transformers\UserProfileTransformer;
 use Modules\Iplaces\Entities\Status;
 
 
@@ -50,7 +51,8 @@ class CategoryController extends AdminBaseController
      */
     public function create()
 
-    {   $statuses = $this->status->lists();
+    {
+        $statuses = $this->status->lists();
         $categories = $this->category->paginate(20);
         return view('iplaces::admin.categories.create',compact('categories','statuses','categories'));
     }
@@ -75,7 +77,7 @@ class CategoryController extends AdminBaseController
         catch (\Exception $e){
             \Log::error($e);
             return redirect()->back()
-                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::categories.title.categories')]));
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::categories.title.categories')]))->withInput($request->all());
 
         }
 
@@ -108,6 +110,9 @@ class CategoryController extends AdminBaseController
     {
 // dd($request);
         try{
+            if(isset($request['options'])){
+                $options=(array)$request['options'];
+            }else{$options = array();}
 
             isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/iplaces/category/" . $category->id . ".jpg") : false;
             $request['options'] = json_encode($options);
@@ -118,7 +123,7 @@ class CategoryController extends AdminBaseController
         }catch (\Exception $e){
             \Log::error($e);
             return redirect()->back()
-                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::categories.title.categories')]));
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::categories.title.categories')]))->withInput($request->all());
 
     }
 

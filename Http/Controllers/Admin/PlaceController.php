@@ -14,6 +14,7 @@ use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Iplaces\Entities\Status;
 use Modules\User\Repositories\UserRepository;
+use Modules\User\Transformers\UserProfileTransformer;
 
 class PlaceController extends AdminBaseController
 {
@@ -24,6 +25,7 @@ class PlaceController extends AdminBaseController
     public $status;
     private $category;
     private $user;
+
 
     public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user)
     {
@@ -78,7 +80,7 @@ class PlaceController extends AdminBaseController
     }catch (\Exception $e){
             \Log::error($e);
             return redirect()->back()
-                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]));
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]))->withInput($request->all());
         }
     }
 
@@ -106,17 +108,22 @@ class PlaceController extends AdminBaseController
     public function update(Place $place, UpdatePlaceRequest $request)
     {//dd($request);
         try{
+            if(isset($request['options'])){
+                $options=(array)$request['options'];
+            }else{$options = array();}
+
+
             isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/iplaces/place/" . $place->id . ".jpg") : false;
 
             $request['options'] = json_encode($options);
-            $this->category->update($place, $request->all());
+            $this->place->update($place, $request->all());
 
         return redirect()->route('admin.iplaces.place.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('iplaces::places.title.places')]));
     }catch (\Exception $e){
             \Log::error($e);
             return redirect()->back()
-                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]));
+                ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]))->withInput($request->all());
         }
     }
 

@@ -18,8 +18,8 @@ class Category extends Model
     //use Sluggable;
 
     protected $table = 'iplaces__categories';
-    public $translatedAttributes = ['title', 'description', 'slug'];
-    protected $fillable = ['title', 'description', 'slug', 'parent_id', 'options','status'];
+    public $translatedAttributes = ['title', 'description', 'slug','metatitle','metadescription','metakeywords'];
+    protected $fillable = ['title', 'description', 'slug', 'parent_id', 'options','status','metatitle','metadescription','metakeywords'];
     protected $fakeColumns = ['options'];
     protected $presenter = CategoryPresenter::class;
 
@@ -73,7 +73,7 @@ class Category extends Model
 
     public function getMainimageAttribute()
     {
-        $image=$this->options->mainimage ?? 'modules/iplaces/img/category/default.jpg';
+        $image=$this->options->mainimage ?? 'modules/iplaces/img/default.jpg';
         $v=strftime('%u%w%g%k%M%S', strtotime($this->updated_at));
       // dd($v) ;
         return url($image.'?v='.$v);
@@ -83,29 +83,20 @@ class Category extends Model
     public function getMediumimageAttribute()
     {
 
-        return str_replace('.jpg', '_mediumThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/category/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
+        return str_replace('.jpg', '_mediumThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
     }
 
     public function getThumbailsAttribute()
     {
 
-        return str_replace('.jpg', '_smallThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/category/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
+        return str_replace('.jpg', '_smallThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
     }
 
-    public function getMetadescriptionAttribute()
-    {
-
-        return $this->options->metadescription ?? substr(strip_tags($this->description), 0, 150);
-    }
 
     /**
      * @return mixed
      */
-    public function getMetatitleAttribute()
-    {
 
-        return $this->options->metatitle ?? $this->title;
-    }
 
     public function getUrlAttribute()
     {

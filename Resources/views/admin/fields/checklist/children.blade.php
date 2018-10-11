@@ -4,6 +4,8 @@
 
         @foreach ($children as $x => $child)
 
+
+
             <li>
                 <label>
                     <input type="checkbox" class="flat-blue jsInherit" name="categories[]" value="{{$child->id}}"
@@ -14,7 +16,7 @@
                     @php
                         $children=$child->children
                     @endphp
-                    @include('icommerce::admin.products.fields.chlidrencategory',['children'=>$children])
+                    @include('iplaces::admin.fields.checklist.children',['children'=>$children])
                 @endif
             </li>
 

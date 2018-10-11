@@ -3,30 +3,25 @@
     <div class="col-xs-12">
         <div class="content-cat" style="max-height:490px;overflow-y: auto;">
 
-            <label for="categories"><strong>{{trans('iplace::place.table.categories')}}</strong></label>
+            <label for="categories"><strong>{{trans('iplaces::places.table.categories')}}</strong></label>
+
 
             @if(count($categories)>0)
                 @php
-                    foreach ($product->categories as $cat){
-                               array_push($oldCat,$cat->id);
-                       if(isset($product->categories) && count($product->categories)>0){
-
-                           $oldCat = array();
-                             array_push($oldCat,$cat->id);
+                    if(isset($place->categories) && count($place->categories)>0){
+                    $oldCat = array();
+                        foreach ($place->categories as $cat){
+                                   array_push($oldCat,$cat->id);
+                               }
 
                            }
-
-                       }
 
                 @endphp
 
                 <ul class="checkbox" style="list-style: none;padding-left: 5px;">
 
                     @foreach ($categories as $category)
-
-
                         @if($category->parent_id==0)
-
                             <li>
 
                                 <label>
@@ -41,7 +36,7 @@
                                     @php
                                         $children=$category->children
                                     @endphp
-                                    @include('icommerce::admin.products.fields.chlidrencategory',['children'=>$children])
+                                    @include('iplaces::admin.fields.checklist.children',['children'=>$children])
                                 @endif
                             </li>
 

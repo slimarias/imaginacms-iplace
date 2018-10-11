@@ -5,7 +5,7 @@
       <paths name="pruebasim.imaginacolombia.com">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/acms/Modules/Iplaces" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

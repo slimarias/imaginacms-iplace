@@ -1,21 +1,21 @@
 <div id="image">
     <div class="bgimg-profile">
 
-        @if(isset($place->mainimage)&&!empty($place->mainimage))
+        @if(isset($entity->mainimage)&&!empty($entity->mainimage))
             <img id="mainImage"
                  class="image profile-user-img "
                  width="100%"
-                 src="{{$place->mainimage}}'?v='{{str_random(4)}}"/>
+                 src="{{$entity->mainimage}}'?v='{{str_random(4)}}"/>
         @else
             <img id="mainImage"
                  class="image profile-user-img img-responsive"
                  width="100%"
-                 src="{{url('modules/iplace/img/place/default.jpg')}}"/>
+                 src="{{url('modules/iplaces/img/default.jpg')}}"/>
         @endif
     </div>
     <div class="btn-group bt-upload">
         <label class="btn btn-primary btn-file">
-            <i class="fa fa-picture-o"></i> {{trans('iplaces::place.form.select photo')}}
+            <i class="fa fa-picture-o"></i> {{trans('iplaces::places.form.select photo')}}
             <input
                     type="file" accept="image/*" id="mainimage"
                     name="mainimage"
@@ -25,8 +25,8 @@
                     type="hidden"
                     id="hiddenImage"
                     name="mainimage"
+                    value="{{$entity->options->mainimage??''}}"
                     required>
-
         </label>
     </div>
 </div>

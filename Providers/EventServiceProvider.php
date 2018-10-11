@@ -23,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         PlaceWasCreated::class => [
             SavePlaceImage::class,
         ],
+        PlaceWasDeleted::class => [
+            SavePlaceImage::class,
+        ],
 
     ];
 }

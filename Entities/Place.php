@@ -17,8 +17,8 @@ class Place extends Model
     use Translatable, PresentableTrait, NamespacedEntity;
 
     protected $table = 'iplaces__places';
-    public $translatedAttributes = ['title','description','slug'];
-    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at'];
+    public $translatedAttributes = ['title','description','slug','metatitle','metadescription','metakeywords'];
+    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords'];
     protected $fakeColumns = ['options'];
     protected $presenter = PlacePresenter::class;
 
@@ -45,7 +45,6 @@ class Place extends Model
     public function user()
     {
         $driver = config('asgard.user.config.driver');
-
         return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
     }
     public function categories()
@@ -65,28 +64,31 @@ class Place extends Model
 
     public function getMainimageAttribute(){
 
-        $image=$this->options->mainimage ?? 'modules/iplaces/img/place/default.jpg';
+        $image=$this->options->mainimage ?? 'modules/iplaces/img/default.jpg';
         $v=strftime('%u%w%g%k%M%S', strtotime($this->updated_at));
         // dd($v) ;
         return url($image.'?v='.$v);
         //return ($this->options->mainimage ?? 'modules/iplace/img/place/default.jpg').'?v='.format_date($this->updated_at,'%u%w%g%k%M%S');
-
-
-
-
     }
     public function getMediumimageAttribute(){
 
-        return str_replace('.jpg','_mediumThumb.jpg',$this->options->mainimage ?? 'modules/iplace/img/place/default.jpg').'?v='.format_date($this->updated_at,'%u%w%g%k%M%S');
+        return str_replace('.jpg','_mediumThumb.jpg',$this->options->mainimage ?? 'modules/iplaces/img/default.jpg').'?v='.format_date($this->updated_at,'%u%w%g%k%M%S');
     }
     public function getThumbailsAttribute(){
 
-        return str_replace('.jpg','_smallThumb.jpg',$this->options->mainimage?? 'modules/iplace/img/place/default.jpg').'?v='.format_date($this->updated_at,'%u%w%g%k%M%S');
+        return str_replace('.jpg','_smallThumb.jpg',$this->options->mainimage?? 'modules/iplaces/img/default.jpg').'?v='.format_date($this->updated_at,'%u%w%g%k%M%S');
+    }
+    public function getMetatitleAttribute(){
+
+        $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
+        return $this->translate($locale)->metatitle ?? $this->translate($locale)->title;
+
     }
     public function getMetadescriptionAttribute(){
 
-        return $this->options->metadescription ?? substr(strip_tags($this->description),0,150);
+        return $this->metadescription ?? substr(strip_tags($this->description),0,150);
     }
+
 
     public function getUrlAttribute() {
 

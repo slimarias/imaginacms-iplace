@@ -12,109 +12,160 @@
 @stop
 
 @section('content')
+
     {!! Form::open(['route' => ['admin.iplaces.place.update', $place->id], 'method' => 'put']) !!}
     <div class="row">
-        <div class="col-xs-12 col-md-8">
-            <div class="box box-primary">
-            <div class="nav-tabs-custom">
-                @include('partials.form-tab-headers')
-                <div class="tab-content">
-                    <?php $i = 0; ?>
-                    @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
-                        <?php $i++; ?>
-                        <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                            @include('iplaces::admin.places.partials.edit-fields', ['lang' => $locale])
+        <div class="col-xs-12 col-md-9">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
                         </div>
-                    @endforeach
+                        <div class="nav-tabs-custom">
+                            @include('partials.form-tab-headers')
+                            <div class="tab-content">
+                                <?php $i = 0; ?>
+                                @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
+                                    <?php $i++; ?>
+                                    <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
+                                        @include('iplaces::admin.places.partials.edit-fields', ['lang' => $locale])
+                                    </div>
+                                @endforeach
+                            </div> {{-- end nav-tabs-custom --}}
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="box-body">
-
-                            <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
-                                <div>
-                                    <label>{{trans('iplaces::status.title')}}</label>
-                                </div>
-                                <label class="radio-inline" for="{{trans('iplaces::status.inactive')}}">
-                                    <input type="radio" id="status" name="status" value="0" {{$place->status == 0 ? 'checked':''}}>
-                                    {{trans('iplaces::status.inactive')}}
-                                </label>
-                                <label class="radio-inline" for="{{trans('iplaces::status.active')}}">
-                                    <input type="radio" id="status" name="status" value="1" {{$place->status == 1 ? 'checked':''}}>
-                                    {{trans('iplaces::status.active')}}
-                                </label>
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                        </div>
+                        <div class="box-body ">
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
+                                <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.place.index')}}">
+                                    <i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                             </div>
-
+                            {{-- <div class="form-group">
+                                 <label for="exampleInputEmail1 ">Email address</label>
+                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                             </div>--}}
                         </div>
-
-
-
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.place.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                     </div>
-                </div>
-            </div> {{-- end nav-tabs-custom --}}
-        </div>
-        </div>
-        <div class="col-xs-12 col-md-4">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <div class="form-group">
-                        <label>Category</label>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <select class="form-control" name="category_id">
-                        @if(count($categories))
-                            @foreach ($categories as $category)
-                                <option value="{{$category->id}}"> {{$category->title}}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select><br>
-                </div>
-                <div class="box-header">
-                    <label>User</label>
-                </div>
-                {{--  <select class="form-control" name="user_id">
-                      <option value="0">
-                          -
-                      </option>
-                      @if(count($users))
-                          @foreach ($users as $user)
-                              <option value="{{$user->id}}"> {{$user->title}}
-                              </option>
-                          @endforeach
-                      @endif
-                  </select>--}}
-                <div class="box-body">
-                    <select name="user_id" id="user" class="form-control">
-                        @foreach ($users as $user)
-                            <option value="{{$user->id }}" {{$user->id == $currentUser->id ? 'selected' : ''}}>{{$user->present()->fullname()}}
-                                - ({{$user->email}})
-                            </option>
-                        @endforeach
-                    </select><br>
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-md-4">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <div class="form-group">
-                        <label>Image</label>
-                    </div>
-                    <div class="box-body">
-                        @include('iplaces::admin.places.partials.image')
+        <div class="col-xs-12 col-md-3">
+            <div class="row">
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>{{trans('iplaces::places.title.categories')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <label for="categories"><strong>{{trans('iplaces::places.form.principal')}}</strong></label>
+                            <select class="form-control" name="category_id">
+                                @if(count($categories))
+                                    @foreach ($categories as $category)
+                                        <option value="{{$category->id}}"> {{$category->title}}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select><br>
+                        </div>
+                        <div class="box-body">
+                            @include('iplaces::admin.fields.checklist.parent')
+                        </div>
                     </div>
                 </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <label>{{trans('iplaces::status.title')}}</label>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body ">
+                            <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
+                                <label class="radio" for="{{trans('iplaces::status.inactive')}}">
+                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    {{trans('iplaces::status.inactive')}}
+                                </label>
+                                <label class="radio" for="{{trans('iplaces::status.active')}}">
+                                    <input type="radio" id="status" name="status" value="1">
+                                    {{trans('iplaces::status.active')}}
+                                </label>
+                            </div>
+                            {{-- <div class="form-group">
+                                 <label for="exampleInputEmail1 ">Email address</label>
+                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                             </div>--}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>Image</label>
+                            </div>
+                            <div class="box-body">
+                                @include('iplaces::admin.fields.image',['entity'=>$place])
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                            </div>
+                            <div class="box-body">
+                                @include('iplaces::admin.fields.maps',['field'=>['name'=>'address', 'label'=>trans('iplaces::places.form.address'),'value'=>$place->address]])
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <label>User</label>
+                        </div>
+                        <div class="box-body">
+                            <select name="user_id" id="user" class="form-control">
+                                @foreach ($users as $user)
+                                    <option value="{{$user->id }}" {{$user->id == $currentUser->id ? 'selected' : ''}}>{{$user->present()->fullname()}}
+                                        - ({{$user->email}})
+                                    </option>
+                                @endforeach
+                            </select><br>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -149,19 +200,23 @@
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
             });
+            $('.btn-box-tool').click(function(e){
+                e.preventDefault();
+            });
+
         });
+
     </script>
+    <style>
+
+        .nav-tabs-custom > .nav-tabs > li.active {
+            border-top-color:white !important;
+            border-bottom-color: #3c8dbc !important;
+        }
+        .nav-tabs-custom > .nav-tabs > li.active > a, .nav-tabs-custom > .nav-tabs > li.active:hover > a {
+            background-color: aliceblue !important;
+
+        }
+    </style>
 @endpush
-<style>
 
-    .nav-tabs-custom > .nav-tabs > li.active {
-        border-top-color:white !important;
-        border-bottom-color: #3c8dbc !important;
-    }
-    .nav-tabs-custom > .nav-tabs > li.active > a, .nav-tabs-custom > .nav-tabs > li.active:hover > a {
-        background-color: aliceblue !important;
-
-    }
-
-
-</style>

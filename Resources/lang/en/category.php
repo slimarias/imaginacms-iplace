@@ -26,7 +26,8 @@ return [
         'status'=>'Status',
         'slug'=>'Slug',
         'Image'=>'Image',
-        'select photo'=>'Select photo'
+        'select photo'=>'Select photo',
+        'summary'=>'Summary'
     ],
     'messages' => [
     ],
