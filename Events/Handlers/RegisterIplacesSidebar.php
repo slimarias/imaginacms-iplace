@@ -53,7 +53,7 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
                 $item->item(trans('iplaces::categories.title.categories'), function (Item $item) {
-                    $item->icon('fa fa-grav');
+                    $item->icon('fa fa-puzzle-piece');
                     $item->weight(0);
                     $item->append('admin.iplaces.category.create');
                     $item->route('admin.iplaces.category.index');
@@ -61,7 +61,27 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('iplaces.categories.index')
                     );
                 });
+                $item->item(trans('iplaces::services.title.services'), function (Item $item) {
+                    $item->icon('fa fa-users');
+                    $item->weight(0);
+                    $item->append('admin.iplaces.service.create');
+                    $item->route('admin.iplaces.service.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('iplaces.services.index')
+                    );
+                });
+                $item->item(trans('iplaces::zones.title.zones'), function (Item $item) {
+                    $item->icon('fa fa-globe');
+                    $item->weight(0);
+                    $item->append('admin.iplaces.zone.create');
+                    $item->route('admin.iplaces.zone.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('iplaces.zones.index')
+                    );
+                });
 // append
+
+
 
 
             });

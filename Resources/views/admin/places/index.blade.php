@@ -60,9 +60,13 @@
                                             </a>
                                         </td>
                                         <td>
+                                            @if(isset($place->category->id))
                                             <a href="{{ route('admin.iplaces.category.edit', [$place->category->id]) }}">
                                                 {{ $place->category->title }}
                                             </a>
+                                                @else
+                                                null
+                                            @endif
                                         </td>
 
 

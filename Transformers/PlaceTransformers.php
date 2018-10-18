@@ -17,7 +17,7 @@ class PlaceTransformers extends Resource
 
     public function toArray($request)
     {
-        $dateformat= config('asgard.iplace.config.dateformat');
+      //  $dateformat= config('asgard.iplace.config.dateformat');
         $options=$this->options;
         unset($options->mainimage,$options->metatitle,$options->metadescription);
         return [
@@ -25,6 +25,7 @@ class PlaceTransformers extends Resource
             'title' => $this->title,
             'slug' => $this->slug,
             'description' => $this->description,
+            'category_id'=>$this->category_id,
             'mainimage' => $this->mainimage,
             'mediumimage'=>$this->mediumimage,
             'thumbails'=>$this->thumbails,
@@ -32,8 +33,8 @@ class PlaceTransformers extends Resource
             'metadescription'=>$this->metadescription??$this->summary,
             'metakeywords'=>$this->metakeywords,
             'options'=>$options,
-            'created_at'=>format_date($this->created_at,$dateformat),
-            'updated_at'=>format_date($this->updated_at,$dateformat)
+            'created_at'=>($this->created_at),
+            'updated_at'=>($this->updated_at)
         ];
     }
 

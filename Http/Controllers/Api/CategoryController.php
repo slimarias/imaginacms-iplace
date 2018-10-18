@@ -32,8 +32,8 @@ class CategoryController extends BasePublicController
 //get
     public function categories(Request $request)
     {
-       // dd($request);
-        try {
+       //dd($request)
+        try {;
             if(isset($request->include)){
                 $includes = explode(",", $request->include);
             }else{
@@ -110,7 +110,8 @@ class CategoryController extends BasePublicController
     }
 //get
     public function category(Category $category, Request $request)
-    {// dd($category);
+    {
+       // dd($request);
         try {
 
             if (isset($category->id) && !empty($category->id)) {
@@ -225,6 +226,10 @@ class CategoryController extends BasePublicController
                     ]
 
                 ];
+            }if(isset($request->category_id)){
+
+            }else{
+
             }
 
         } catch (\Exception $e) {
@@ -246,10 +251,6 @@ class CategoryController extends BasePublicController
     public function store(Request $request)
     {
         try {
-            $options = (array)$request->options ?? array();
-            isset($request->metatitle) ? $options['metatitle'] = $request->metatitle : false;
-            isset($request->metadescription) ? $options['metadescription'] = $request->metatitle : false;
-            $request['options'] = $options;
             $category = $this->category->create($request->all());
             $status = 200;
             $response = [
@@ -288,8 +289,6 @@ class CategoryController extends BasePublicController
 
             if (isset($category->id) && !empty($category->id)) {
                 $options = (array)$request->options ?? array();
-                isset($request->metatitle) ? $options['metatitle'] = $request->metatitle : false;
-                isset($request->metadescription) ? $options['metadescription'] = $request->metatitle : false;
                 isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/iplace/category/" . $category->id . ".jpg") : false;
                 $request['options'] = json_encode($options);
                 $category = $this->category->update($category, $request->all());

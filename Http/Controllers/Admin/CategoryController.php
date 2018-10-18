@@ -50,11 +50,11 @@ class CategoryController extends AdminBaseController
      * @return Response
      */
     public function create()
-
     {
+
         $statuses = $this->status->lists();
         $categories = $this->category->paginate(20);
-        return view('iplaces::admin.categories.create',compact('categories','statuses','categories'));
+        return view('iplaces::admin.categories.create',compact('categories','statuses'));
     }
 
     /**
@@ -65,9 +65,8 @@ class CategoryController extends AdminBaseController
      */
     public function store(CreateCategoryRequest $request)
     {
-       // dd($request);
+       //dd($request);
         try{
-
             $this->category->create($request->all());
            // event(new CategoryWasCreated($this->data['entry'], $request->all()));
 
@@ -144,6 +143,7 @@ class CategoryController extends AdminBaseController
                 ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('iplaces::categories.title.categories')]));
 
         }catch (\Exception $e){
+
             \Log::error($e);
             return redirect()->back()
                 ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::categories.title.categories')]));

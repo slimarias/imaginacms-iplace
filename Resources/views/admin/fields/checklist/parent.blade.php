@@ -23,7 +23,6 @@
                     @foreach ($categories as $category)
                         @if($category->parent_id==0)
                             <li>
-
                                 <label>
 
                                     <input type="checkbox" class="flat-blue jsInherit" name="categories[]"

@@ -5,8 +5,11 @@ namespace Modules\Iplaces\Providers;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Modules\Iplaces\Events\CategoryWasCreated;
 use Modules\Iplaces\Events\CategoryWasDeleted;
+use Modules\Iplaces\Events\ServiceWasCreated;
+use Modules\Iplaces\Events\ServiceWasDeleted;
 use Modules\Iplaces\Events\Handlers\DeleteCategoryImage;
 use Modules\Iplaces\Events\Handlers\SaveCategoryImage;
+use Modules\Iplaces\Events\Handlers\SaveServiceImage;
 use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Iplaces\Events\Handlers\SavePlaceImage;
 
@@ -26,6 +29,13 @@ class EventServiceProvider extends ServiceProvider
         PlaceWasDeleted::class => [
             SavePlaceImage::class,
         ],
+        ServiceWasCreated::class => [
+            SaveServiceImage::class,
+        ],
+        ServiceWasDeleted::class => [
+            SaveServiceImage::class,
+        ],
+
 
     ];
 }

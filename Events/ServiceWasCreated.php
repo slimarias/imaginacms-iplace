@@ -1,18 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: imagina
- * Date: 3/10/2018
- * Time: 5:41 PM
- */
+
 
 namespace Modules\Iplaces\Events;
 
-use Modules\Iplaces\Entities\Place;
+use Modules\Iplaces\Entities\Service;
 use Modules\Media\Contracts\StoringMedia;
 
-
-class PlaceWasCreated implements StoringMedia
+class ServiceWasCreated implements StoringMedia
 {
     public $entity;
     public  $data;
@@ -24,7 +18,7 @@ class PlaceWasCreated implements StoringMedia
      * @param array $data
      */
     public function __construct($entity,array $data)
-    { //dd($data,$entity);
+    {// dd($data,$entity);
         $this->data=$data;
         $this->entity=$entity;
     }
@@ -43,7 +37,5 @@ class PlaceWasCreated implements StoringMedia
     {
         return $this->data;
     }
-
-
 
 }

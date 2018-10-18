@@ -13,6 +13,8 @@ use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Iplaces\Entities\Status;
+use Modules\Iplaces\Repositories\ZoneRepository;
+use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\User\Repositories\UserRepository;
 use Modules\User\Transformers\UserProfileTransformer;
 
@@ -25,9 +27,11 @@ class PlaceController extends AdminBaseController
     public $status;
     private $category;
     private $user;
+    private $zone;
+    private $service;
 
 
-    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user)
+    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service)
     {
         parent::__construct();
 
@@ -35,6 +39,8 @@ class PlaceController extends AdminBaseController
         $this->status = $status;
         $this->category=$category;
         $this->user=$user;
+        $this->zone=$zone;
+        $this->service=$service;
     }
 
     /**
@@ -60,8 +66,10 @@ class PlaceController extends AdminBaseController
        // $place = $this->place->paginate(20);
         $categories=$this->category->all();
         $users=$this->user->all();
+        $zones=$this->zone->all();
+        $services=$this->service->all();
 
-        return view('iplaces::admin.places.create',compact('categories','statuses','users'));
+        return view('iplaces::admin.places.create',compact('categories','statuses','users','zones','services'));
     }
 
     /**
@@ -71,7 +79,8 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function store(CreatePlaceRequest $request)
-    {// dd($request);
+    {
+        //dd($request);
         try{
         $this->place->create($request->all());//envia todas las categorias
 
@@ -95,7 +104,9 @@ class PlaceController extends AdminBaseController
         $statuses = $this->status->lists();
         $categories=$this->category->all();
         $users=$this->user->all();
-        return view('iplaces::admin.places.edit', compact('place','statuses','categories','users'));
+        $zones=$this->zone->all();
+        $services=$this->service->all();
+        return view('iplaces::admin.places.edit', compact('place','statuses','categories','users','zones','services'));
     }
 
     /**

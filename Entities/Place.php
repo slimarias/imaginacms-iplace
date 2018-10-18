@@ -18,13 +18,16 @@ class Place extends Model
 
     protected $table = 'iplaces__places';
     public $translatedAttributes = ['title','description','slug','metatitle','metadescription','metakeywords'];
-    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords'];
+    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords','zone_id','city','service_id'];
     protected $fakeColumns = ['options'];
     protected $presenter = PlacePresenter::class;
 
     protected $casts = [
         'options' => 'array',
-        'status'=>'int'
+        'status'=>'int',
+        'zone_id'=>'int',
+        'service_id'=>'int'
+
     ];
 
     /*
@@ -72,11 +75,11 @@ class Place extends Model
     }
     public function getMediumimageAttribute(){
 
-        return str_replace('.jpg','_mediumThumb.jpg',$this->options->mainimage ?? 'modules/iplaces/img/default.jpg').'?v='.format_date($this->updated_at,'%u%w%g%k%M%S');
+        return str_replace('.jpg','_mediumThumb.jpg',$this->options->mainimage ?? 'modules/iplaces/img/default.jpg');
     }
     public function getThumbailsAttribute(){
 
-        return str_replace('.jpg','_smallThumb.jpg',$this->options->mainimage?? 'modules/iplaces/img/default.jpg').'?v='.format_date($this->updated_at,'%u%w%g%k%M%S');
+        return str_replace('.jpg','_smallThumb.jpg',$this->options->mainimage?? 'modules/iplaces/img/default.jpg');
     }
     public function getMetatitleAttribute(){
 

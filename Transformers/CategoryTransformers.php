@@ -5,6 +5,7 @@ namespace Modules\Iplaces\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\User\Transformers\UserProfileTransformer;
+use Modules\Iplaces\Events\CategoryWasCreated;
 
 
 class CategoryTransformers extends Resource
@@ -13,7 +14,7 @@ class CategoryTransformers extends Resource
     public function toArray($request)
     {
 
-        $dateformat= config('asgard.iplace.config.dateformat');
+      //  $dateformat= config('asgard.iplace.config.dateformat');
         $options=$this->options;
         unset($options->mainimage,$options->metatitle,$options->metadescription);
         return [
@@ -28,9 +29,17 @@ class CategoryTransformers extends Resource
             'metadescription'=>$this->metadescription,
             'metakeywords'=>$this->metakeywords,
             'options' => $options,
-            'created_at' => format_date($this->created_at, $dateformat),
-            'updated_at' => format_date($this->updated_at, $dateformat)
+            'created_at' => ($this->created_at),
+            'updated_at' => ($this->updated_at)
         ];
+
+        if (in_array('category',$includes)) {
+
+            $data['category']= CategoryTransformers::collection($this->categories);
+        }
+        return $data;
+
+
     }
 
 

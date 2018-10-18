@@ -13,7 +13,21 @@ return [
         'edit' => 'iplaces::categories.edit resource',
         'destroy' => 'iplaces::categories.destroy resource',
     ],
+    'iplaces.services' => [
+        'index' => 'iplaces::services.list resource',
+        'create' => 'iplaces::services.create resource',
+        'edit' => 'iplaces::services.edit resource',
+        'destroy' => 'iplaces::services.destroy resource',
+    ],
+    'iplaces.zones' => [
+        'index' => 'iplaces::zones.list resource',
+        'create' => 'iplaces::zones.create resource',
+        'edit' => 'iplaces::zones.edit resource',
+        'destroy' => 'iplaces::zones.destroy resource',
+    ],
 // append
+
+
 
 
 ];

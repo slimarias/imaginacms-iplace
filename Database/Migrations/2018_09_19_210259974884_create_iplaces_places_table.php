@@ -18,9 +18,12 @@ class CreateIplacesPlacesTable extends Migration
             // fields
             $table->text('summary');
             $table->text('options')->default('')->nullable();
+            $table->integer('city')->default(0)->unsigned();
             $table->integer('status')->default(0)->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('category_id')->unsigned();
+            $table->integer('zone_id')->unsigned();
+            $table->integer('service_id')->unsigned();
             $table->text('address');
             $table->foreign('user_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
             // Your fields

@@ -23,6 +23,7 @@ class Category extends Model
     protected $fakeColumns = ['options'];
     protected $presenter = CategoryPresenter::class;
 
+
     protected $casts = [
         'options' => 'array'
     ];
@@ -83,13 +84,13 @@ class Category extends Model
     public function getMediumimageAttribute()
     {
 
-        return str_replace('.jpg', '_mediumThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
+        return str_replace('.jpg', '_mediumThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/default.jpg');
     }
 
     public function getThumbailsAttribute()
     {
 
-        return str_replace('.jpg', '_smallThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/default.jpg') . '?v=' . format_date($this->updated_at, '%u%w%g%k%M%S');
+        return str_replace('.jpg', '_smallThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/default.jpg');
     }
 
 

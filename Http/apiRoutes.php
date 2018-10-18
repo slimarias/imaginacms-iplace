@@ -6,74 +6,75 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
 
     $router->group(['prefix' => 'places'], function (Router $router) {
 
-        $router->bind('entity', function ($id) {
-            return app(\Modules\Iplace\Repositories\PlaceRepository::class)->find($id);
+        $router->bind('aiplacesplace', function ($id) {
+            return app(\Modules\Iplaces\Repositories\PlaceRepository::class)->find($id);
         });
         $router->get('/', [
             'as' => 'iplace.api.places',
             'uses' => 'PlaceController@places',
         ]);
-        $router->get('{entity}', [
+        $router->get('{aiplacesplace}', [
             'as' => 'iplace.api.place',
             'uses' => 'PlaceController@place',
         ]);
         $router->post('/', [
             'as' => 'iplace.api.places.store',
             'uses' => 'PlaceController@store',
-            'middleware' => ['api.token','token-can:iplace.places.create']
+            'middleware' => ['api.token','token-can:iplaces.places.create']
         ]);
         $router->post('gallery', [
             'as' => 'iplace.api.places.gallery.store',
             'uses' => 'PlaceController@galleryStore',
-            'middleware' => ['api.token','token-can:iplace.places.create']
+            'middleware' => ['api.token','token-can:iplaces.places.create']
         ]);
         $router->post('gallery/delete', [
             'as' => 'iplace.api.places.gallery.delete',
             'uses' => 'PlaceController@galleryDelete',
-            'middleware' => ['api.token','token-can:iplace.places.create']
+            'middleware' => ['api.token','token-can:iplaces.places.create']
         ]);
-        $router->put('{entity}', [
+        $router->put('{aiplacesplace}', [
             'as' => 'iplace.api.places.update',
             'uses' => 'PlaceController@update',
-            'middleware' =>['api.token','token-can:iplace.places.edit']
+            'middleware' =>['api.token','token-can:iplaces.places.edit']
         ]);
-        $router->delete('{entity}', [
+        $router->delete('{aiplacesplace}', [
             'as' => 'iplace.api.places.delete',
             'uses' => 'PlaceController@delete',
-            'middleware' => ['api.token','token-can:iplace.places.destroy']
+            'middleware' => ['api.token','token-can:iplaces.places.destroy']
         ]);
     });
     $router->group(['prefix' => 'categories'], function (Router $router) {
 
-        $router->bind('cat', function ($id) {
-            return app(\Modules\Iplace\Repositories\CategoryRepository::class)->find($id);
+        $router->bind('aiplacescat', function ($id) {
+
+           return app(\Modules\Iplaces\Repositories\CategoryRepository::class)->find($id);
         });
         $router->get('/', [
             'as' => 'iplace.api.categories',
             'uses' => 'CategoryController@categories',
         ]);
-        $router->get('{cat}', [
+        $router->get('{aiplacescat}', [
             'as' => 'iplace.api.category',
             'uses' => 'CategoryController@category',
         ]);
-        $router->get('{cat}/places', [
+        $router->get('{aiplacescat}/places', [
             'as' => 'iplace.api.categories.places',
             'uses' => 'CategoryController@places',
         ]);
         $router->post('/', [
             'as' => 'iplace.api.categories.store',
             'uses' => 'CategoryController@store',
-            'middleware' => ['api.token','token-can:iplace.categories.create']
+            'middleware' => ['api.token','token-can:iplaces.categories.create']
         ]);
-        $router->put('{cat}', [
+        $router->put('{aiplacescat}', [
             'as' => 'iplace.api.categories.update',
             'uses' => 'CategoryController@update',
-            'middleware' =>['api.token','token-can:iplace.categories.edit']
+            'middleware' =>['api.token','token-can:iplaces.categories.edit']
         ]);
-        $router->delete('{cat}', [
+        $router->delete('{aiplacescat}', [
             'as' => 'iplace.api.categories.delete',
             'uses' => 'CategoryController@delete',
-            'middleware' => ['api.token','token-can:iplace.categories.destroy']
+            'middleware' => ['api.token','token-can:iplaces.categories.destroy']
         ]);
     });
     

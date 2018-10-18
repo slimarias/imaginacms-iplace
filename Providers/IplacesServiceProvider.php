@@ -31,7 +31,11 @@ class IplacesServiceProvider extends ServiceProvider
         $this->app['events']->listen(LoadingBackendTranslations::class, function (LoadingBackendTranslations $event) {
             $event->load('places', array_dot(trans('iplaces::places')));
             $event->load('categories', array_dot(trans('iplaces::categories')));
+            $event->load('services', array_dot(trans('iplaces::services')));
+            $event->load('zones', array_dot(trans('iplaces::zones')));
             // append translations
+
+
 
 
         });
@@ -80,7 +84,33 @@ class IplacesServiceProvider extends ServiceProvider
                 return new \Modules\Iplaces\Repositories\Cache\CacheCategoryDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Iplaces\Repositories\ServiceRepository',
+            function () {
+                $repository = new \Modules\Iplaces\Repositories\Eloquent\EloquentServiceRepository(new \Modules\Iplaces\Entities\Service());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Iplaces\Repositories\Cache\CacheServiceDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Iplaces\Repositories\ZoneRepository',
+            function () {
+                $repository = new \Modules\Iplaces\Repositories\Eloquent\EloquentZoneRepository(new \Modules\Iplaces\Entities\Zone());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Iplaces\Repositories\Cache\CacheZoneDecorator($repository);
+            }
+        );
 // add bindings
+
+
 
 
     }

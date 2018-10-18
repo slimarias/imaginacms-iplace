@@ -9,7 +9,6 @@ use Mockery\CountValidator\Exception;
 use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Iplaces\Entities\Place;
 use Modules\Iplaces\Repositories\PlaceRepository;
-use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Iplaces\Transformers\PlaceTransformers;
 use Modules\Iplaces\Transformers\CategoryTransformers;
 use Modules\Iplaces\Entities\Status;
@@ -103,7 +102,7 @@ class PlaceController extends BasePublicController
     }
 
     public function place(Place $place, Request $request)
-    { //dd($request);
+    { dd($place);
         try {
             if (isset($place->id) && !empty($place->id)) {
                 $response = [
@@ -126,6 +125,7 @@ class PlaceController extends BasePublicController
                 if (in_array('category', $includes)) {
                     $response["relationships"]["category"] = new CategoryTransformer($place->category);
                 }
+
 
 
             } else {
@@ -158,7 +158,7 @@ class PlaceController extends BasePublicController
     }
 
     public function store(Request $request)
-    {
+    {//dd($request);
         try {
             $options = (array)$request->options ?? array();
             isset($request->metatitle) ? $options['metatitle'] = $request->metatitle : false;

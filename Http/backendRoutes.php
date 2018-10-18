@@ -18,9 +18,10 @@ $router->group(['prefix' =>'/places'], function (Router $router) {
         'middleware' => 'can:iplaces.places.create'
     ]);
     $router->post('places', [
+       // dd('hjh'),
         'as' => 'admin.iplaces.place.store',
         'uses' => 'PlaceController@store',
-        'middleware' => 'can:iplaces.places.create'
+       'middleware' => 'can:iplaces.places.create'
     ]);
     $router->get('places/{place}/edit', [
         'as' => 'admin.iplaces.place.edit',
@@ -73,7 +74,75 @@ $router->group(['prefix' =>'/places'], function (Router $router) {
             'uses' => 'CategoryController@destroy',
             'middleware' => 'can:iplaces.categories.destroy'
         ]);
+    $router->bind('service', function ($id) {
+        return app('Modules\Iplaces\Repositories\ServiceRepository')->find($id);
+    });
+    $router->get('services', [
+        'as' => 'admin.iplaces.service.index',
+        'uses' => 'ServiceController@index',
+        'middleware' => 'can:iplaces.services.index'
+    ]);
+    $router->get('services/create', [
+        'as' => 'admin.iplaces.service.create',
+        'uses' => 'ServiceController@create',
+        'middleware' => 'can:iplaces.services.create'
+    ]);
+    $router->post('services', [
+        'as' => 'admin.iplaces.service.store',
+        'uses' => 'ServiceController@store',
+        'middleware' => 'can:iplaces.services.create'
+    ]);
+    $router->get('services/{service}/edit', [
+        'as' => 'admin.iplaces.service.edit',
+        'uses' => 'ServiceController@edit',
+        'middleware' => 'can:iplaces.services.edit'
+    ]);
+    $router->put('services/{service}', [
+        'as' => 'admin.iplaces.service.update',
+        'uses' => 'ServiceController@update',
+        'middleware' => 'can:iplaces.services.edit'
+    ]);
+    $router->delete('services/{service}', [
+        'as' => 'admin.iplaces.service.destroy',
+        'uses' => 'ServiceController@destroy',
+        'middleware' => 'can:iplaces.services.destroy'
+    ]);
+    $router->bind('zone', function ($id) {
+        return app('Modules\Iplaces\Repositories\ZoneRepository')->find($id);
+    });
+    $router->get('zones', [
+        'as' => 'admin.iplaces.zone.index',
+        'uses' => 'ZoneController@index',
+        'middleware' => 'can:iplaces.zones.index'
+    ]);
+    $router->get('zones/create', [
+        'as' => 'admin.iplaces.zone.create',
+        'uses' => 'ZoneController@create',
+        'middleware' => 'can:iplaces.zones.create'
+    ]);
+    $router->post('zones', [
+        'as' => 'admin.iplaces.zone.store',
+        'uses' => 'ZoneController@store',
+        'middleware' => 'can:iplaces.zones.create'
+    ]);
+    $router->get('zones/{zone}/edit', [
+        'as' => 'admin.iplaces.zone.edit',
+        'uses' => 'ZoneController@edit',
+        'middleware' => 'can:iplaces.zones.edit'
+    ]);
+    $router->put('zones/{zone}', [
+        'as' => 'admin.iplaces.zone.update',
+        'uses' => 'ZoneController@update',
+        'middleware' => 'can:iplaces.zones.edit'
+    ]);
+    $router->delete('zones/{zone}', [
+        'as' => 'admin.iplaces.zone.destroy',
+        'uses' => 'ZoneController@destroy',
+        'middleware' => 'can:iplaces.zones.destroy'
+    ]);
 // append
+
+
 
     });
 });

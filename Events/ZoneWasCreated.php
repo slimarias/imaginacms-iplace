@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: imagina
- * Date: 3/10/2018
- * Time: 5:41 PM
- */
+
 
 namespace Modules\Iplaces\Events;
 
-use Modules\Iplaces\Entities\Place;
+use Modules\Iplaces\Entities\Zone;
 use Modules\Media\Contracts\StoringMedia;
 
 
-class PlaceWasCreated implements StoringMedia
+class ZoneWasCreated implements StoringMedia
 {
     public $entity;
     public  $data;
@@ -20,7 +15,7 @@ class PlaceWasCreated implements StoringMedia
     /**
      * Create a new event instance.
      *
-     * @param $entity
+     * @param $zone
      * @param array $data
      */
     public function __construct($entity,array $data)
