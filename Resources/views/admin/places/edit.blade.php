@@ -110,6 +110,31 @@
 
                     </div>
                 </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>{{trans('iplaces::services.form.services')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <label for="services"><strong>{{trans('iplaces::services.form.principal')}}</strong></label>
+                            <select class="form-control" name="service_id">
+                                @if(count($services))
+                                    @foreach ($services as $service)
+                                        <option value="{{$service->id}}"> {{$service->title}}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select><br>
+                        </div>
+
+                    </div>
+                </div>
              {{--  <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">

@@ -15,7 +15,7 @@ class CategoryWasCreated implements StoringMedia
     /**
      * Create a new event instance.
      *
-     * @param $category
+     * @param $entity
      * @param array $data
      */
     public function __construct($entity,array $data)

@@ -139,9 +139,35 @@
                                 @endif
                             </select><br>
                         </div>
-
                     </div>
                 </div>
+                {{--
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>{{trans('iplaces::cities.form.cities')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <label for="cities"><strong>{{trans('iplaces::cities.form.principal')}}</strong></label>
+                            <select class="form-control" name="city_id" id="city_id">
+                                @if(count($cities))
+                                    @foreach ($cities as $city)
+                                        <option value="{{$city->id}}"> {{$city->title}}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select><br>
+                        </div>
+
+                    </div>
+                </div>--}}
                 <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">

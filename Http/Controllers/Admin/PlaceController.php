@@ -29,6 +29,7 @@ class PlaceController extends AdminBaseController
     private $user;
     private $zone;
     private $service;
+  //  private $city;
 
 
     public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service)
@@ -37,10 +38,11 @@ class PlaceController extends AdminBaseController
 
         $this->place = $place;
         $this->status = $status;
-        $this->category=$category;
-        $this->user=$user;
-        $this->zone=$zone;
-        $this->service=$service;
+        $this->category = $category;
+        $this->user = $user;
+        $this->zone = $zone;
+        $this->service = $service;
+       // $this->city = $city;
     }
 
     /**
@@ -63,13 +65,14 @@ class PlaceController extends AdminBaseController
     public function create()
     {
         $statuses = $this->status->lists();
-       // $place = $this->place->paginate(20);
-        $categories=$this->category->all();
-        $users=$this->user->all();
-        $zones=$this->zone->all();
-        $services=$this->service->all();
+        // $place = $this->place->paginate(20);
+        $categories = $this->category->all();
+        $users = $this->user->all();
+        $zones = $this->zone->all();
+        $services = $this->service->all();
+      //  $cities = $this->city->all();
 
-        return view('iplaces::admin.places.create',compact('categories','statuses','users','zones','services'));
+        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services'));
     }
 
     /**
@@ -81,12 +84,12 @@ class PlaceController extends AdminBaseController
     public function store(CreatePlaceRequest $request)
     {
         //dd($request);
-        try{
-        $this->place->create($request->all());//envia todas las categorias
+        try {
+            $this->place->create($request->all());//send all categories
 
-        return redirect()->route('admin.iplaces.place.index')
-            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::places.title.places')]));
-    }catch (\Exception $e){
+            return redirect()->route('admin.iplaces.place.index')
+                ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::places.title.places')]));
+        } catch (\Exception $e) {
             \Log::error($e);
             return redirect()->back()
                 ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]))->withInput($request->all());
@@ -102,11 +105,12 @@ class PlaceController extends AdminBaseController
     public function edit(Place $place)
     {//dd($place);
         $statuses = $this->status->lists();
-        $categories=$this->category->all();
-        $users=$this->user->all();
-        $zones=$this->zone->all();
-        $services=$this->service->all();
-        return view('iplaces::admin.places.edit', compact('place','statuses','categories','users','zones','services'));
+        $categories = $this->category->all();
+        $users = $this->user->all();
+        $zones = $this->zone->all();
+        $services = $this->service->all();
+       //$cities = $this->city->all();
+        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services'));
     }
 
     /**
@@ -118,10 +122,12 @@ class PlaceController extends AdminBaseController
      */
     public function update(Place $place, UpdatePlaceRequest $request)
     {//dd($request);
-        try{
-            if(isset($request['options'])){
-                $options=(array)$request['options'];
-            }else{$options = array();}
+        try {
+            if (isset($request['options'])) {
+                $options = (array)$request['options'];
+            } else {
+                $options = array();
+            }
 
 
             isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/iplaces/place/" . $place->id . ".jpg") : false;
@@ -129,9 +135,9 @@ class PlaceController extends AdminBaseController
             $request['options'] = json_encode($options);
             $this->place->update($place, $request->all());
 
-        return redirect()->route('admin.iplaces.place.index')
-            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('iplaces::places.title.places')]));
-    }catch (\Exception $e){
+            return redirect()->route('admin.iplaces.place.index')
+                ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('iplaces::places.title.places')]));
+        } catch (\Exception $e) {
             \Log::error($e);
             return redirect()->back()
                 ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]))->withInput($request->all());
@@ -146,13 +152,13 @@ class PlaceController extends AdminBaseController
      */
     public function destroy(Place $place)
     {
-        try{
+        try {
             $this->place->destroy($place);
 
             return redirect()->route('admin.iplaces.place.index')
                 ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('iplaces::places.title.places')]));
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             \Log::error($e);
             return redirect()->back()
                 ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]));
