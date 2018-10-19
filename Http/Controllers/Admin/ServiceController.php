@@ -83,7 +83,7 @@ class ServiceController extends AdminBaseController
      * @return Response
      */
     public function edit(Service $service)
-    {
+    {//dd($service);
         $services = $this->service->paginate(20);
         $statuses = $this->status->lists();
         return view('iplaces::admin.services.edit', compact('service','services','statuses'));

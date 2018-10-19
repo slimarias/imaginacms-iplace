@@ -31,7 +31,7 @@
                                 @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
                                     <?php $i++; ?>
                                     <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                                        @include('iplaces::admin.zones.partials.create-fields', ['lang' => $locale])
+                                        @include('iplaces::admin.zones.partials.edit-fields', ['lang' => $locale])
                                     </div>
                                 @endforeach
 

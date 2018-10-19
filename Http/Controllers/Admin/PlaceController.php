@@ -29,7 +29,7 @@ class PlaceController extends AdminBaseController
     private $user;
     private $zone;
     private $service;
-  //  private $city;
+  //private $city;
 
 
     public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service)
@@ -70,7 +70,7 @@ class PlaceController extends AdminBaseController
         $users = $this->user->all();
         $zones = $this->zone->all();
         $services = $this->service->all();
-      //  $cities = $this->city->all();
+      //$cities = $this->city->all();
 
         return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services'));
     }
@@ -121,7 +121,7 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function update(Place $place, UpdatePlaceRequest $request)
-    {//dd($request);
+    {dd($request);
         try {
             if (isset($request['options'])) {
                 $options = (array)$request['options'];

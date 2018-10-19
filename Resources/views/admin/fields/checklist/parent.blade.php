@@ -24,12 +24,10 @@
                         @if($category->parent_id==0)
                             <li>
                                 <label>
-
                                     <input type="checkbox" class="flat-blue jsInherit" name="categories[]"
 
                                            value="{{$category->id}}"
                                            @isset($oldCat) @if(in_array($category->id, $oldCat)) checked="checked" @endif @endisset> {{$category->title}}
-
                                 </label>
                                 @if(count($category->children)>0)
                                     @php

@@ -29,7 +29,7 @@
                                 @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
                                     <?php $i++; ?>
                                     <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                                        @include('iplaces::admin.places.partials.edit-fields', ['lang' => $locale])
+                                        @include('iplaces::admin.services.partials.edit-fields', ['lang' => $locale])
                                     </div>
                                 @endforeach
                             </div> {{-- end nav-tabs-custom --}}
@@ -95,7 +95,7 @@
                                 <label>Image</label>
                             </div>
                             <div class="box-body">
-                                @include('iplaces::admin.fields.image',['entity'=>$place])
+                                @include('iplaces::admin.fields.image',['entity'=>$service])
                             </div>
                         </div>
                     </div>

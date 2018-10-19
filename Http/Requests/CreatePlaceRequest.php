@@ -8,14 +8,16 @@ class CreatePlaceRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'category_id'=>'required'
+        ];
     }
 
     public function translationRules()
     {
         return [
             'title'=>'required:min2',
-            'category_id'=>'required'
+
         ];
     }
 

@@ -79,7 +79,7 @@ class ZoneController extends AdminBaseController
      * @return Response
      */
     public function edit(Zone $zone)
-    {
+    {//dd($zone);
         $zones = $this->zone->paginate(20);
         return view('iplaces::admin.zones.edit', compact('zone','zones'));
     }

@@ -24,7 +24,7 @@ class PlaceWasCreated implements StoringMedia
      * @param array $data
      */
     public function __construct($entity,array $data)
-    { //dd($data,$entity);
+    { dd($data,$entity);
         $this->data=$data;
         $this->entity=$entity;
     }
