@@ -6,15 +6,16 @@ namespace Modules\Iplaces\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
-use Modules\Core\Http\Controllers\BasePublicController;
+use Modules\Iplaces\Http\Controllers\Api\BaseApiController;
 use Modules\Iplaces\Entities\Place;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Iplaces\Transformers\PlaceTransformers;
 use Modules\Iplaces\Transformers\CategoryTransformers;
 use Modules\Iplaces\Entities\Status;
+
 use Route;
 
-class PlaceController extends BasePublicController
+class PlaceController extends BaseApiController
 {
     private $place;
 
@@ -24,6 +25,54 @@ class PlaceController extends BasePublicController
         $this->place = $place;
 
     }
+
+    public function index(Request $request){
+        try {
+            //Get Parameters from URL.
+            $p = $this->parametersUrl(1, 12, false, []);
+
+            //Request to Repository
+            $places = $this->place->index($p->page, $p->take, $p->filter, $p->include);
+
+            //Response
+            $response = ["data" => PlaceTransformer::collection($places)];
+
+            //If request pagination add meta-page
+            $p->page ? $response["meta"] = ["page" => $this->pageTransformer($places)] : false;
+        } catch (\Exception $e) {
+            //Message Error
+            $status = 500;
+            $response = [
+                "errors" => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response, $status ?? 200);
+    }
+
+    public function show($slug, Request $request)
+    {
+        try {
+            //Get Parameters from URL.
+            $p = $this->parametersUrl(false, false, false, []);
+
+            //Request to Repository
+            $place = $this->place->show($slug, $p->include);
+
+            //Response
+            $response = [
+                "data" => is_null($place) ? false : new PlaceTransformer($place)];
+        } catch (\Exception $e) {
+            //Message Error
+            $status = 500;
+            $response = [
+                "errors" => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response, $status ?? 200);
+    }
+
     public function places(Request $request)
     {
         try {
@@ -102,7 +151,7 @@ class PlaceController extends BasePublicController
     }
 
     public function place(Place $place, Request $request)
-    { dd($place);
+    {// dd($place);
         try {
             if (isset($place->id) && !empty($place->id)) {
                 $response = [
@@ -122,8 +171,8 @@ class PlaceController extends BasePublicController
                     $response["relationships"]["author"] = new UserProfileTransformer($place->user);
 
                 }
-                if (in_array('category', $includes)) {
-                    $response["relationships"]["category"] = new CategoryTransformer($place->category);
+                if (in_array('place', $includes)) {
+                    $response["relationships"]["place"] = new PlaceTransformer($place->place);
                 }
 
 

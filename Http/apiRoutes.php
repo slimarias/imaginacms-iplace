@@ -6,6 +6,16 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
 
     $router->group(['prefix' => 'places'], function (Router $router) {
 
+        /*Update 2018-10-16. Routes Index and Show for posts*/
+        $router->get('/', [
+            'as' => 'iplace.api.posts.index',
+            'uses' => 'PostController@index',
+        ]);
+        $router->get('/{param}', [
+            'as' => 'iplace.api.posts.show',
+            'uses' => 'PostController@show',
+        ]);
+
         $router->bind('aiplacesplace', function ($id) {
             return app(\Modules\Iplaces\Repositories\PlaceRepository::class)->find($id);
         });

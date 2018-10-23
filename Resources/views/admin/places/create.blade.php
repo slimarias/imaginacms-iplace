@@ -325,7 +325,8 @@
         }
 
         .nav-tabs-custom > .nav-tabs > li.active > a, .nav-tabs-custom > .nav-tabs > li.active:hover > a {
-            background-color: aliceblue !important;
+            border-left: 1px solid #e6e6fd !important;
+            border-right: 1px solid #e6e6fd !important;
 
         }
 

@@ -15,7 +15,6 @@
                                }
 
                            }
-
                 @endphp
 
                 <ul class="checkbox" style="list-style: none;padding-left: 5px;">

@@ -100,7 +100,7 @@
                             <label for="zones"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
                             <select class="form-control" name="zone_id">
                                     @foreach ($zones as $zone)
-                                        <option value="{{$zone->id}}"> {{$zone->title}}
+                                        <option value="{{$zone->id}}" {{$zone->id == $place->zone_id ? 'selected' : ''}}> {{$zone->title}}
                                         </option>
                                     @endforeach
                             </select><br>
@@ -121,16 +121,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <ul  class="checkbox" style="list-style: none;padding-left: 5px;">
-                                @foreach ($services as $service)
-                                    <li>
-                                        <label for="services">
-                                            <input value="{{$service->id}}" name="services[]" type="checkbox" id="services" class="flat-blue jsInherit" >
-                                             {{$service->title}}
-                                        </label><br>
-                                    </li>
-                                @endforeach
-                            </ul>
+                            @include('iplaces::admin.fields.checklist.services')
 
                         </div>
                     </div>
@@ -289,7 +280,8 @@
             border-bottom-color: #3c8dbc !important;
         }
         .nav-tabs-custom > .nav-tabs > li.active > a, .nav-tabs-custom > .nav-tabs > li.active:hover > a {
-            background-color: aliceblue !important;
+            border-left: 1px solid #e6e6fd !important;
+            border-right: 1px solid #e6e6fd !important;
 
         }
     </style>

@@ -6,18 +6,17 @@ namespace Modules\Iplaces\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
-use Modules\Core\Http\Controllers\BasePublicController;
+use Modules\Iplaces\Http\Controllers\Api\BaseApiController;
 use Modules\Iplaces\Entities\Category;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Iplaces\Transformers\CategoryTransformers;
-use Modules\Iplaces\Transformers\PlaceTransformers;
 use Modules\Iplaces\Entities\Status;
 
 use Route;
 
-class CategoryController extends BasePublicController
+class CategoryController extends BaseApiController
 {
     private $category;
     public $status;
@@ -28,6 +27,53 @@ class CategoryController extends BasePublicController
         $this->category = $category;
         $this->status=$status;
     }
+    public function index(Request $request){
+
+        try {
+            //Get Parameters from URL.
+            $p = $this->parametersUrl(1, 12, false, []);
+
+            //Request to Repository
+            $categories = $this->category->index($p->page, $p->take, $p->filter, $p->include);
+
+            //Response
+            $response = ["data" => CategoryTransformer::collection($categories)];
+
+            //If request pagination add meta-page
+            $p->page ? $response["meta"] = ["page" => $this->pageTransformer($categories)] : false;
+        } catch (\Exception $e) {
+            //Message Error
+            $status = 500;
+            $response = [
+                "errors" => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response, $status ?? 200);
+    }
+    public function show($slug, Request $request)
+    {
+        try {
+            //Get Parameters from URL.
+            $p = $this->parametersUrl(false, false, false, []);
+
+            //Request to Repository
+            $category = $this->category->show($slug, $p->include);
+
+            //Response
+            $response = [
+                "data" => is_null($category) ? false : new CategoryTransformer($category)];
+        } catch (\Exception $e) {
+            //Message Error
+            $status = 500;
+            $response = [
+                "errors" => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response, $status ?? 200);
+    }
+
 
 //get
     public function categories(Request $request)
@@ -187,7 +233,7 @@ class CategoryController extends BasePublicController
                             "take" => $filters->take ?? 5,
                             "skip" => $filters->skip ?? 0,
                         ],
-                        'data' => PlaceTransformers::collection($results),
+                        'data' => CategoryTransformers::collection($results),
                     ];
                 } else {
                     $response = [
@@ -196,7 +242,7 @@ class CategoryController extends BasePublicController
                             "per_page" => $results->perPage(),
                             "total-item" => $results->total()
                         ],
-                        'data' => PlaceTransformers::collection($results),
+                        'data' => CategoryTransformers::collection($results),
                         'links' => [
                             "self" => $results->currentPage(),
                             "first" => $results->hasMorePages(),
@@ -216,7 +262,7 @@ class CategoryController extends BasePublicController
                         "per_page" => $results->perPage(),
                         "total-item" => $results->total()
                     ],
-                    'data' => PlaceTransformers::collection($results),
+                    'data' => CategoryTransformers::collection($results),
                     'links' => [
                         "self" => $results->currentPage(),
                         "first" => $results->hasMorePages(),

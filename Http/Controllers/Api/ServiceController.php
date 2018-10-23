@@ -6,18 +6,16 @@ namespace Modules\Iplaces\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
-use Modules\Core\Http\Controllers\BasePublicController;
+use Modules\Iplaces\Http\Controllers\Api\BaseApiController;
 use Modules\Iplaces\Entities\Service;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Iplaces\Repositories\ServiceRepository;
-use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Iplaces\Transformers\ServiceTransformers;
-use Modules\Iplaces\Transformers\PlaceTransformers;
 use Modules\Iplaces\Entities\Status;
 
 use Route;
 
-class ServiceController extends BasePublicController
+class ServiceController extends BaseApiController
 {
     private $service;
     public $status;
@@ -28,6 +26,53 @@ class ServiceController extends BasePublicController
         parent::__construct();
         $this->service = $service;
         $this->status = $status;
+    }
+
+    public function index(Request $request){
+        try {
+            //Get Parameters from URL.
+            $p = $this->parametersUrl(1, 12, false, []);
+
+            //Request to Repository
+            $services = $this->place->index($p->page, $p->take, $p->filter, $p->include);
+
+            //Response
+            $response = ["data" => ServiceTransformer::collection($services)];
+
+            //If request pagination add meta-page
+            $p->page ? $response["meta"] = ["page" => $this->pageTransformer($services)] : false;
+        } catch (\Exception $e) {
+            //Message Error
+            $status = 500;
+            $response = [
+                "errors" => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response, $status ?? 200);
+    }
+
+    public function show($slug, Request $request)
+    {
+        try {
+            //Get Parameters from URL.
+            $p = $this->parametersUrl(false, false, false, []);
+
+            //Request to Repository
+            $service = $this->place->show($slug, $p->include);
+
+            //Response
+            $response = [
+                "data" => is_null($service) ? false : new ServiceTransformer($service)];
+        } catch (\Exception $e) {
+            //Message Error
+            $status = 500;
+            $response = [
+                "errors" => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response, $status ?? 200);
     }
 
     public function services(Request $request)
@@ -192,7 +237,7 @@ class ServiceController extends BasePublicController
                             "take" => $filters->take ?? 5,
                             "skip" => $filters->skip ?? 0,
                         ],
-                        'data' => PlaceTransformers::collection($results),
+                        'data' => ServiceTransformers::collection($results),
                     ];
                 } else {
                     $response = [
@@ -201,7 +246,7 @@ class ServiceController extends BasePublicController
                             "per_page" => $results->perPage(),
                             "total-item" => $results->total()
                         ],
-                        'data' => PlaceTransformers::collection($results),
+                        'data' => ServiceTransformers::collection($results),
                         'links' => [
                             "self" => $results->currentPage(),
                             "first" => $results->hasMorePages(),
@@ -221,7 +266,7 @@ class ServiceController extends BasePublicController
                         "per_page" => $results->perPage(),
                         "total-item" => $results->total()
                     ],
-                    'data' => PlaceTransformers::collection($results),
+                    'data' => ServiceTransformers::collection($results),
                     'links' => [
                         "self" => $results->currentPage(),
                         "first" => $results->hasMorePages(),

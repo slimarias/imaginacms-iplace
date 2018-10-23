@@ -103,7 +103,7 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function edit(Place $place)
-    {//dd($place);
+    {//dd($place->services);
         $statuses = $this->status->lists();
         $categories = $this->category->all();
         $users = $this->user->all();
@@ -121,7 +121,7 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function update(Place $place, UpdatePlaceRequest $request)
-    {dd($request);
+    {//dd($request);
         try {
             if (isset($request['options'])) {
                 $options = (array)$request['options'];

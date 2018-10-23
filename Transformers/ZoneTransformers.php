@@ -4,7 +4,6 @@ namespace Modules\Iplaces\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\User\Transformers\UserProfileTransformer;
-use Modules\Iplaces\Events\ServiceWasCreated;
 
 class ZoneTransformers extends Resource
 {

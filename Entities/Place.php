@@ -5,6 +5,7 @@ namespace Modules\Iplaces\Entities;
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Iplaces\Entities\Category;
+use Modules\Iplaces\Entities\Zone;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Iplaces\Presenters\PlacePresenter;
 use Modules\Iplaces\Events\PlaceWasCreated;

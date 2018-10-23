@@ -6,16 +6,15 @@ namespace Modules\Iplaces\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
-use Modules\Core\Http\Controllers\BasePublicController;
+use Modules\Iplaces\Http\Controllers\Api\BaseApiController;
 use Modules\Iplaces\Repositories\ZoneRepository;
 use Modules\Iplaces\Entities\Zone;
 use Modules\Iplaces\Repositories\PlaceRepository;
-use Modules\Iplaces\Transformers\PlaceTransformers;
 use Modules\Iplaces\Transformers\ZoneTransformers;
-use Modules\Iplaces\Entities\Status;
+
 use Route;
 
-class ZoneController extends BasePublicController
+class ZoneController extends BaseApiController
 {
     private $zone;
 
@@ -25,6 +24,54 @@ class ZoneController extends BasePublicController
         $this->zone = $zone;
 
     }
+
+    public function index(Request $request){
+        try {
+            //Get Parameters from URL.
+            $p = $this->parametersUrl(1, 12, false, []);
+
+            //Request to Repository
+            $zones = $this->place->index($p->page, $p->take, $p->filter, $p->include);
+
+            //Response
+            $response = ["data" => ZoneTransformer::collection($zones)];
+
+            //If request pagination add meta-page
+            $p->page ? $response["meta"] = ["page" => $this->pageTransformer($zones)] : false;
+        } catch (\Exception $e) {
+            //Message Error
+            $status = 500;
+            $response = [
+                "errors" => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response, $status ?? 200);
+    }
+
+    public function show($slug, Request $request)
+    {
+        try {
+            //Get Parameters from URL.
+            $p = $this->parametersUrl(false, false, false, []);
+
+            //Request to Repository
+            $zone = $this->place->show($slug, $p->include);
+
+            //Response
+            $response = [
+                "data" => is_null($zone) ? false : new ZoneTransformer($zone)];
+        } catch (\Exception $e) {
+            //Message Error
+            $status = 500;
+            $response = [
+                "errors" => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response, $status ?? 200);
+    }
+
     public function zones(Request $request)
     {
         try {
@@ -43,7 +90,7 @@ class ZoneController extends BasePublicController
                             "take" => $filters->take ?? 5,
                             "skip" => $filters->skip ?? 0,
                         ],
-                        'data' => PlaceTransformers::collection($results),
+                        'data' => ZoneTransformers::collection($results),
                     ];
                 } else {
                     $response = [
@@ -52,7 +99,7 @@ class ZoneController extends BasePublicController
                             "per_page" => $results->perPage(),
                             "total-item" => $results->total()
                         ],
-                        'data' => PlaceTransformers::collection($results),
+                        'data' => ZoneTransformers::collection($results),
                         'links' => [
                             "self" => $results->currentPage(),
                             "first" => $results->hasMorePages(),
@@ -72,7 +119,7 @@ class ZoneController extends BasePublicController
                         "per_page" => $results->perPage(),
                         "total-item" => $results->total()
                     ],
-                    'data' => PlaceTransformers::collection($results),
+                    'data' => ZoneTransformers::collection($results),
                     'links' => [
                         "self" => $results->currentPage(),
                         "first" => $results->hasMorePages(),
@@ -102,33 +149,18 @@ class ZoneController extends BasePublicController
 
     }
 
-    public function zone(Place $zone, Request $request)
-    { dd($zone);
+    public function zone(Zone $zone, Request $request)
+    { //dd($zone);
         try {
             if (isset($zone->id) && !empty($zone->id)) {
                 $response = [
-                    "meta" => [
-                        "metatitle" => $zone->metatitle,
-                        "metadescription" => $zone->metadescription
-                    ],
                     "type" => "articles",
                     "id" => $zone->id,
-                    "attributes" => new PlaceTransformers($zone),
+                    "attributes" => new ZoneTransformers($zone),
 
                 ];
 
-                $includes = explode(",", $request->include);
-
-                if (in_array('author', $includes)) {
-                    $response["relationships"]["author"] = new UserProfileTransformer($zone->user);
-
-                }
-                if (in_array('category', $includes)) {
-                    $response["relationships"]["category"] = new CategoryTransformer($zone->category);
-                }
-
-
-
+               // $includes = explode(",", $request->include);
             } else {
                 $status = 404;
                 $response = ['errors' => [
@@ -158,13 +190,89 @@ class ZoneController extends BasePublicController
         return response()->json($response, $status ?? 200);
     }
 
+//get
+    public function posts(Zone $zone, Request $request)
+    {
+        try {
+            $includes = explode(",", $request->include);
+            if (isset($request->filters) && !empty($request->filters)) {
+                $filters = json_decode($request->filters);
+                $filters->zones = $zone->id;
+
+                $results = $this->post->whereFilters($filters, $includes);
+
+                if (isset($filters->take)) {
+                    $response = [
+                        'meta' => [
+                            "take" => $filters->take ?? 5,
+                            "skip" => $filters->skip ?? 0,
+                        ],
+                        'data' => ZoneTransformers::collection($results),
+                    ];
+                } else {
+                    $response = [
+                        'meta' => [
+                            "total-pages" => $results->lastPage(),
+                            "per_page" => $results->perPage(),
+                            "total-item" => $results->total()
+                        ],
+                        'data' => ZoneTransformers::collection($results),
+                        'links' => [
+                            "self" => $results->currentPage(),
+                            "first" => $results->hasMorePages(),
+                            "prev" => $results->previousPageUrl(),
+                            "next" => $results->nextPageUrl(),
+                            "last" => $results->lastPage()
+                        ]
+
+                    ];
+                }
+            } else {
+
+                $results = $this->post->whereFilters((object)$filter = ['zones' => $zone->id, 'paginate' => $request->paginate ?? 12], $request->includes ?? false);
+                $response = [
+                    'meta' => [
+                        "total-pages" => $results->lastPage(),
+                        "per_page" => $results->perPage(),
+                        "total-item" => $results->total()
+                    ],
+                    'data' => ZoneTransformers::collection($results),
+                    'links' => [
+                        "self" => $results->currentPage(),
+                        "first" => $results->hasMorePages(),
+                        "prev" => $results->previousPageUrl(),
+                        "next" => $results->nextPageUrl(),
+                        "last" => $results->lastPage()
+                    ]
+
+                ];
+            }
+            if (isset($request->zone_id)) {
+
+            } else {
+
+            }
+
+        } catch (\Exception $e) {
+            $status = 500;
+            $response = ['errors' => [
+                "code" => "501",
+                "source" => [
+                    "pointer" => url($request->path()),
+                ],
+                "title" => "Error Query Zones",
+                "detail" => $e->getMessage()
+            ]
+            ];
+        }
+
+        return response()->json($response, $status ?? 200);
+    }
+
+//post
     public function store(Request $request)
     {//dd($request);
         try {
-            $options = (array)$request->options ?? array();
-            isset($request->metatitle) ? $options['metatitle'] = $request->metatitle : false;
-            isset($request->metadescription) ? $options['metadescription'] = $request->metatitle : false;
-            $request['options'] = $options;
             $zone = $this->zone->create($request->all());
             $status = 200;
             $response = [
@@ -196,16 +304,13 @@ class ZoneController extends BasePublicController
 
     }
 
-    public function update(Place $zone, Request $request)
+    public function update(Zone $zone, Request $request)
     {
 
         try {
 
             if (isset($zone->id) && !empty($zone->id)) {
                 $options = (array)$request->options ?? array();
-                isset($request->metatitle) ? $options['metatitle'] = $request->metatitle : false;
-                isset($request->metadescription) ? $options['metadescription'] = $request->metatitle : false;
-                isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/iplace/zones/" . $zone->id . ".jpg") : false;
                 $request['options'] = json_encode($options);
                 $zone = $this->zone->update($zone, $request->all());
 
@@ -244,7 +349,7 @@ class ZoneController extends BasePublicController
                 "source" => [
                     "pointer" => url($request->path()),
                 ],
-                "title" => "Error Query Post",
+                "title" => "Error Query Zone",
                 "detail" => $e->getMessage()
             ]
             ];
@@ -253,7 +358,7 @@ class ZoneController extends BasePublicController
         return response()->json($response, $status ?? 200);
     }
 
-    public function delete(Place $zone, Request $request)
+    public function delete(Zone $zone, Request $request)
     {
         try {
             $this->zone->destroy($zone);
