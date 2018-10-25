@@ -31,10 +31,10 @@ class ZoneController extends BaseApiController
             $p = $this->parametersUrl(1, 12, false, []);
 
             //Request to Repository
-            $zones = $this->place->index($p->page, $p->take, $p->filter, $p->include);
+            $zones = $this->zone->index($p->page, $p->take, $p->filter, $p->include);
 
             //Response
-            $response = ["data" => ZoneTransformer::collection($zones)];
+            $response = ["data" => ZoneTransformers::collection($zones)];
 
             //If request pagination add meta-page
             $p->page ? $response["meta"] = ["page" => $this->pageTransformer($zones)] : false;
@@ -56,11 +56,11 @@ class ZoneController extends BaseApiController
             $p = $this->parametersUrl(false, false, false, []);
 
             //Request to Repository
-            $zone = $this->place->show($slug, $p->include);
+            $zone = $this->zone->show($slug, $p->include);
 
             //Response
             $response = [
-                "data" => is_null($zone) ? false : new ZoneTransformer($zone)];
+                "data" => is_null($zone) ? false : new ZoneTransformers($zone)];
         } catch (\Exception $e) {
             //Message Error
             $status = 500;

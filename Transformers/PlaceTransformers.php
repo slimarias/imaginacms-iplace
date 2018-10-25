@@ -33,6 +33,7 @@ class PlaceTransformers extends Resource
             'category_id' => $this->category_id,
             'categories' => $this->categories,
             'service_id' => $this->service_id,
+            'services' => $this->services,
             'zone_id' => $this->zone_id,
             'mainimage' => $this->mainimage,
             'mediumimage' => $this->mediumimage,

@@ -34,10 +34,10 @@ class ServiceController extends BaseApiController
             $p = $this->parametersUrl(1, 12, false, []);
 
             //Request to Repository
-            $services = $this->place->index($p->page, $p->take, $p->filter, $p->include);
+            $services = $this->service->index($p->page, $p->take, $p->filter, $p->include);
 
             //Response
-            $response = ["data" => ServiceTransformer::collection($services)];
+            $response = ["data" => ServiceTransformers::collection($services)];
 
             //If request pagination add meta-page
             $p->page ? $response["meta"] = ["page" => $this->pageTransformer($services)] : false;
@@ -59,11 +59,11 @@ class ServiceController extends BaseApiController
             $p = $this->parametersUrl(false, false, false, []);
 
             //Request to Repository
-            $service = $this->place->show($slug, $p->include);
+            $service = $this->service->show($slug, $p->include);
 
             //Response
             $response = [
-                "data" => is_null($service) ? false : new ServiceTransformer($service)];
+                "data" => is_null($service) ? false : new ServiceTransformers($service)];
         } catch (\Exception $e) {
             //Message Error
             $status = 500;

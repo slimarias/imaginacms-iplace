@@ -8,12 +8,12 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
 
         /*Update 2018-10-16. Routes Index and Show for posts*/
         $router->get('/', [
-            'as' => 'iplace.api.posts.index',
-            'uses' => 'PostController@index',
+            'as' => 'iplace.api.places.index',
+            'uses' => 'PlaceController@index',
         ]);
         $router->get('/{param}', [
-            'as' => 'iplace.api.posts.show',
-            'uses' => 'PostController@show',
+            'as' => 'iplace.api.places.show',
+            'uses' => 'PlaceController@show',
         ]);
 
         $router->bind('aiplacesplace', function ($id) {
@@ -60,6 +60,15 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
            return app(\Modules\Iplaces\Repositories\CategoryRepository::class)->find($id);
         });
         $router->get('/', [
+            'as' => 'iblog.api.categories.index',
+            'uses' => 'CategoryController@index',
+        ]);
+        $router->get('/{slug}', [
+            'as' => 'iblog.api.categories.show',
+            'uses' => 'CategoryController@show',
+        ]);
+
+        $router->get('/', [
             'as' => 'iplace.api.categories',
             'uses' => 'CategoryController@categories',
         ]);
@@ -94,6 +103,16 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
 
             return app(\Modules\Iplaces\Repositories\ServiceRepository::class)->find($id);
         });
+
+        $router->get('/', [
+            'as' => 'iblog.api.services.index',
+            'uses' => 'ServiceController@index',
+        ]);
+        $router->get('/{slug}', [
+            'as' => 'iblog.api.services.show',
+            'uses' => 'ServiceController@show',
+        ]);
+
         $router->get('/', [
             'as' => 'iplace.api.services',
             'uses' => 'ServiceController@services',
@@ -128,6 +147,16 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
 
             return app(\Modules\Iplaces\Repositories\ZoneRepository::class)->find($id);
         });
+
+        $router->get('/', [
+            'as' => 'iblog.api.zones.index',
+            'uses' => 'ZoneController@index',
+        ]);
+        $router->get('/{slug}', [
+            'as' => 'iblog.api.zones.show',
+            'uses' => 'ZoneController@show',
+        ]);
+
         $router->get('/', [
             'as' => 'iplace.api.zones',
             'uses' => 'ZoneController@zones',

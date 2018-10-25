@@ -35,7 +35,7 @@ class PlaceController extends BaseApiController
             $places = $this->place->index($p->page, $p->take, $p->filter, $p->include);
 
             //Response
-            $response = ["data" => PlaceTransformer::collection($places)];
+            $response = ["data" => PlaceTransformers::collection($places)];
 
             //If request pagination add meta-page
             $p->page ? $response["meta"] = ["page" => $this->pageTransformer($places)] : false;
@@ -61,7 +61,7 @@ class PlaceController extends BaseApiController
 
             //Response
             $response = [
-                "data" => is_null($place) ? false : new PlaceTransformer($place)];
+                "data" => is_null($place) ? false : new PlaceTransformers($place)];
         } catch (\Exception $e) {
             //Message Error
             $status = 500;
@@ -172,7 +172,7 @@ class PlaceController extends BaseApiController
 
                 }
                 if (in_array('place', $includes)) {
-                    $response["relationships"]["place"] = new PlaceTransformer($place->place);
+                    $response["relationships"]["place"] = new PlaceTransformers($place->place);
                 }
 
 
