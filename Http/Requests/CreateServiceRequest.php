@@ -13,7 +13,9 @@ class CreateServiceRequest extends BaseFormRequest
 
     public function translationRules()
     {
-        return [];
+        return [
+            'title'=>'required:min2',
+        ];
     }
 
     public function authorize()
@@ -28,6 +30,9 @@ class CreateServiceRequest extends BaseFormRequest
 
     public function translationMessages()
     {
-        return [];
+        return [
+            'title.required' => trans('iplaces::messages.name is required'),
+            'title.min2'=>trans('iplaces::messages.name is min 2')
+        ];
     }
 }
