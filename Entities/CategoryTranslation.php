@@ -40,6 +40,14 @@ class CategoryTranslation extends Model
         }
 
     }
+    protected function setMetakeywordsAttribute($value){
 
+        if(!empty($value)){
+            $this->attributes['metakeywords'] = $value;
+        } else {
+            $this->attributes['metakeywords'] =  $this->attributes['title'];
+        }
+
+    }
 
 }

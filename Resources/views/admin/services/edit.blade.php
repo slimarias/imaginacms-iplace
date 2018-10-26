@@ -46,10 +46,6 @@
                                 <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.place.index')}}">
                                     <i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                             </div>
-                            {{-- <div class="form-group">
-                                 <label for="exampleInputEmail1 ">Email address</label>
-                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                             </div>--}}
                         </div>
                     </div>
                 </div>
@@ -69,18 +65,16 @@
                         <div class="box-body ">
                             <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
                                 <label class="radio" for="{{trans('iplaces::status.inactive')}}">
-                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    <input type="radio" id="status" name="status"
+                                           value="0" {{ old('status',$service->status) == 0? 'checked' : '' }}>
                                     {{trans('iplaces::status.inactive')}}
                                 </label>
                                 <label class="radio" for="{{trans('iplaces::status.active')}}">
-                                    <input type="radio" id="status" name="status" value="1">
+                                    <input type="radio" id="status" name="status"
+                                           value="1" {{ old('status',$service->status) == 1? 'checked' : '' }}>
                                     {{trans('iplaces::status.active')}}
                                 </label>
                             </div>
-                            {{-- <div class="form-group">
-                                 <label for="exampleInputEmail1 ">Email address</label>
-                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                             </div>--}}
                         </div>
                     </div>
                 </div>
@@ -128,7 +122,7 @@
         });
     </script>
     <script>
-        $( document ).ready(function() {
+        $(document).ready(function () {
             $('input[type="checkbox"], input[type="radio"]').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'

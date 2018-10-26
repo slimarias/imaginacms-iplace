@@ -15,7 +15,7 @@
 
     <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->description : '' ?>
     <div class='form-group{{ $errors->has("$lang.description") ? ' has-error' : '' }}'>
-        @editor('content', trans('iplaces::places.form.description'), old("$lang.description", $old), $lang)
+        @editor('description', trans('iplaces::places.form.description'), old("$lang.description", $old), $lang)
     </div>
     <div class="col-xs-12" style="padding-top: 35px;">
         <div class="panel box box-primary">

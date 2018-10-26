@@ -65,10 +65,10 @@ class CategoryController extends AdminBaseController
      */
     public function store(CreateCategoryRequest $request)
     {
-       //dd($request);
+      // dd($request);
         try{
             $this->category->create($request->all());
-           // event(new CategoryWasCreated($this->data['entry'], $request->all()));
+
 
             return redirect()->route('admin.iplaces.category.index')
                 ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::categories.title.categories')]));
@@ -105,9 +105,8 @@ class CategoryController extends AdminBaseController
      * @param  UpdateCategoryRequest $request
      * @return Response
      */
-    public function update(Category $category, UpdateCategoryRequest $request)
+    public function update(Category $category, CreateCategoryRequest $request)
     {
-// dd($request);
         try{
             if(isset($request['options'])){
                 $options=(array)$request['options'];

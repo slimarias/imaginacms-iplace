@@ -14,8 +14,9 @@
     </div>
 
     <?php $old = $category->hasTranslation($lang) ? $category->translate($lang)->description : '' ?>
-    @editor('content', trans('iplaces::categories.form.description'), old("$lang.description", $old), $lang)
-
+    <div class='form-group{{ $errors->has("$lang.description") ? ' has-error' : '' }}'>
+    @editor('description', trans('iplaces::categories.form.description'), old("$lang.description", $old), $lang)
+    </div>
 
 
     <div class="col-xs-12" style="padding-top: 35px;">
@@ -49,10 +50,6 @@
         </div>
     </div>
 
-
-
-
-
     <?php if (config('asgard.page.config.partials.translatable.edit') !== []): ?>
     <?php foreach (config('asgard.page.config.partials.translatable.edit') as $partial): ?>
     @include($partial)
@@ -60,3 +57,10 @@
     <?php endif; ?>
 
 </div>
+@section('scripts')
+    @parent
+    <style>
+
+
+    </style>
+@stop

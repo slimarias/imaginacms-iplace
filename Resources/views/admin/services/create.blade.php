@@ -69,18 +69,16 @@
                         <div class="box-body ">
                             <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
                                 <label class="radio" for="{{trans('iplaces::status.inactive')}}">
-                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    <input type="radio" id="status" name="status"
+                                           value="0" {{ old('status',0) == 0? 'checked' : '' }}>
                                     {{trans('iplaces::status.inactive')}}
                                 </label>
                                 <label class="radio" for="{{trans('iplaces::status.active')}}">
-                                    <input type="radio" id="status" name="status" value="1">
+                                    <input type="radio" id="status" name="status"
+                                           value="1" {{ old('status', 0) == 1? 'checked' : '' }}>
                                     {{trans('iplaces::status.active')}}
                                 </label>
                             </div>
-                            {{-- <div class="form-group">
-                                 <label for="exampleInputEmail1 ">Email address</label>
-                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                             </div>--}}
                         </div>
                     </div>
                 </div>
@@ -128,11 +126,10 @@
         });
     </script>
     <script>
-        $( document ).ready(function() {
-            $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
+        $(document).ready(function () {
+            $('input[type="checkbox"], input[type="radio"]').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
-
             });
 
             $('.btn-box-tool').click(function(e){

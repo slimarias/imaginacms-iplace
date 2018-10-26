@@ -6,6 +6,7 @@ use Modules\Iplaces\Repositories\Collection;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Iplaces\Events\PlaceWasCreated;
+use Modules\Iplaces\Entities\Status;
 
 
 class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRepository
@@ -18,7 +19,7 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
         /*== RELATIONSHIPS ==*/
         if (count($include)) {
             //Include relationships for default
-            $includeDefault = [];
+            $includeDefault = ['categories', 'cites','services',];
             $query->with(array_merge($includeDefault, $include));
         }
 
@@ -59,20 +60,20 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
                 $query->whereIn('city_id', $filter->cities);
 
             }
-
             //Add order for zone
             if (isset($filter->zones) && is_array($filter->zones)) {
+
                 is_array($filter->zones) ? true : $filter->zones = [$filter->zones];
                 $query->whereIn('zone_id', $filter->zones);
             }
-
-
             //Add order for category
 
             if (isset($filter->categories) && is_array($filter->categories)) {
                 is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
-                $query->leftJoin('iplaces_place_category', 'iplaces_place_category.place_id', '=', 'iplaces__places.id')
-                    ->whereIn('iplaces_place_category.category_id', $filter->category);
+
+                $query->whereHas('categories', function($q) use ($filter){
+                    $q->whereIn('category_id', $filter->categories);
+                });
 
             }
 
@@ -81,16 +82,16 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
 
             if (isset($filter->services) && is_array($filter->services)) {
                 is_array($filter->services) ? true : $filter->services = [$filter->services];
-                $query->leftJoin('iplaces_place_service', 'iplaces_place_service.service_id', '=', 'iplaces__services.id')
-                    ->whereIn('iplaces_place_service.service_id', $filter->service);
-
+                $query->whereHas('services', function($q) use ($filter) {
+                    $q->whereIn('service_id', $filter->services);
+                });
             }
-
 
             //Add order By
             $orderBy = isset($filter->orderBy) ? $filter->orderBy : 'created_at';
             $orderType = isset($filter->orderType) ? $filter->orderType : 'desc';
             $query->orderBy($orderBy, $orderType);
+            $query->whereStatus(Status::ACTIVE);
         }
 
         /*=== REQUEST ===*/
@@ -143,6 +144,19 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
         $model->categories()->sync(array_get($data, 'categories', []));
         $model->services()->sync(array_get($data, 'services', []));
         return $model;
+    }
+
+
+    public function whereCategory($id){
+
+        is_array($id) ? true : $id = [$id];
+        $query = $this->model->whith('categories,cites');
+        $query->whereHas('categories', function($q) use ($id){
+            $q->whereIn('category_id', $id);
+        });
+        $query->orderBy("created_at", "desc");
+        $query->whereStatus(Status::ACTIVE);
+        return $query->paginate(12);
     }
 
 

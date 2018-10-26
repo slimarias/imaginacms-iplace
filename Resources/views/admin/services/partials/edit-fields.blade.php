@@ -6,8 +6,9 @@
         {!! $errors->first("{$lang}.title", '<span class="help-block">:message</span>') !!}
     </div>
     <?php $old = $service->hasTranslation($lang) ? $service->translate($lang)->description : '' ?>
+    <div class='form-group{{ $errors->has("$lang.description") ? ' has-error' : '' }}'>
     @editor('content', trans('iplaces::services.form.description'), old("$lang.description", $old), $lang)
-
+    </div>
 
     <div class="col-xs-12" style="padding-top: 35px;">
         <div class="box box-primary">

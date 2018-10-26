@@ -6,8 +6,9 @@
         {!! $errors->first("{$lang}.title", '<span class="help-block">:message</span>') !!}
     </div>
     <?php $old = $zone->hasTranslation($lang) ? $zone->translate($lang)->description : '' ?>
+    <div class='form-group{{ $errors->has("{$lang}.description") ? ' has-error' : '' }}'>
     @editor('content', trans('iplaces::zones.form.description'), old("$lang.description", $old), $lang)
-
+    </div>
 
 
     <?php if (config('asgard.page.config.partials.translatable.edit') !== []): ?>

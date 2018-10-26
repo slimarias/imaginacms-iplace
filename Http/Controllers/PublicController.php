@@ -9,7 +9,7 @@ use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\Iplaces\Repositories\ZoneRepository;
-use Request;
+use Illuminate\Http\Request;
 use Route;
 
 class PublicController extends BasePublicController
@@ -32,21 +32,29 @@ class PublicController extends BasePublicController
     public function index(Request $request)
     {
 
-        if (isset($request->filter) && !empty($request->filter)) {
-            $places = $this->place->whereFilter($request->filter);
+        $oldCat=null;
+        $oldServ=null;
+        $oldZone=null;
+        if ((isset($request->categories) && !empty($request->categories))||(isset($request->services) && !empty($request->services))||(isset($request->zones) && !empty($request->zones)) ) {
+            $filter=['categories'=>$request->categories,"services"=>$request->services, "zones"=>$request->zones];
+
+            $places = $this->place->wherebyFilter($request->page,$take=12, json_decode(json_encode($filter)), $include=null);
+            $oldCat=$request->categories;
+            $oldServ=$request->services;
+            $oldZone=$request->zones;
         } else {
             $places = $this->place->paginate(12);
         }
 
         $services = $this->service->all();
         $zones = $this->zone->all();
-        $category = $this->category->all();
+        $categories = $this->category->all();
         $tpl = 'iplaces::frontend.index';
         $ttpl = 'iplace.frontend.index';
 
         if (view()->exists($ttpl)) $tpl = $ttpl;
 
-        Return view($tpl, compact('places', 'category', 'zones', 'services'));
+        Return view($tpl, compact('places', 'categories', 'zones', 'services','oldCat', 'oldServ','oldZone'));
 
     }
 
@@ -67,7 +75,7 @@ class PublicController extends BasePublicController
 
     }
 
-    public function show($slugCategory,$slug)
+    public function show($category,$place)
     {
 
         $category = $this->category->findBySlug($slugCategory);

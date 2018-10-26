@@ -90,11 +90,11 @@ class Place extends Model
     }
     public function getMediumimageAttribute(){
 
-        return str_replace('.jpg','_mediumThumb.jpg',$this->options->mainimage ?? 'modules/iplaces/img/default.jpg');
+        return url(str_replace('.jpg','_mediumThumb.jpg',$this->options->mainimage ?? 'modules/iplaces/img/default.jpg'));
     }
     public function getThumbailsAttribute(){
 
-        return str_replace('.jpg','_smallThumb.jpg',$this->options->mainimage?? 'modules/iplaces/img/default.jpg');
+        return url(str_replace('.jpg','_smallThumb.jpg',$this->options->mainimage?? 'modules/iplaces/img/default.jpg'));
     }
     public function getMetatitleAttribute(){
 
@@ -110,9 +110,8 @@ class Place extends Model
 
     public function getUrlAttribute() {
 
-        return url($this->slug);
-
-        //return \URL::route(\LaravelLocalization::getCurrentLocale() . '.iplaces.slug', [$this->category->slug,$this->slug]);
+       // \URL::route(\LaravelLocalization::getCurrentLocale(
+        return  \URL::route('iplaces.place.show', [$this->category->slug,$this->slug]);
     }
     public function getOptionsAttribute($value)
     {

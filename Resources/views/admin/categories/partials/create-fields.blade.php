@@ -14,8 +14,9 @@
         {!! Form::textarea("{$lang}[summary]", old("$lang.summary"), ['class' => 'form-control','rows'=>2, 'placeholder' => trans('iplaces::category.form.summary')]) !!}
         {!! $errors->first("$lang.summary", '<span class="help-block">:message</span>') !!}
     </div>
+    <div class='form-group{{ $errors->has("$lang.description") ? ' has-error' : '' }}'>
     @editor('description', trans('iplaces::category.form.description'), old("{$lang}.description"), $lang)
-
+    </div>
     <div class="col-xs-12" style="padding-top: 35px;">
         <div class="panel box box-primary">
             <div class="box-header">
@@ -47,6 +48,7 @@
             </div>
         </div>
     </div>
+
     <?php if (config('asgard.page.config.partials.translatable.create') !== []): ?>
     <?php foreach (config('asgard.page.config.partials.translatable.create') as $partial): ?>
     @include($partial)
@@ -54,28 +56,10 @@
     <?php endif; ?>
 
 </div>
-{{--<div class="box-group" id="accordion">
-    <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
-     <div class="panel box box-primary">
-        -     <div class="box-header">
-                 <h4 class="box-title">
-               {{--
-                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo-{{$lang}}">
-                         {{ trans('iplaces::categories.form.meta_data') }}
-                     </a>
-
-             </h4>
-         </div>
-    </div>
-
-</div>--}}
+@section('scripts')
+    @parent
+    <style>
 
 
-
-{{--
-    <div class='form-group{{ $errors->has("$lang.description") ? ' has-error' : '' }}'>
-        {!! Form::label("{$lang}[description]", trans('iplaces::categories.form.description')) !!}
-        {!! Form::textarea("{$lang}[description]", old("$lang.description"), ['class' => 'form-control',  'rows' => 3, 'placeholder' => trans('iplaces::categories.form.description')]) !!}
-        {!! $errors->first("$lang.description", '<span class="help-block">:message</span>') !!}
-    </div>
-    --}}
+    </style>
+@stop
