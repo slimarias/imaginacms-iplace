@@ -10,7 +10,7 @@ use Laracasts\Presenter\PresentableTrait;
 use Modules\Iplaces\Presenters\PlacePresenter;
 use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Core\Traits\NamespacedEntity;
-
+use Modules\Ilocations\Entities\City;
 
 
 class Place extends Model
@@ -19,17 +19,14 @@ class Place extends Model
 
     protected $table = 'iplaces__places';
     public $translatedAttributes = ['title','description','slug','metatitle','metadescription','metakeywords'];
-    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords','zone_id','city','service_id'];
+    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords','zone_id','city_id','service_id'];
     protected $fakeColumns = ['options'];
     protected $presenter = PlacePresenter::class;
 
     protected $casts = [
         'options' => 'array',
         'status'=>'int',
-        'zone_id'=>'int',
-        'service_id'=>'int',
-        'city'=>'int'
-
+        'zone_id'=>'int'
     ];
 
     /*
@@ -69,11 +66,14 @@ class Place extends Model
         return $this->belongsTo(Zone::class);
     }
 
- /*   public function city()
+    public function city()
     {
         return $this->belongsTo(City::class);
     }
-*/
+
+
+
+
     /*
      * -------------
      * IMAGE

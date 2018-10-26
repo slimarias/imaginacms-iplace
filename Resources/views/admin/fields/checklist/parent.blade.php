@@ -14,6 +14,8 @@
                                    array_push($oldCat,$cat->id);
                                }
 
+                           }else{
+                           $oldCat=old('categories');
                            }
                 @endphp
 
@@ -21,7 +23,7 @@
 
                     @foreach ($categories as $category)
                         @if($category->parent_id==0)
-                            <li>
+                            <li  style="padding-top: 5px">
                                 <label>
                                     <input type="checkbox" class="flat-blue jsInherit" name="categories[]"
 

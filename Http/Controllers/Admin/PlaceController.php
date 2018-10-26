@@ -66,13 +66,11 @@ class PlaceController extends AdminBaseController
     public function create()
     {
         $statuses = $this->status->lists();
-        // $place = $this->place->paginate(20);
         $categories = $this->category->all();
         $users = $this->user->all();
         $zones = $this->zone->all();
         $services = $this->service->all();
       $cities = $this->city->whereByCountry(48);
-//dd($cities);
         return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities'));
     }
 
@@ -84,9 +82,10 @@ class PlaceController extends AdminBaseController
      */
     public function store(CreatePlaceRequest $request)
     {
-        //dd($request);
         try {
-            $this->place->create($request->all());//send all categories
+
+
+            $this->place->create($request->all());
 
             return redirect()->route('admin.iplaces.place.index')
                 ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::places.title.places')]));
@@ -121,7 +120,7 @@ class PlaceController extends AdminBaseController
      * @param  UpdatePlaceRequest $request
      * @return Response
      */
-    public function update(Place $place, UpdatePlaceRequest $request)
+    public function update(Place $place, CreatePlaceRequest $request)
     {//dd($request);
         try {
             if (isset($request['options'])) {

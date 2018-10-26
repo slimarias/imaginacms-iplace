@@ -2,9 +2,6 @@
 
     <div class="col-xs-12">
         <div class="content-serv" style="max-height:490px;overflow-y: auto;">
-
-            <label for="services"></label>
-
             @if(count($categories)>0)
                 @php
                     if(isset($place->services) && count($place->services)>0){
@@ -13,6 +10,8 @@
                                    array_push($oldServ,$serv->id);
                                }
 
+                           }else{
+                           $oldServ=old('services');
                            }
                 @endphp
 
@@ -20,10 +19,9 @@
 
                     @foreach ($services as $service)
                       
-                            <li>
+                            <li style="padding-top: 5px">
                                 <label>
                                     <input type="checkbox" class="flat-blue jsInherit" name="services[]"
-
                                            value="{{$service->id}}"
                                            @isset($oldServ) @if(in_array($service->id, $oldServ)) checked="checked" @endif @endisset> {{$service->title}}
                                 </label>

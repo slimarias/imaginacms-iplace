@@ -51,10 +51,6 @@
                                    href="{{ route('admin.iplaces.zone.index')}}">
                                 <i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                             </div>
-                            {{-- <div class="form-group">
-                                 <label for="exampleInputEmail1 ">Email address</label>
-                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                             </div>--}}
                         </div>
                     </div>
                 </div>

@@ -14,8 +14,9 @@
         {!! Form::textarea("{$lang}[summary]", old("$lang.summary"), ['class' => 'form-control','rows'=>2, 'placeholder' => trans('iplaces::places.form.summary')]) !!}
         {!! $errors->first("$lang.summary", '<span class="help-block">:message</span>') !!}
     </div>
-    @editor('description', trans('iplaces::places.form.description'), old("{$lang}.description"), $lang)
-
+    <div class='form-group{{ $errors->has("$lang.description") ? ' has-error' : '' }}'>
+        @editor('description', trans('iplaces::places.form.description'), old("{$lang}.description"), $lang)
+    </div>
     <div class="col-xs-12" style="padding-top: 35px;">
         <div class="panel box box-primary">
             <div class="box-header">
@@ -26,7 +27,6 @@
                 </div>
                 <label>{{ trans('iplaces::common.form.metadata')}}</label>
             </div>
-
             <div class="panel-collapse collapse" id="aditional{{$lang}}">
                 <div class="box-body">
                     <div class='form-group{{ $errors->has("{$lang}.metatitle") ? ' has-error' : '' }}'>
@@ -48,7 +48,6 @@
         </div>
     </div>
 
-
     <?php if (config('asgard.page.config.partials.translatable.create') !== []): ?>
     <?php foreach (config('asgard.page.config.partials.translatable.create') as $partial): ?>
     @include($partial)
@@ -59,7 +58,6 @@
 @section('scripts')
     @parent
     <style>
-
 
 
     </style>

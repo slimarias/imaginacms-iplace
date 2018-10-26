@@ -3,7 +3,7 @@
 
         @if(isset($entity->mainimage)&&!empty($entity->mainimage))
             <img id="mainImage"
-                 class="image profile-user-img "
+                 class="image profile-user-img  img-responsive"
                  width="100%"
                  src="{{$entity->mainimage}}'?v='{{str_random(4)}}"/>
         @else

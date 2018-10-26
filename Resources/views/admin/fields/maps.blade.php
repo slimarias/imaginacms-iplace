@@ -1,4 +1,5 @@
 <!-- field_type_name -->
+<div class='form-group{{ $errors->has("address") ? ' has-error' : '' }}'>
 <div>
     <label>{!! $field['label'] !!}</label>
     <!-- this is an example of reverse geocoding an address and obtaining
@@ -12,31 +13,36 @@ Adress field below -->
     }
 
     ?>
-    <div class="container_fluid">
-        <input id="address" name="{{$field['name']}}[]" class="form-control input-md" placeholder="Address"
-               value="{{$field_values->address or ''}}">
-        <div id="map_canvas" style="width:100%; height:300px"></div>
-        <br>
-        <div class="row">
-            <div class="col-md-3">
-                <input id="latitude" name="{{$field['name']}}[]" type="hidden"
-                       value="{{$field_values->lattitude or ''}}">
-            </div>
-            <div class="col-md-3">
-                <input id="longitude" name="{{$field['name']}}[]" type="hidden"
-                       value="{{$field_values->longitude or ''}}">
+
+
+        <div class="container_fluid">
+            <input id="address" name="{{$field['name']}}[]" class="form-control input-md" placeholder="Address"
+                   value="{{$field_values->address or ''}}">
+            <div id="map_canvas" style="width:100%; height:300px"></div>
+            <br>
+            <div class="row">
+                <div class="col-md-3">
+                    <input id="latitude" name="{{$field['name']}}[]" type="hidden"
+                           value="{{$field_values->lattitude or ''}}">
+                </div>
+                <div class="col-md-3">
+                    <input id="longitude" name="{{$field['name']}}[]" type="hidden"
+                           value="{{$field_values->longitude or ''}}">
+                </div>
             </div>
         </div>
+
+        <div class="container">
+            <input
+                    type="hidden"
+                    id="{{$field['name']}}hidd"
+                    name="{{ $field['name'] }}"
+                    value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] :  '' ) }}"
+            >
+        </div>
+       {!! $errors->first("address", '<span class="help-block">:message</span>') !!}
     </div>
 
-    <div class="container">
-        <input
-                type="hidden"
-                id="{{$field['name']}}hidd"
-                name="{{ $field['name'] }}"
-                value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] :  '' ) }}"
-        >
-    </div>
 
     {{-- HINT --}}
 

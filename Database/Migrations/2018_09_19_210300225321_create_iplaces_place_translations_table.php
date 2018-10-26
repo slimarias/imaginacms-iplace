@@ -17,6 +17,7 @@ class CreateIplacesPlaceTranslationsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('slug');
+            $table->text('summary');
             $table->text('description');
             $table->string('metatitle')->nullable();
             $table->text('metakeywords')->nullable();

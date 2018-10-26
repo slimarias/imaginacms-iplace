@@ -9,10 +9,10 @@
 namespace Modules\Iplaces\Events;
 
 use Modules\Iplaces\Entities\Place;
-use Modules\Media\Contracts\StoringMedia;
+use Modules\Core\Events\AbstractEntityHook;
 
 
-class PlaceWasCreated implements StoringMedia
+class PlaceIsCreated extends AbstractEntityHook
 {
     public $entity;
     public  $data;
@@ -24,25 +24,12 @@ class PlaceWasCreated implements StoringMedia
      * @param array $data
      */
     public function __construct($entity,array $data)
-    {
+    { 
         $this->data=$data;
         $this->entity=$entity;
     }
 
-    public function getEntity()
-    {
-        return $this->entity;
-    }
 
-    /**
-     * Return the ALL data sent
-     * @return array
-     */
-
-    public function getSubmissionData()
-    {
-        return $this->data;
-    }
 
 
 

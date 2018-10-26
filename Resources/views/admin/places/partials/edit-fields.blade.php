@@ -14,50 +14,54 @@
     </div>
 
     <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->description : '' ?>
-    @editor('content', trans('iplaces::places.form.description'), old("$lang.description", $old), $lang)
-
-        <div class="col-xs-12" style="padding-top: 35px;">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <div class="box-tools pull-right">
-                        <a href="#aditional{{$lang}}" class="btn btn-box-tool" data-target="#aditional{{$lang}}"
-                           data-toggle="collapse"><i class="fa fa-minus"></i>
-                        </a>
-                    </div>
-                    <label>{{ trans('iplaces::common.form.metadata')}}</label>
+    <div class='form-group{{ $errors->has("$lang.description") ? ' has-error' : '' }}'>
+        @editor('content', trans('iplaces::places.form.description'), old("$lang.description", $old), $lang)
+    </div>
+    <div class="col-xs-12" style="padding-top: 35px;">
+        <div class="panel box box-primary">
+            <div class="box-header">
+                <div class="box-tools pull-right">
+                    <a href="#aditional{{$lang}}" class="btn btn-box-tool" data-target="#aditional{{$lang}}"
+                       data-toggle="collapse"><i class="fa fa-minus"></i>
+                    </a>
                 </div>
+                <label>{{ trans('iplaces::common.form.metadata')}}</label>
+            </div>
+            <div class="panel-collapse collapse" id="aditional{{$lang}}">
                 <div class="box-body ">
-
                     <div class='form-group{{ $errors->has("{$lang}.metatitle") ? ' has-error' : '' }}'>
                         {!! Form::label("{$lang}[metatitle]", trans('iplaces::places.form.metatitle')) !!}
-                    <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->metatitle : '' ?>
-                    {!! Form::text("{$lang}[metatitle]", old("{$lang}.metatitle", $old), ['class' => 'form-control', 'data-slug' => 'source', 'placeholder' => trans('iplaces::places.form.metatitle')]) !!}
-                    {!! $errors->first("{$lang}.metatitle", '<span class="help-block">:message</span>') !!}
-                </div>
-                <div class='form-group{{ $errors->has("{$lang}.metakeywords") ? ' has-error' : '' }}'>
-                    {!! Form::label("{$lang}[metakeywords]", trans('iplaces::places.form.metakeywords')) !!}
-                    <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->metatitle : '' ?>
-                    {!! Form::text("{$lang}[metakeywords]", old("{$lang}.metakeywords", $old), ['class' => 'form-control', 'data-slug' => 'source', 'placeholder' => trans('iplaces::places.form.metakeywords')]) !!}
-                    {!! $errors->first("{$lang}.metakeywords", '<span class="help-block">:message</span>') !!}
-                </div>
+                        <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->metatitle : '' ?>
+                        {!! Form::text("{$lang}[metatitle]", old("{$lang}.metatitle", $old), ['class' => 'form-control', 'data-slug' => 'source', 'placeholder' => trans('iplaces::places.form.metatitle')]) !!}
+                        {!! $errors->first("{$lang}.metatitle", '<span class="help-block">:message</span>') !!}
+                    </div>
+                    <div class='form-group{{ $errors->has("{$lang}.metakeywords") ? ' has-error' : '' }}'>
+                        {!! Form::label("{$lang}[metakeywords]", trans('iplaces::places.form.metakeywords')) !!}
+                        <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->metatitle : '' ?>
+                        {!! Form::text("{$lang}[metakeywords]", old("{$lang}.metakeywords", $old), ['class' => 'form-control', 'data-slug' => 'source', 'placeholder' => trans('iplaces::places.form.metakeywords')]) !!}
+                        {!! $errors->first("{$lang}.metakeywords", '<span class="help-block">:message</span>') !!}
+                    </div>
 
-                <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->metadescription : '' ?>
-                @editor('content', trans('iplaces::places.form.metadescription'), old("$lang.metadescription", $old), $lang)
+                    <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->metadescription : '' ?>
+                    @editor('content', trans('iplaces::places.form.metadescription'), old("$lang.metadescription",
+                    $old),
+                    $lang)
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
+    </div>
 
     <?php if (config('asgard.page.config.partials.translatable.edit') !== []): ?>
     <?php foreach (config('asgard.page.config.partials.translatable.edit') as $partial): ?>
     @include($partial)
     <?php endforeach; ?>
     <?php endif; ?>
-</div>
 
+</div>
+@section('scripts')
+    @parent
+    <style>
+
+
+    </style>
+@stop

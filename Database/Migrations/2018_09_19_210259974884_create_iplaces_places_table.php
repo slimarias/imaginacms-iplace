@@ -16,9 +16,8 @@ class CreateIplacesPlacesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
             // fields
-            $table->text('summary');
             $table->text('options')->default('')->nullable();
-            $table->integer('city')->default(0)->unsigned();
+            $table->integer('city_id')->default(0)->unsigned();
             $table->integer('status')->default(0)->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('category_id')->unsigned();

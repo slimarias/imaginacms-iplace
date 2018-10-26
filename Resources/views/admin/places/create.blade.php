@@ -78,7 +78,7 @@
                             <select class="form-control" name="category_id">
                                 @if(count($categories))
                                     @foreach ($categories as $category)
-                                        <option value="{{$category->id}}"> {{$category->title}}
+                                        <option value="{{$category->id}}" {{ old('category_id',0) == $category->id ? 'selected' : '' }}> {{$category->title}}
                                         </option>
                                     @endforeach
                                 @endif
@@ -106,9 +106,9 @@
                             <label for="zones"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
                             <select class="form-control" name="zone_id" id="zone_id">
                                 @foreach ($zones as $zone)
-                                        <option value="{{$zone->id}}"> {{$zone->title}}
-                                        </option>
-                                    @endforeach
+                                    <option value="{{$zone->id}}" {{ old('zone_id', 0) == $zone->id ? 'selected' : '' }}> {{$zone->title}}
+                                    </option>
+                                @endforeach
                             </select><br>
                         </div>
 
@@ -130,7 +130,7 @@
                             <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
                             <select class="form-control" name="city_id" id="city_id">
                                 @foreach ($cities as $city)
-                                    <option value="{{$city->id}}"> {{$city->title}}
+                                    <option value="{{$city->id}}" {{ old('city_id', 0) == $city->id ? 'selected' : '' }}> {{$city->name}}
                                     </option>
                                 @endforeach
                             </select><br>
@@ -151,48 +151,12 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <ul  class="checkbox" style="list-style: none;padding-left: 5px;">
-                                @foreach ($services as $service)
-                                    <li>
-                                        <label for="services">
-                                            <input value="{{$service->id}}" name="services[]" type="checkbox" id="services" class="flat-blue jsInherit" >
-                                            {{$service->title}}
-                                        </label><br>
-                                    </li>
-                                @endforeach
-                            </ul>
+                            @include('iplaces::admin.fields.checklist.services')
 
                         </div>
                     </div>
                 </div>
 
-                {{--
-                <div class="col-xs-12 ">
-                    <div class="box box-primary">
-                        <div class="box-header">
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                            class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <div class="form-group">
-                                <label>{{trans('iplaces::cities.form.cities')}}</label>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <label for="cities"><strong>{{trans('iplaces::cities.form.principal')}}</strong></label>
-                            <select class="form-control" name="city_id" id="city_id">
-                                @if(count($cities))
-                                    @foreach ($cities as $city)
-                                        <option value="{{$city->id}}"> {{$city->title}}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select><br>
-                        </div>
-
-                    </div>
-                </div>--}}
                 <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">
@@ -206,18 +170,16 @@
                         <div class="box-body ">
                             <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
                                 <label class="radio" for="{{trans('iplaces::status.inactive')}}">
-                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    <input type="radio" id="status" name="status"
+                                           value="0" {{ old('status',0) == 0? 'checked' : '' }}>
                                     {{trans('iplaces::status.inactive')}}
                                 </label>
                                 <label class="radio" for="{{trans('iplaces::status.active')}}">
-                                    <input type="radio" id="status" name="status" value="1">
+                                    <input type="radio" id="status" name="status"
+                                           value="1" {{ old('status', 0) == 1? 'checked' : '' }}>
                                     {{trans('iplaces::status.active')}}
                                 </label>
                             </div>
-                            {{-- <div class="form-group">
-                                 <label for="exampleInputEmail1 ">Email address</label>
-                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                             </div>--}}
                         </div>
                     </div>
                 </div>
@@ -281,30 +243,6 @@
         </div>
     </div>
 
-    {{--
-    <div class="row">
-        <div class="col-md-4">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">{{trans('iplaces::places.form.Place Image')}}</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <div class="nav-tabs-custom">
-                        <div class="tab-content">
-                            @mediaSingle('thumbnail')
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    --}}
-
     {!! Form::close() !!}
 @stop
 
@@ -333,9 +271,7 @@
             $('input[type="checkbox"], input[type="radio"]').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
-
             });
-
             $('.btn-box-tool').click(function (e) {
                 e.preventDefault();
             });
@@ -353,8 +289,6 @@
             border-right: 1px solid #e6e6fd !important;
 
         }
-
-
     </style>
 @endpush
 

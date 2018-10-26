@@ -6,7 +6,7 @@
 
 
 
-            <li>
+            <li  style="padding-top: 5px">
                 <label>
                     <input type="checkbox" class="flat-blue jsInherit" name="categories[]" value="{{$child->id}}"
                            @isset($oldCat) @if(in_array($child->id, $oldCat)) checked="checked" @endif @endisset> {{$child->title}}

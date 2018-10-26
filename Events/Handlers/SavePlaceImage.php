@@ -14,9 +14,9 @@ class SavePlaceImage
     }
     public function handle(PlaceWasCreated $event)
     {
-       // dd($event->data['mainimage']);
         $id = $event->entity->id;
         if (!empty($event->data['mainimage'])) {
+            dd('hola');
             $mainimage = saveImage($event->data['mainimage'], "assets/iplaces/place/" . $id . ".jpg");
             if(isset($event->data['options'])){
                 $options=(array)$event->data['options'];

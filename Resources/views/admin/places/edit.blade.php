@@ -5,14 +5,14 @@
         {{ trans('iplaces::places.title.edit place') }}
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
+        <li><a href="{{ route('dashboard.index') }}"><i
+                        class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
         <li><a href="{{ route('admin.iplaces.place.index') }}">{{ trans('iplaces::places.title.places') }}</a></li>
         <li class="active">{{ trans('iplaces::places.title.edit place') }}</li>
     </ol>
 @stop
 
 @section('content')
-
     {!! Form::open(['route' => ['admin.iplaces.place.update', $place->id], 'method' => 'put']) !!}
     <div class="row">
         <div class="col-xs-12 col-md-9">
@@ -20,7 +20,8 @@
                 <div class="col-xs-12">
                     <div class="box box-primary">
                         <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
                             </button>
                         </div>
                         <div class="nav-tabs-custom">
@@ -43,14 +44,12 @@
                         </div>
                         <div class="box-body ">
                             <div class="box-footer">
-                                <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
-                                <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.iplaces.place.index')}}">
+                                <button type="submit"
+                                        class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
+                                <a class="btn btn-danger pull-right btn-flat"
+                                   href="{{ route('admin.iplaces.place.index')}}">
                                     <i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                             </div>
-                            {{-- <div class="form-group">
-                                 <label for="exampleInputEmail1 ">Email address</label>
-                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                             </div>--}}
                         </div>
                     </div>
                 </div>
@@ -62,7 +61,8 @@
                     <div class="box box-primary">
                         <div class="box-header">
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
                                 </button>
                             </div>
                             <div class="form-group">
@@ -74,7 +74,7 @@
                             <select class="form-control" name="category_id">
                                 @if(count($categories))
                                     @foreach ($categories as $category)
-                                        <option value="{{$category->id}}"> {{$category->title}}
+                                        <option value="{{$category->id}}" {{ old('category_id',$place->category_id) == $category->id ? 'selected' : '' }}> {{$category->title}}
                                         </option>
                                     @endforeach
                                 @endif
@@ -85,11 +85,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
                                 </button>
                             </div>
                             <div class="form-group">
@@ -98,11 +100,11 @@
                         </div>
                         <div class="box-body">
                             <label for="zones"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
-                            <select class="form-control" name="zone_id">
-                                    @foreach ($zones as $zone)
-                                        <option value="{{$zone->id}}" {{$zone->id == $place->zone_id ? 'selected' : ''}}> {{$zone->title}}
-                                        </option>
-                                    @endforeach
+                            <select class="form-control" name="zone_id" id="zone_id">
+                                @foreach ($zones as $zone)
+                                    <option value="{{$zone->id}}"{{ old('zone_id', $place->zone_id) == $zone->id ? 'selected' : '' }} > {{$zone->title}}
+                                    </option>
+                                @endforeach
                             </select><br>
                         </div>
 
@@ -112,7 +114,8 @@
                     <div class="box box-primary">
                         <div class="box-header">
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
                                 </button>
                             </div>
                             <div class="form-group">
@@ -121,9 +124,9 @@
                         </div>
                         <div class="box-body">
                             <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
-                            <select class="form-control" name="city_id">
+                            <select class="form-control" name="city_id" id="city_id">
                                 @foreach ($cities as $city)
-                                    <option value="{{$city->id}}" {{$city->id == $place->city_id ? 'selected' : ''}}> {{$city->name}}
+                                    <option value="{{$city->id}}" {{ old('city_id', $place->city_id ) == $city->id ? 'selected' : '' }}> {{$city->name}}
                                     </option>
                                 @endforeach
                             </select><br>
@@ -145,60 +148,33 @@
                         </div>
                         <div class="box-body">
                             @include('iplaces::admin.fields.checklist.services')
-
                         </div>
                     </div>
                 </div>
-             {{--  <div class="col-xs-12 ">
-                    <div class="box box-primary">
-                        <div class="box-header">
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                            class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <div class="form-group">
-                                <label>{{trans('iplaces::services.form.services')}}</label>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <label for="services"><strong>{{trans('iplaces::services.form.principal')}}</strong></label>
-                            <select class="form-control" name="service_id" id="service_id">
-                                @if(count($services))
-                                    @foreach ($services as $service)
-                                        <option value="{{$service->id}}"> {{$service->title}}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select><br>
-                        </div>
 
-                    </div>
-                </div>--}}
                 <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">
                             <label>{{trans('iplaces::status.title')}}</label>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="box-body ">
                             <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
                                 <label class="radio" for="{{trans('iplaces::status.inactive')}}">
-                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    <input type="radio" id="status" name="status"
+                                           value="0" {{ old('status',$place->status) == 0? 'checked' : '' }}>
                                     {{trans('iplaces::status.inactive')}}
                                 </label>
                                 <label class="radio" for="{{trans('iplaces::status.active')}}">
-                                    <input type="radio" id="status" name="status" value="1">
+                                    <input type="radio" id="status" name="status"
+                                           value="1" {{ old('status',$place->status) == 1? 'checked' : '' }}>
                                     {{trans('iplaces::status.active')}}
                                 </label>
                             </div>
-                            {{-- <div class="form-group">
-                                 <label for="exampleInputEmail1 ">Email address</label>
-                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                             </div>--}}
                         </div>
                     </div>
                 </div>
@@ -206,7 +182,8 @@
                     <div class="box box-primary">
                         <div class="box-header">
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
                                 </button>
                             </div>
                             <div class="form-group">
@@ -222,7 +199,8 @@
                     <div class="box box-primary">
                         <div class="box-header">
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
                                 </button>
                             </div>
                             <div class="form-group">
@@ -238,7 +216,8 @@
                     <div class="box box-primary">
                         <div class="box-header">
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
                                 </button>
                             </div>
                             <label>User</label>
@@ -258,8 +237,6 @@
             </div>
         </div>
     </div>
-
-    </div>
     {!! Form::close() !!}
 @stop
 
@@ -275,33 +252,32 @@
 
 @push('js-stack')
     <script type="text/javascript">
-        $( document ).ready(function() {
+        $(document).ready(function () {
             $(document).keypressAction({
                 actions: [
-                    { key: 'b', route: "<?= route('admin.iplaces.place.index') ?>" }
+                    {key: 'b', route: "<?= route('admin.iplaces.place.index') ?>"}
                 ]
             });
         });
     </script>
     <script>
-        $( document ).ready(function() {
+        $(document).ready(function () {
             $('input[type="checkbox"], input[type="radio"]').iCheck({
                 checkboxClass: 'icheckbox_flat-blue',
                 radioClass: 'iradio_flat-blue'
             });
-            $('.btn-box-tool').click(function(e){
+            $('.btn-box-tool').click(function (e) {
                 e.preventDefault();
             });
-
         });
-
     </script>
     <style>
 
         .nav-tabs-custom > .nav-tabs > li.active {
-            border-top-color:white !important;
+            border-top-color: white !important;
             border-bottom-color: #3c8dbc !important;
         }
+
         .nav-tabs-custom > .nav-tabs > li.active > a, .nav-tabs-custom > .nav-tabs > li.active:hover > a {
             border-left: 1px solid #e6e6fd !important;
             border-right: 1px solid #e6e6fd !important;
