@@ -13,7 +13,8 @@ return [
         'metatitle' => 'MetaTitle',
         'metadescription' => 'MetaDescription',
         'metakeywords' => 'Metakeywords',
-        'metadata' => 'Meta Data'
+        'metadata' => 'Meta Data',
+        'cities'=>'City'
 
     ],
 

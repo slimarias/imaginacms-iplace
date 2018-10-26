@@ -7,9 +7,10 @@ use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Iplaces\Events\PlaceWasCreated;
 
+
 class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRepository
 {
-    public function index($page, $take, $filter, $include)
+    public function wherebyFilter($page, $take, $filter, $include)
     {
         //Initialize Query
         $query = $this->model->query();
@@ -28,19 +29,6 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
                 $query->where('slug', $filter->slug);
             }
 
-            //Filter by parent_id
-            if (isset($filter->parentId) && is_array($filter->parentId)) {
-                $query->whereIn('parent_id', $filter->parentId);
-            }
-
-            //Filter by parent_slug
-            if (isset($filter->parentSlug) && is_array($filter->parentSlug)) {
-                $query->whereIn('parent_id', function ($query) use ($filter) {
-                    $query->select('iblog__places.id')
-                        ->from('iblog__places')
-                        ->whereIn('iblog__places.slug', $filter->parentSlug);
-                });
-            }
 
             //Filter excluding places by ID
             if (isset($filter->excludeById) && is_array($filter->excludeById)) {
@@ -65,6 +53,39 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
                     }
                 });
             }
+            //Add order by city
+            if (isset($filter->cities) && is_array($filter->cities)) {
+                is_array($filter->cities) ? true : $filter->cities = [$filter->cities];
+                $query->whereIn('city_id', $filter->cities);
+
+            }
+
+            //Add order for zone
+            if (isset($filter->zones) && is_array($filter->zones)) {
+                is_array($filter->zones) ? true : $filter->zones = [$filter->zones];
+                $query->whereIn('zone_id', $filter->zones);
+            }
+
+
+            //Add order for category
+
+            if (isset($filter->categories) && is_array($filter->categories)) {
+                is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
+                $query->leftJoin('iplaces_place_category', 'iplaces_place_category.place_id', '=', 'iplaces__places.id')
+                    ->whereIn('iplaces_place_category.category_id', $filter->category);
+
+            }
+
+
+            //Add order for services
+
+            if (isset($filter->services) && is_array($filter->services)) {
+                is_array($filter->services) ? true : $filter->services = [$filter->services];
+                $query->leftJoin('iplaces_place_service', 'iplaces_place_service.service_id', '=', 'iplaces__services.id')
+                    ->whereIn('iplaces_place_service.service_id', $filter->service);
+
+            }
+
 
             //Add order By
             $orderBy = isset($filter->orderBy) ? $filter->orderBy : 'created_at';
@@ -108,8 +129,8 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
 
     public function create($data)
     {
-     // dd($data);
-        $place= $this->model->create($data);
+        // dd($data);
+        $place = $this->model->create($data);
         event(new PlaceWasCreated($place, $data));
         $place->categories()->sync(array_get($data, 'categories', []));
         $place->services()->sync(array_get($data, 'services', []));
@@ -123,7 +144,6 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
         $model->services()->sync(array_get($data, 'services', []));
         return $model;
     }
-
 
 
 }

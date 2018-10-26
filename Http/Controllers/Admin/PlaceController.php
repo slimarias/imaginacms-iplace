@@ -17,6 +17,7 @@ use Modules\Iplaces\Repositories\ZoneRepository;
 use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\User\Repositories\UserRepository;
 use Modules\User\Transformers\UserProfileTransformer;
+use Modules\Ilocations\Repositories\CityRepository;
 
 class PlaceController extends AdminBaseController
 {
@@ -29,10 +30,10 @@ class PlaceController extends AdminBaseController
     private $user;
     private $zone;
     private $service;
-  //private $city;
+   private $city;
 
 
-    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service)
+    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service, CityRepository $city)
     {
         parent::__construct();
 
@@ -42,7 +43,7 @@ class PlaceController extends AdminBaseController
         $this->user = $user;
         $this->zone = $zone;
         $this->service = $service;
-       // $this->city = $city;
+       $this->city = $city;
     }
 
     /**
@@ -70,9 +71,9 @@ class PlaceController extends AdminBaseController
         $users = $this->user->all();
         $zones = $this->zone->all();
         $services = $this->service->all();
-      //$cities = $this->city->all();
-
-        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services'));
+      $cities = $this->city->whereByCountry(48);
+//dd($cities);
+        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities'));
     }
 
     /**
@@ -109,8 +110,8 @@ class PlaceController extends AdminBaseController
         $users = $this->user->all();
         $zones = $this->zone->all();
         $services = $this->service->all();
-       //$cities = $this->city->all();
-        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services'));
+       $cities = $this->city->all();
+        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities'));
     }
 
     /**

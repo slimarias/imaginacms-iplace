@@ -123,6 +123,30 @@
                                 </button>
                             </div>
                             <div class="form-group">
+                                <label>{{trans('iplaces::common.form.cities')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
+                            <select class="form-control" name="city_id" id="city_id">
+                                @foreach ($cities as $city)
+                                    <option value="{{$city->id}}"> {{$city->title}}
+                                    </option>
+                                @endforeach
+                            </select><br>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
                                 <label>{{trans('iplaces::services.form.services')}}</label>
                             </div>
                         </div>
