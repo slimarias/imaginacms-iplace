@@ -62,28 +62,29 @@ class PublicController extends BasePublicController
     {
 
         $category = $this->category->findBySlug($slugCategory);
-        $places = $this->place->WhereCategory($category->id);
+        $places = $this->place->whereCategory($category->id);
         $services = $this->service->all();
         $zones = $this->zone->all();
-        $category = $this->category->all();
+        $categories = $this->category->all();
         $tpl = 'iplaces::frontend.index';
         $ttpl = 'iplace.frontend.index';
 
         if (view()->exists($ttpl)) $tpl = $ttpl;
 
-        Return view($tpl, compact('places', 'category', 'zones', 'services'));
+        Return view($tpl, compact('places', 'category', 'zones', 'services','categories'));
 
     }
 
-    public function show($category,$place)
+    public function show($slugCategory,$slugPlace)
     {
 
         $category = $this->category->findBySlug($slugCategory);
-        $place = $this->place->findBySlug($slug);
+      // dd($category);
+        $place = $this->place->findBySlug($slugPlace);
+        dd($place->category->id,$category->title );
        if($place->category->id ==$category->id){
            $services = $this->service->all();
            $zones = $this->zone->all();
-           $category = $this->category->all();
            $tpl = 'iplaces::frontend.show';
            $ttpl = 'iplace.frontend.show';
 

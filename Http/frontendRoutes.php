@@ -9,13 +9,12 @@ $router->group(['prefix' => 'lugares'], function (Router $router) {
     $router->get('/', [
         'as' => 'iplaces.place.index',
         'uses' => 'PublicController@index',
-        'middleware' => 'can:iplaces.places.index'
     ]);
-    $router->get('/{category}', [
+    $router->get('/{slugcategory}', [
         'as' => 'iplaces.place.category',
-        'uses' => 'PublicController@index',
+        'uses' => 'PublicController@category',
     ]);
-    $router->get('/{category}/{place}', [
+    $router->get('{slugcategory}/{slugplace}', [
         'as' => 'iplaces.place.show',
         'uses' => 'PublicController@show',
     ]);

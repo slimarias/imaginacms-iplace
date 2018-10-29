@@ -49,14 +49,15 @@ class Place extends Model
         $driver = config('asgard.user.config.driver');
         return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class,'category_id');
+    }
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'iplaces_place_category');
     }
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+
     public function services()
     {
         return $this->belongsToMany(Service::class, 'iplaces_place_service');
@@ -111,6 +112,7 @@ class Place extends Model
     public function getUrlAttribute() {
 
        // \URL::route(\LaravelLocalization::getCurrentLocale(
+        dd($this->category->id);
         return  \URL::route('iplaces.place.show', [$this->category->slug,$this->slug]);
     }
     public function getOptionsAttribute($value)

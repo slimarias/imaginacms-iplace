@@ -2,11 +2,12 @@
 
 namespace Modules\Iplaces\Repositories\Eloquent;
 
+use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Modules\Iplaces\Entities\Status;
+use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Iplaces\Repositories\Collection;
 use Modules\Iplaces\Repositories\PlaceRepository;
-use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
-use Modules\Iplaces\Events\PlaceWasCreated;
-use Modules\Iplaces\Entities\Status;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRepository
@@ -19,7 +20,7 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
         /*== RELATIONSHIPS ==*/
         if (count($include)) {
             //Include relationships for default
-            $includeDefault = ['categories', 'cites','services',];
+            $includeDefault = ['categories', 'cites', 'services',];
             $query->with(array_merge($includeDefault, $include));
         }
 
@@ -71,7 +72,7 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
             if (isset($filter->categories) && is_array($filter->categories)) {
                 is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
 
-                $query->whereHas('categories', function($q) use ($filter){
+                $query->whereHas('categories', function ($q) use ($filter) {
                     $q->whereIn('category_id', $filter->categories);
                 });
 
@@ -82,7 +83,7 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
 
             if (isset($filter->services) && is_array($filter->services)) {
                 is_array($filter->services) ? true : $filter->services = [$filter->services];
-                $query->whereHas('services', function($q) use ($filter) {
+                $query->whereHas('services', function ($q) use ($filter) {
                     $q->whereIn('service_id', $filter->services);
                 });
             }
@@ -146,12 +147,25 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
         return $model;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function findBySlug($slug)
+    {
+        if (method_exists($this->model, 'translations')) {
+            return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
+                $q->where('slug', $slug);
+            })->with('categories', 'city', 'category','translations')->first();
+        }
 
-    public function whereCategory($id){
+        return $this->model->with('categories', 'city', 'category')->where('slug', $slug)->first();
+    }
 
-        is_array($id) ? true : $id = [$id];
-        $query = $this->model->whith('categories,cites');
-        $query->whereHas('categories', function($q) use ($id){
+    public function whereCategory($id)
+    {
+         is_array($id) ? true : $id = [$id];
+        $query = $this->model->with('city', 'category');
+        $query->whereHas('categories', function (Builder $q) use ($id) {
             $q->whereIn('category_id', $id);
         });
         $query->orderBy("created_at", "desc");
