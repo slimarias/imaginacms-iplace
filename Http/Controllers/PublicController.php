@@ -81,7 +81,6 @@ class PublicController extends BasePublicController
         $category = $this->category->findBySlug($slugCategory);
       // dd($category);
         $place = $this->place->findBySlug($slugPlace);
-        dd($place->category->id,$category->title );
        if($place->category->id ==$category->id){
            $services = $this->service->all();
            $zones = $this->zone->all();

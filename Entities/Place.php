@@ -112,7 +112,7 @@ class Place extends Model
     public function getUrlAttribute() {
 
        // \URL::route(\LaravelLocalization::getCurrentLocale(
-        dd($this->category->id);
+
         return  \URL::route('iplaces.place.show', [$this->category->slug,$this->slug]);
     }
     public function getOptionsAttribute($value)
