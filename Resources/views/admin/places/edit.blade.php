@@ -13,8 +13,9 @@
 @stop
 
 @section('content')
-    {!! Form::open(['route' => ['admin.iplaces.place.update', $place->id], 'method' => 'put']) !!}
     <div class="row">
+        {!! Form::open(['route' => ['admin.iplaces.place.update', $place->id], 'method' => 'put']) !!}
+
         <div class="col-xs-12 col-md-9">
             <div class="row">
                 <div class="col-xs-12">
@@ -54,6 +55,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="col-xs-12 col-md-3">
             <div class="row">
@@ -236,8 +238,11 @@
 
             </div>
         </div>
-    </div>
     {!! Form::close() !!}
+
+        @include('iperformers::admin.fields.gallery',['entry'=>$prefromer??'','field'=>['name'=>'gallery', 'label'=>trans('iperformers::performers.form.gallery'),'route_upload'=>route('iplace.api.performers.gallery.store'),'route_delete'=>route('iperformers.api.performers.gallery.delete'),'folder'=>'assets/iperformers/performers/gallery/','label_drag'=>trans('iperformers::performers.form.drag')]])
+    </div>
+
 @stop
 
 @section('footer')

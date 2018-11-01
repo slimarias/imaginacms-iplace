@@ -13,8 +13,9 @@
 @stop
 
 @section('content')
-    {!! Form::open(['route' => ['admin.iplaces.place.store'], 'method' => 'post']) !!}
     <div class="row">
+    {!! Form::open(['route' => ['admin.iplaces.place.store'], 'method' => 'post']) !!}
+
         <div class="col-xs-12 col-md-9">
             <div class="row">
                 <div class="col-xs-12">
@@ -50,10 +51,6 @@
                                    href="{{ route('admin.iplaces.place.index')}}">
                                     <i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                             </div>
-                            {{-- <div class="form-group">
-                                 <label for="exampleInputEmail1 ">Email address</label>
-                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                             </div>--}}
                         </div>
                     </div>
                 </div>
@@ -241,9 +238,12 @@
 
             </div>
         </div>
+        @stack('left_fields')
+    {!! Form::close() !!}
+
+        @include('iperformers::admin.fields.gallery',['entry'=>$prefromer??'','field'=>['name'=>'gallery', 'label'=>trans('iperformers::performers.form.gallery'),'route_upload'=>route('iplace.api.performers.gallery.store'),'route_delete'=>route('iperformers.api.performers.gallery.delete'),'folder'=>'assets/iperformers/performers/gallery/','label_drag'=>trans('iperformers::performers.form.drag')]])
     </div>
 
-    {!! Form::close() !!}
 @stop
 
 @section('footer')

@@ -48,15 +48,6 @@ class Category extends Model
         return $this->belongsToMany(Place::class, 'iplaces_place_category');
     }
 
-    protected function setSlugAttribute($value)
-    {
-
-        if (!empty($value)) {
-            $this->attributes['slug'] = str_slug($value, '-');
-        } else {
-            $this->attributes['slug'] = str_slug($this->attributes['title'], '-');
-        }
-    }
     //generar url automatica
     /* public function sluggable()
      {
@@ -98,12 +89,11 @@ class Category extends Model
      * @return mixed
      */
 
+    public function getUrlAttribute() {
 
-    public function getUrlAttribute()
-    {
+        // \URL::route(\LaravelLocalization::getCurrentLocale(
 
-        return url($this->slug);
-
+        return  \URL::route('iplaces.place.category', [$this->slug]);
     }
 
     public function getOptionsAttribute($value)
