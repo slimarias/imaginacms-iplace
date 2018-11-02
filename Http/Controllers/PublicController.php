@@ -79,9 +79,11 @@ class PublicController extends BasePublicController
     {
 
         $category = $this->category->findBySlug($slugCategory);
-      // dd($category);
         $place = $this->place->findBySlug($slugPlace);
        if($place->category->id ==$category->id){
+           $services = $this->service->all();
+           $zones = $this->zone->all();
+           $categories = $this->category->all();
            $services = $this->service->all();
            $zones = $this->zone->all();
            $tpl = 'iplaces::frontend.show';
@@ -89,7 +91,7 @@ class PublicController extends BasePublicController
 
            if (view()->exists($ttpl)) $tpl = $ttpl;
 
-           Return view($tpl, compact('places', 'category', 'zones', 'services'));
+           Return view($tpl, compact('place', 'category', 'zones', 'services','categories'));
        }
 
        return abort(404);

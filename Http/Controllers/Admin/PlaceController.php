@@ -165,4 +165,17 @@ class PlaceController extends AdminBaseController
         }
 
     }
+    public function addPosts(Request $request,$place_id){
+
+        if($request->relations_ids){
+
+            $places = $this->business->getById($place_id);
+            $places->relations()->syncWithoutDetaching($request->relations_ids);
+
+        }
+
+        return redirect()->route('admin.ibusiness.userbusiness.edit', [$places->id])
+            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('ibusiness::userbusinesses.title.userbusinesses')]));
+
+    }
 }

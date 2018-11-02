@@ -16,7 +16,6 @@ class SavePlaceImage
     {
         $id = $event->entity->id;
         if (!empty($event->data['mainimage'])) {
-            dd('hola');
             $mainimage = saveImage($event->data['mainimage'], "assets/iplaces/place/" . $id . ".jpg");
             if(isset($event->data['options'])){
                 $options=(array)$event->data['options'];
@@ -26,6 +25,14 @@ class SavePlaceImage
         }else{
             $event->data['options'] = json_encode($event->data['options']);
         }
+        if (!empty($event->data['gallery']) && !empty($id)) {
+            if (count(\Storage::disk('publicmedia')->files('assets/ipaces/pace/gallery/' . $event->data['gallery']))) {
+                \File::makeDirectory('assets/ipaces/pace/gallery/' . $id);
+                $success = rename('assets/ipaces/pace/gallery/' . $event->data['gallery'], 'assets/ipaces/pace/gallery/' . $id);
+            }
+        }
+
+
         $this->place->update($event->entity, $event->data);
     }
 

@@ -41,6 +41,10 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
             'uses' => 'PlaceController@destroy',
             'middleware' => 'can:iplaces.places.destroy'
         ]);
+        $router->post('/{place_id}/addposts', [
+            'as' => 'admin.ibusiness.userbusiness.addPosts',
+            'uses' => 'PlaceController@addPosts'
+        ]);
     });
 
     $router->group(['prefix' => 'categories'], function (Router $router) {
