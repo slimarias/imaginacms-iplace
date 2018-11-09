@@ -77,6 +77,12 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
                 });
 
             }
+            //Add order by province
+            if (isset($filter->provinces) && is_array($filter->provinces)) {
+                is_array($filter->provinces) ? true : $filter->cities = [$filter->provinces];
+                $query->whereIn('province_id', $filter->cities);
+
+            }
 
 
             //Add order for services
@@ -155,16 +161,16 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
         if (method_exists($this->model, 'translations')) {
             return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
                 $q->where('slug', $slug);
-            })->with('categories', 'city', 'category','translations')->first();
+            })->with('categories', 'city', 'category','translations','province')->first();
         }
 
-        return $this->model->with('categories', 'city', 'category')->where('slug', $slug)->first();
+        return $this->model->with('categories', 'city', 'category','province')->where('slug', $slug)->first();
     }
 
     public function whereCategory($id)
     {
          is_array($id) ? true : $id = [$id];
-        $query = $this->model->with('city', 'category');
+        $query = $this->model->with('city', 'category','province');
         $query->whereHas('categories', function (Builder $q) use ($id) {
             $q->whereIn('category_id', $id);
         });

@@ -25,6 +25,12 @@ return [
         'edit' => 'iplaces::zones.edit resource',
         'destroy' => 'iplaces::zones.destroy resource',
     ],
+    'iplaces.schedules' => [
+        'index' => 'iplaces::schedules.list resource',
+        'create' => 'iplaces::schedules.create resource',
+        'edit' => 'iplaces::schedules.edit resource',
+        'destroy' => 'iplaces::schedules.destroy resource',
+    ],
 // append
 
 

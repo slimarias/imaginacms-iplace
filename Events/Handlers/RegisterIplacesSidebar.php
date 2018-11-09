@@ -79,10 +79,15 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('iplaces.zones.index')
                     );
                 });
-// append
-
-
-
+                $item->item(trans('iplaces::schedules.title.schedules'), function (Item $item) {
+                    $item->icon('fa fa-clock-o');
+                    $item->weight(0);
+                    $item->append('admin.iplaces.schedule.create');
+                    $item->route('admin.iplaces.schedule.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('iplaces.schedules.index')
+                    );
+                });
 
             });
         });

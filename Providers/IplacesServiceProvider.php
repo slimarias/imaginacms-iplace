@@ -108,6 +108,18 @@ class IplacesServiceProvider extends ServiceProvider
                 return new \Modules\Iplaces\Repositories\Cache\CacheZoneDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Iplaces\Repositories\ScheduleRepository',
+            function () {
+                $repository = new \Modules\Iplaces\Repositories\Eloquent\EloquentScheduleRepository(new \Modules\Iplaces\Entities\Schedule());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Iplaces\Repositories\Cache\CacheScheduleDecorator($repository);
+            }
+        );
 // add bindings
 
 

@@ -9,6 +9,7 @@ use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\Iplaces\Repositories\ZoneRepository;
+use Modules\Iplaces\Repositories\ScheduleRepository;
 use Illuminate\Http\Request;
 use Route;
 
@@ -19,14 +20,16 @@ class PublicController extends BasePublicController
     public $category;
     public $service;
     public $zone;
+    public $schedule;
 
-    public function __construct(PlaceRepository $place, CategoryRepository $category, ServiceRepository $service, ZoneRepository $zone)
+    public function __construct(PlaceRepository $place, CategoryRepository $category, ServiceRepository $service, ZoneRepository $zone, ScheduleRepository $schedule)
     {
         parent::__construct();
         $this->place = $place;
         $this->category = $category;
         $this->service = $service;
         $this->zone = $zone;
+        $this->schedule= $schedule;
     }
 
     public function index(Request $request)
@@ -35,26 +38,29 @@ class PublicController extends BasePublicController
         $oldCat=null;
         $oldServ=null;
         $oldZone=null;
-        if ((isset($request->categories) && !empty($request->categories))||(isset($request->services) && !empty($request->services))||(isset($request->zones) && !empty($request->zones)) ) {
-            $filter=['categories'=>$request->categories,"services"=>$request->services, "zones"=>$request->zones];
+        $oldSche=null;
+        if ((isset($request->categories) && !empty($request->categories))||(isset($request->services) && !empty($request->services))||(isset($request->zones) && !empty($request->zones)) ||(isset($request->schedules) && !empty($request->schedules))) {
+            $filter=['categories'=>$request->categories,"services"=>$request->services, "zones"=>$request->zones, "schedules"=>$request->schedules];
 
             $places = $this->place->wherebyFilter($request->page,$take=12, json_decode(json_encode($filter)), $include=null);
             $oldCat=$request->categories;
             $oldServ=$request->services;
             $oldZone=$request->zones;
+            $oldSche=$request->schedules;
         } else {
             $places = $this->place->paginate(12);
         }
 
         $services = $this->service->all();
         $zones = $this->zone->all();
+        $schedules = $this->schedule->all();
         $categories = $this->category->all();
         $tpl = 'iplaces::frontend.index';
         $ttpl = 'iplace.frontend.index';
 
         if (view()->exists($ttpl)) $tpl = $ttpl;
 
-        Return view($tpl, compact('places', 'categories', 'zones', 'services','oldCat', 'oldServ','oldZone'));
+        Return view($tpl, compact('places', 'categories', 'zones', 'services','oldCat', 'oldServ','oldZone','oldSche'));
 
     }
 
@@ -65,13 +71,14 @@ class PublicController extends BasePublicController
         $places = $this->place->whereCategory($category->id);
         $services = $this->service->all();
         $zones = $this->zone->all();
+        $schedules = $this->schedule->all();
         $categories = $this->category->all();
         $tpl = 'iplaces::frontend.index';
         $ttpl = 'iplace.frontend.index';
 
         if (view()->exists($ttpl)) $tpl = $ttpl;
 
-        Return view($tpl, compact('places', 'category', 'zones', 'services','categories'));
+        Return view($tpl, compact('places', 'category', 'zones', 'services','categories','schedules'));
 
     }
 
@@ -86,12 +93,13 @@ class PublicController extends BasePublicController
            $categories = $this->category->all();
            $services = $this->service->all();
            $zones = $this->zone->all();
+           $schedules = $this->schedule->all();
            $tpl = 'iplaces::frontend.show';
            $ttpl = 'iplace.frontend.show';
 
            if (view()->exists($ttpl)) $tpl = $ttpl;
 
-           Return view($tpl, compact('place', 'category', 'zones', 'services','categories'));
+           Return view($tpl, compact('place', 'category', 'zones', 'services','categories','schedules'));
        }
 
        return abort(404);

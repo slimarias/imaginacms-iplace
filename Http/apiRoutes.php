@@ -32,12 +32,12 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
             'uses' => 'PlaceController@store',
             'middleware' => ['api.token','token-can:iplaces.places.create']
         ]);
-        $router->post('gallery', [
+        $router->post('aiplacesplace', [
             'as' => 'iplace.api.places.gallery.store',
             'uses' => 'PlaceController@galleryStore',
             'middleware' => ['api.token','token-can:iplaces.places.create']
         ]);
-        $router->post('gallery/delete', [
+        $router->post('aiplacesplace/delete', [
             'as' => 'iplace.api.places.gallery.delete',
             'uses' => 'PlaceController@galleryDelete',
             'middleware' => ['api.token','token-can:iplaces.places.create']

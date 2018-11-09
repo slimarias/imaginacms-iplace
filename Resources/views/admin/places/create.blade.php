@@ -120,14 +120,15 @@
                                 </button>
                             </div>
                             <div class="form-group">
-                                <label>{{trans('iplaces::common.form.cities')}}</label>
+                                <label>{{trans('iplaces::common.form.provinces')}}</label>
                             </div>
                         </div>
                         <div class="box-body">
-                            <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
-                            <select class="form-control" name="city_id" id="city_id">
-                                @foreach ($cities as $city)
-                                    <option value="{{$city->id}}" {{ old('city_id', 0) == $city->id ? 'selected' : '' }}> {{$city->name}}
+                            <label for="provinces"><strong>{{trans('iplaces::common.form.principal')}}</strong></label>
+                            <select class="form-control" name="province_id" id="province_id">
+                                <option value=""> Select </option>
+                                @foreach ($provinces as $province)
+                                    <option value="{{$province->id}}" {{ old('province_id', 0) == $province->id ? 'selected' : '' }}> {{$province->name}}
                                     </option>
                                 @endforeach
                             </select><br>
@@ -135,6 +136,52 @@
 
                     </div>
                 </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>{{trans('iplaces::common.form.cities')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
+                            <select class="form-control" name="city_id" id="city_id">
+                                    <option value=""> Select </option>
+                            </select><br>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>{{trans('iplaces::schedules.form.schedules')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <label for="schedule"><strong>{{trans('iplaces::schedules.form.principal')}}</strong></label>
+                            <select class="form-control" name="schedule_id" id="schedule_id">
+                                @foreach ($schedules as $schedule)
+                                    <option value="{{$schedule->id}}" {{ old('schedule_id', 0) == $schedule->id ? 'selected' : '' }}> {{$schedule->title}}
+                                    </option>
+                                @endforeach
+                            </select><br>
+                        </div>
+
+                    </div>
+                </div>
+
                 <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">
@@ -241,7 +288,7 @@
         @stack('left_fields')
     {!! Form::close() !!}
 
-        @include('iperformers::admin.fields.gallery',['entry'=>$prefromer??'','field'=>['name'=>'gallery', 'label'=>trans('iperformers::performers.form.gallery'),'route_upload'=>route('iplace.api.performers.gallery.store'),'route_delete'=>route('iperformers.api.performers.gallery.delete'),'folder'=>'assets/iperformers/performers/gallery/','label_drag'=>trans('iperformers::performers.form.drag')]])
+     {{--   @include('iperformers::admin.fields.gallery',['entry'=>$prefromer??'','field'=>['name'=>'gallery', 'label'=>trans('iperformers::performers.form.gallery'),'route_upload'=>route('iplace.api.performers.gallery.store'),'route_delete'=>route('iperformers.api.performers.gallery.delete'),'folder'=>'assets/iperformers/performers/gallery/','label_drag'=>trans('iperformers::performers.form.drag')]])--}}
     </div>
 
 @stop
@@ -275,6 +322,56 @@
             $('.btn-box-tool').click(function (e) {
                 e.preventDefault();
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#province_id').change(function () {
+               var province='{"province_id":'+$("#province_id").val()+'}';
+                $.ajax({
+                    type: "GET",
+                    url: "{{URL::route('ilocation.api.get.cities')}}",
+                    dataType:'json',
+                    data:{'take':null,'filter':province,'token':$('meta[name="token"]').attr('value'),'fields':"[]"},
+                    beforeSend: function(){
+                        $('#city_id').prop('disabled',true)
+
+                    },
+                    success: function(data){
+                        $('#city_id').prop('disabled',false)
+                        $('#city_id').html('');
+                        $.each(data.data, function (i, item) {
+
+                            $('#city_id').append("<option value="+item.id+">"+item.name+"</option>")
+                        });
+                        {{--   {
+                                $('#tab_logic').append(tr);
+
+                                $('#tab_logic tbody tr').find("td button.row-remove").on("click", function () {
+                                    $(this).closest("tr").remove();
+                                });
+                                var value=$('#providerautocomple').val();
+                                $('input[id=provider'+newid+']').val(value);
+                                $("tr#trProvider"+newid+" td #id-provider").val($('#data-holder').val());
+                                $.each(data, function( index, value ) {
+                                    $('select[id=product'+newid+']').append($('<option>', {
+                                        value: value["id"],
+                                        text : value["name"]
+                                    }));
+                                });
+                                newid+=1;
+
+
+                        }
+
+                        $('#providerautocomple').val("");
+                        $('#data-holder').val("");--}}
+                    }
+                });
+
+            })
+
         });
     </script>
     <style>

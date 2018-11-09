@@ -120,6 +120,7 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
         ]);
 
     });
+
     $router->group(['prefix' => '/zones'], function (Router $router) {
 
         $router->bind('zone', function ($id) {
@@ -154,6 +155,46 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
             'as' => 'admin.iplaces.zone.destroy',
             'uses' => 'ZoneController@destroy',
             'middleware' => 'can:iplaces.zones.destroy'
+        ]);
+// append
+
+
+    });
+
+    $router->group(['prefix' => '/schedules'], function (Router $router) {
+
+        $router->bind('schedule', function ($id) {
+            return app('Modules\Iplaces\Repositories\ScheduleRepository')->find($id);
+        });
+        $router->get('/', [
+            'as' => 'admin.iplaces.schedule.index',
+            'uses' => 'ScheduleController@index',
+            'middleware' => 'can:iplaces.schedules.index'
+        ]);
+        $router->get('create', [
+            'as' => 'admin.iplaces.schedule.create',
+            'uses' => 'ScheduleController@create',
+            'middleware' => 'can:iplaces.schedules.create'
+        ]);
+        $router->post('/', [
+            'as' => 'admin.iplaces.schedule.store',
+            'uses' => 'ScheduleController@store',
+            'middleware' => 'can:iplaces.schedules.create'
+        ]);
+        $router->get('{schedule}/edit', [
+            'as' => 'admin.iplaces.schedule.edit',
+            'uses' => 'ScheduleController@edit',
+            'middleware' => 'can:iplaces.schedules.edit'
+        ]);
+        $router->put('{schedule}', [
+            'as' => 'admin.iplaces.schedule.update',
+            'uses' => 'ScheduleController@update',
+            'middleware' => 'can:iplaces.schedules.edit'
+        ]);
+        $router->delete('{schedule}', [
+            'as' => 'admin.iplaces.schedule.destroy',
+            'uses' => 'ScheduleController@destroy',
+            'middleware' => 'can:iplaces.schedules.destroy'
         ]);
 // append
 

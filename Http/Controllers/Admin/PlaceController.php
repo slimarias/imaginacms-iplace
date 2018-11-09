@@ -18,6 +18,9 @@ use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\User\Repositories\UserRepository;
 use Modules\User\Transformers\UserProfileTransformer;
 use Modules\Ilocations\Repositories\CityRepository;
+use Modules\Ilocations\Repositories\ProvinceRepository;
+use Modules\Ilocations\Repositories\EloquentCityRepository;
+use Modules\Iplaces\Repositories\ScheduleRepository;
 
 class PlaceController extends AdminBaseController
 {
@@ -31,9 +34,11 @@ class PlaceController extends AdminBaseController
     private $zone;
     private $service;
    private $city;
+   private $province;
+   private $schedule;
 
 
-    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service, CityRepository $city)
+    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service, CityRepository $city, ProvinceRepository $province, ScheduleRepository $schedule)
     {
         parent::__construct();
 
@@ -44,6 +49,8 @@ class PlaceController extends AdminBaseController
         $this->zone = $zone;
         $this->service = $service;
        $this->city = $city;
+       $this->province = $province;
+        $this->schedule = $schedule;
     }
 
     /**
@@ -64,14 +71,18 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function create()
-    {
+    {//dd('sdsa');
         $statuses = $this->status->lists();
         $categories = $this->category->all();
         $users = $this->user->all();
         $zones = $this->zone->all();
         $services = $this->service->all();
-      $cities = $this->city->whereByCountry(48);
-        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities'));
+        $filter=json_decode(json_encode(['country_id'=>48]));
+        $provinces = $this->province->index(null,null,$filter,[],[]);
+        $schedules= $this->schedule->all();
+      //  $cities = $this->city->all();
+
+        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities','provinces','schedules'));
     }
 
     /**
@@ -82,8 +93,8 @@ class PlaceController extends AdminBaseController
      */
     public function store(CreatePlaceRequest $request)
     {
+       // dd($request);
         try {
-
 
             $this->place->create($request->all());
 
@@ -109,8 +120,13 @@ class PlaceController extends AdminBaseController
         $users = $this->user->all();
         $zones = $this->zone->all();
         $services = $this->service->all();
-       $cities = $this->city->all();
-        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities'));
+        $filter=json_decode(json_encode(['country_id'=>48]));
+        $provinces = $this->province->index(null,null,$filter,[],[]);
+        $filter_city = json_decode(json_encode(['province_id'=>$place->province_id]));
+        $cities=$this->city->index(null,null,$filter_city,[],[]);
+        $schedules=$this->schedule->all();
+
+        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities','provinces','schedules'));
     }
 
     /**

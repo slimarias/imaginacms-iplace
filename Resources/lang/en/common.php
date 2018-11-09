@@ -14,7 +14,10 @@ return [
         'metadescription' => 'MetaDescription',
         'metakeywords' => 'Metakeywords',
         'metadata' => 'Meta Data',
-        'cities'=>'City'
+        'cities'=>'City',
+        'provinces'=>'Departments',
+        'principal'=>'Principal',
+        'schedule'=>'Schedule'
 
     ],
 

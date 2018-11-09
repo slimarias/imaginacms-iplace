@@ -11,6 +11,8 @@ use Modules\Iplaces\Presenters\PlacePresenter;
 use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Ilocations\Entities\City;
+use Modules\Ilocations\Entities\Province;
+use Modules\Iplaces\Entities\Schedule;
 
 
 class Place extends Model
@@ -19,14 +21,16 @@ class Place extends Model
 
     protected $table = 'iplaces__places';
     public $translatedAttributes = ['title','description','slug','metatitle','metadescription','metakeywords'];
-    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords','zone_id','city_id','service_id'];
+    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords','zone_id','city_id','service_id','province_id','schedule_id'];
     protected $fakeColumns = ['options'];
     protected $presenter = PlacePresenter::class;
 
     protected $casts = [
         'options' => 'array',
         'status'=>'int',
-        'zone_id'=>'int'
+        'zone_id'=>'int',
+        'schedule_id'=>'int',
+        'province_id'
     ];
 
     /*
@@ -72,8 +76,15 @@ class Place extends Model
         return $this->belongsTo(City::class);
     }
 
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
 
-
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
 
     /*
      * -------------
