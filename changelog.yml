@@ -1,17 +1,7 @@
 url: https://github.com/imagina/asgardcms-iplace
 versions:
-    "0.1.0":
+    "1.0.0":
         added:
-        -Migration Place, Category, place_category
-        -Translate Place, Category
-        changed:
+        - Initial Module
 
-        removed:
-"0.1.1":
-        added:
-        -Migration Place, Category, place_category
-        -Translate Place, Category
-        changed:
-
-        removed:
 
