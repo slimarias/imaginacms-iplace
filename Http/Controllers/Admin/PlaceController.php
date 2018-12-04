@@ -21,6 +21,7 @@ use Modules\Ilocations\Repositories\CityRepository;
 use Modules\Ilocations\Repositories\ProvinceRepository;
 use Modules\Ilocations\Repositories\EloquentCityRepository;
 use Modules\Iplaces\Repositories\ScheduleRepository;
+use Modules\Iplaces\Entities\Weather;
 
 class PlaceController extends AdminBaseController
 {
@@ -36,9 +37,10 @@ class PlaceController extends AdminBaseController
    private $city;
    private $province;
    private $schedule;
+   private $weather;
 
 
-    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service, CityRepository $city, ProvinceRepository $province, ScheduleRepository $schedule)
+    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service, CityRepository $city, ProvinceRepository $province, ScheduleRepository $schedule, Weather $weather)
     {
         parent::__construct();
 
@@ -51,6 +53,7 @@ class PlaceController extends AdminBaseController
        $this->city = $city;
        $this->province = $province;
         $this->schedule = $schedule;
+        $this->weather=$weather;
     }
 
     /**
@@ -80,9 +83,11 @@ class PlaceController extends AdminBaseController
         $filter=json_decode(json_encode(['country_id'=>48]));
         $provinces = $this->province->index(null,null,$filter,[],[]);
         $schedules= $this->schedule->all();
+        $weathers= $this->weather->lists();
       //  $cities = $this->city->all();
 
-        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities','provinces','schedules'));
+
+        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities','provinces','schedules','weathers'));
     }
 
     /**
@@ -104,6 +109,7 @@ class PlaceController extends AdminBaseController
             \Log::error($e);
             return redirect()->back()
                 ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]))->withInput($request->all());
+
         }
     }
 
@@ -125,8 +131,9 @@ class PlaceController extends AdminBaseController
         $filter_city = json_decode(json_encode(['province_id'=>$place->province_id]));
         $cities=$this->city->index(null,null,$filter_city,[],[]);
         $schedules=$this->schedule->all();
+        $weathers=$this->weather->lists();
 
-        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities','provinces','schedules'));
+        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities','provinces','schedules','weathers'));
     }
 
     /**
@@ -157,6 +164,7 @@ class PlaceController extends AdminBaseController
             \Log::error($e);
             return redirect()->back()
                 ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]))->withInput($request->all());
+
         }
     }
 

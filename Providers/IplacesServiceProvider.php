@@ -120,6 +120,7 @@ class IplacesServiceProvider extends ServiceProvider
                 return new \Modules\Iplaces\Repositories\Cache\CacheScheduleDecorator($repository);
             }
         );
+
 // add bindings
 
 

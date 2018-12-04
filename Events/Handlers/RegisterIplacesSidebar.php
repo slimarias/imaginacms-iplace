@@ -89,6 +89,17 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
 
+              /*
+                $item->item(trans('iplaces::ranges.title.ranges'), function (Item $item) {
+                    $item->icon('fa fa-exchange');
+                    $item->weight(0);
+                    $item->append('admin.iplaces.range.create');
+                    $item->route('admin.iplaces.range.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('iplaces.ranges.index')
+                    );
+                });*/
+
             });
         });
 

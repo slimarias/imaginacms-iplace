@@ -200,5 +200,48 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
 
 
     });
+
+ /*
+
+    $router->group(['prefix' => '/ranges'], function (Router $router) {
+
+        $router->bind('range', function ($id) {
+            return app('Modules\Iplaces\Repositories\RangeRepository')->find($id);
+        });
+        $router->get('/', [
+            'as' => 'admin.iplaces.range.index',
+            'uses' => 'RangeController@index',
+            'middleware' => 'can:iplaces.ranges.index'
+        ]);
+        $router->get('create', [
+            'as' => 'admin.iplaces.range.create',
+            'uses' => 'RangeController@create',
+            'middleware' => 'can:iplaces.ranges.create'
+        ]);
+        $router->post('/', [
+            'as' => 'admin.iplaces.range.store',
+            'uses' => 'RangeController@store',
+            'middleware' => 'can:iplaces.ranges.create'
+        ]);
+        $router->get('{range}/edit', [
+            'as' => 'admin.iplaces.range.edit',
+            'uses' => 'RangeController@edit',
+            'middleware' => 'can:iplaces.ranges.edit'
+        ]);
+        $router->put('{range}', [
+            'as' => 'admin.iplaces.range.update',
+            'uses' => 'RangeController@update',
+            'middleware' => 'can:iplaces.ranges.edit'
+        ]);
+        $router->delete('{range}', [
+            'as' => 'admin.iplaces.range.destroy',
+            'uses' => 'RangeController@destroy',
+            'middleware' => 'can:iplaces.ranges.destroy'
+        ]);
+// append
+
+
+    });
+ */
 });
 

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ * User: imagina
+ * Date: 13/11/2018
+ * Time: 10:23 AM
+ */
 
 namespace Modules\Iplaces\Http\Controllers\Api;
 
@@ -8,20 +13,19 @@ use Log;
 use Mockery\CountValidator\Exception;
 use Modules\Iplaces\Http\Controllers\Api\BaseApiController;
 use Modules\Iplaces\Repositories\PlaceRepository;
-use Modules\Iplaces\Repositories\ZoneRepository;
-use Modules\Iplaces\Entities\Zone;
-use Modules\Iplaces\Transformers\ZoneTransformers;
-
+use Modules\Iplaces\Entities\Schedule;
+use Modules\Iplaces\Repositories\ScheduleRepository;
+use Modules\Iplaces\Transformers\ScheduleTransformers;
 use Route;
 
-class ZoneController extends BaseApiController
+class ScheduleController extends BaseApiController
 {
-    private $zone;
+private $schedule;
 
-    public function __construct(ZoneRepository $zone)
+    public function __construct(ScheduleRepository $schedule)
     {
         parent::__construct();
-        $this->zone = $zone;
+        $this->schedule = $schedule;
 
     }
 
@@ -31,13 +35,13 @@ class ZoneController extends BaseApiController
             $p = $this->parametersUrl(1, 12, false, []);
 
             //Request to Repository
-            $zones = $this->zone->index($p->page, $p->take, $p->filter, $p->include);
+            $schedules = $this->schedule->index($p->page, $p->take, $p->filter, $p->include);
 
             //Response
-            $response = ["data" => ZoneTransformers::collection($zones)];
+            $response = ["data" => ScheduleTransformers::collection($schedules)];
 
             //If request pagination add meta-page
-            $p->page ? $response["meta"] = ["page" => $this->pageTransformer($zones)] : false;
+            $p->page ? $response["meta"] = ["page" => $this->pageTransformer($schedules)] : false;
         } catch (\Exception $e) {
             //Message Error
             $status = 500;
@@ -56,11 +60,11 @@ class ZoneController extends BaseApiController
             $p = $this->parametersUrl(false, false, false, []);
 
             //Request to Repository
-            $zone = $this->zone->show($slug, $p->include);
+            $schedule = $this->schedule->show($slug, $p->include);
 
             //Response
             $response = [
-                "data" => is_null($zone) ? false : new ZoneTransformers($zone)];
+                "data" => is_null($schedule) ? false : new ScheduleTransformers($schedule)];
         } catch (\Exception $e) {
             //Message Error
             $status = 500;
@@ -72,7 +76,7 @@ class ZoneController extends BaseApiController
         return response()->json($response, $status ?? 200);
     }
 
-    public function zones(Request $request)
+    public function schedules(Request $request)
     {
         try {
             if (isset($request->include)) {
@@ -82,7 +86,7 @@ class ZoneController extends BaseApiController
             }
             if (isset($request->filters) && !empty($request->filters)) {
                 $filters = json_decode($request->filters);
-                $results = $this->zone->whereFilters($filters, $includes);
+                $results = $this->schedule->whereFilters($filters, $includes);
 
                 if (isset($filters->take)) {
                     $response = [
@@ -90,7 +94,7 @@ class ZoneController extends BaseApiController
                             "take" => $filters->take ?? 5,
                             "skip" => $filters->skip ?? 0,
                         ],
-                        'data' => ZoneTransformers::collection($results),
+                        'data' => ScheduleTransformers::collection($results),
                     ];
                 } else {
                     $response = [
@@ -99,7 +103,7 @@ class ZoneController extends BaseApiController
                             "per_page" => $results->perPage(),
                             "total-item" => $results->total()
                         ],
-                        'data' => ZoneTransformers::collection($results),
+                        'data' => ScheduleTransformers::collection($results),
                         'links' => [
                             "self" => $results->currentPage(),
                             "first" => $results->hasMorePages(),
@@ -112,14 +116,14 @@ class ZoneController extends BaseApiController
                 }
             } else {
 
-                $results = $this->zone->paginate($request->paginate ?? 12);
+                $results = $this->schedule->paginate($request->paginate ?? 12);
                 $response = [
                     'meta' => [
                         "total-pages" => $results->lastPage(),
                         "per_page" => $results->perPage(),
                         "total-item" => $results->total()
                     ],
-                    'data' => ZoneTransformers::collection($results),
+                    'data' => ScheduleTransformers::collection($results),
                     'links' => [
                         "self" => $results->currentPage(),
                         "first" => $results->hasMorePages(),
@@ -139,7 +143,7 @@ class ZoneController extends BaseApiController
                 "source" => [
                     "pointer" => url($request->path()),
                 ],
-                "title" => "Error Query Zones",
+                "title" => "Error Query Schedule",
                 "detail" => $e->getMessage()
             ]
             ];
@@ -149,18 +153,18 @@ class ZoneController extends BaseApiController
 
     }
 
-    public function zone(Zone $zone, Request $request)
-    { //dd($zone);
+    public function schedule(Schedule $schedule, Request $request)
+    { //dd($schedule);
         try {
-            if (isset($zone->id) && !empty($zone->id)) {
+            if (isset($schedule->id) && !empty($schedule->id)) {
                 $response = [
                     "type" => "articles",
-                    "id" => $zone->id,
-                    "attributes" => new ZoneTransformers($zone),
+                    "id" => $schedule->id,
+                    "attributes" => new ScheduleTransformers($schedule),
 
                 ];
 
-               // $includes = explode(",", $request->include);
+                // $includes = explode(",", $request->include);
             } else {
                 $status = 404;
                 $response = ['errors' => [
@@ -181,7 +185,7 @@ class ZoneController extends BaseApiController
                 "source" => [
                     "pointer" => url($request->path()),
                 ],
-                "title" => "Error Query Zones",
+                "title" => "Error Query Schedules",
                 "detail" => $e->getMessage()
             ]
             ];
@@ -191,13 +195,13 @@ class ZoneController extends BaseApiController
     }
 
 //get
-    public function posts(Zone $zone, Request $request)
+    public function posts(Schedule $schedule, Request $request)
     {
         try {
             $includes = explode(",", $request->include);
             if (isset($request->filters) && !empty($request->filters)) {
                 $filters = json_decode($request->filters);
-                $filters->zones = $zone->id;
+                $filters->schedules = $schedule->id;
 
                 $results = $this->post->whereFilters($filters, $includes);
 
@@ -207,7 +211,7 @@ class ZoneController extends BaseApiController
                             "take" => $filters->take ?? 5,
                             "skip" => $filters->skip ?? 0,
                         ],
-                        'data' => ZoneTransformers::collection($results),
+                        'data' => ScheduleTransformers::collection($results),
                     ];
                 } else {
                     $response = [
@@ -216,7 +220,7 @@ class ZoneController extends BaseApiController
                             "per_page" => $results->perPage(),
                             "total-item" => $results->total()
                         ],
-                        'data' => ZoneTransformers::collection($results),
+                        'data' => ScheduleTransformers::collection($results),
                         'links' => [
                             "self" => $results->currentPage(),
                             "first" => $results->hasMorePages(),
@@ -229,14 +233,14 @@ class ZoneController extends BaseApiController
                 }
             } else {
 
-                $results = $this->post->whereFilters((object)$filter = ['zones' => $zone->id, 'paginate' => $request->paginate ?? 12], $request->includes ?? false);
+                $results = $this->post->whereFilters((object)$filter = ['schedules' => $schedule->id, 'paginate' => $request->paginate ?? 12], $request->includes ?? false);
                 $response = [
                     'meta' => [
                         "total-pages" => $results->lastPage(),
                         "per_page" => $results->perPage(),
                         "total-item" => $results->total()
                     ],
-                    'data' => ZoneTransformers::collection($results),
+                    'data' => ScheduleTransformers::collection($results),
                     'links' => [
                         "self" => $results->currentPage(),
                         "first" => $results->hasMorePages(),
@@ -247,7 +251,7 @@ class ZoneController extends BaseApiController
 
                 ];
             }
-            if (isset($request->zone_id)) {
+            if (isset($request->schedule_id)) {
 
             } else {
 
@@ -260,7 +264,7 @@ class ZoneController extends BaseApiController
                 "source" => [
                     "pointer" => url($request->path()),
                 ],
-                "title" => "Error Query Zones",
+                "title" => "Error Query Schedules",
                 "detail" => $e->getMessage()
             ]
             ];
@@ -273,7 +277,7 @@ class ZoneController extends BaseApiController
     public function store(Request $request)
     {//dd($request);
         try {
-            $zone = $this->zone->create($request->all());
+            $schedule = $this->schedule->create($request->all());
             $status = 200;
             $response = [
                 'susses' => [
@@ -283,7 +287,7 @@ class ZoneController extends BaseApiController
                     ],
                     "title" => trans('core::core.messages.resource created', ['name' => trans('iplace::common.singular')]),
                     "detail" => [
-                        'id' => $zone->id
+                        'id' => $schedule->id
                     ]
                 ]
             ];
@@ -295,7 +299,7 @@ class ZoneController extends BaseApiController
                 "source" => [
                     "pointer" => url($request->path()),
                 ],
-                "title" => "Error Query Zones",
+                "title" => "Error Query Schedules",
                 "detail" => $e->getMessage()
             ]
             ];
@@ -304,15 +308,15 @@ class ZoneController extends BaseApiController
 
     }
 
-    public function update(Zone $zone, Request $request)
+    public function update(Schedule $schedule, Request $request)
     {
 
         try {
 
-            if (isset($zone->id) && !empty($zone->id)) {
+            if (isset($schedule->id) && !empty($schedule->id)) {
                 $options = (array)$request->options ?? array();
                 $request['options'] = json_encode($options);
-                $zone = $this->zone->update($zone, $request->all());
+                $schedule = $this->schedule->update($schedule, $request->all());
 
                 $status = 200;
                 $response = [
@@ -321,9 +325,9 @@ class ZoneController extends BaseApiController
                         "source" => [
                             "pointer" => url($request->path())
                         ],
-                        "title" => trans('core::core.messages.resource updated', ['name' => trans('iplace::zones.singular')]),
+                        "title" => trans('core::core.messages.resource updated', ['name' => trans('iplace::schedules.singular')]),
                         "detail" => [
-                            'id' => $zone->id
+                            'id' => $schedule->id
                         ]
                     ]
                 ];
@@ -349,7 +353,7 @@ class ZoneController extends BaseApiController
                 "source" => [
                     "pointer" => url($request->path()),
                 ],
-                "title" => "Error Query Zone",
+                "title" => "Error Query Schedule",
                 "detail" => $e->getMessage()
             ]
             ];
@@ -358,17 +362,17 @@ class ZoneController extends BaseApiController
         return response()->json($response, $status ?? 200);
     }
 
-    public function delete(Zone $zone, Request $request)
+    public function delete(Schedule $schedule, Request $request)
     {
         try {
-            $this->zone->destroy($zone);
+            $this->schedule->destroy($schedule);
             $status = 200;
             $response = [
                 'susses' => [
                     'code' => '201',
-                    "title" => trans('core::core.messages.resource deleted', ['name' => trans('iplace::zones.singular')]),
+                    "title" => trans('core::core.messages.resource deleted', ['name' => trans('iplace::schedules.singular')]),
                     "detail" => [
-                        'id' => $zone->id
+                        'id' => $schedule->id
                     ]
                 ]
             ];
@@ -389,7 +393,5 @@ class ZoneController extends BaseApiController
 
         return response()->json($response, $status ?? 200);
     }
-
-
 
 }

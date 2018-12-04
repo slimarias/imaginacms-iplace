@@ -33,7 +33,9 @@ return [
         'metatitle'=>'MetaTitle',
         'metadescription'=>'MetaDescription',
         'metakeywords'=>'Metakeywords',
-        'metadata'=>'Meta Data'
+        'metadata'=>'Meta Data',
+        'gama'=>'Gama',
+        'person'=>'Quantity Person'
 
     ],
     'messages' => [

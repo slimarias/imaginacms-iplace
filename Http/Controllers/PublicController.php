@@ -60,7 +60,7 @@ class PublicController extends BasePublicController
 
         if (view()->exists($ttpl)) $tpl = $ttpl;
 
-        Return view($tpl, compact('places', 'categories', 'zones', 'services','oldCat', 'oldServ','oldZone','oldSche'));
+        Return view($tpl, compact('places', 'categories', 'zones', 'services','schedules','oldCat', 'oldServ','oldZone','oldSche'));
 
     }
 
@@ -88,8 +88,6 @@ class PublicController extends BasePublicController
         $category = $this->category->findBySlug($slugCategory);
         $place = $this->place->findBySlug($slugPlace);
        if($place->category->id ==$category->id){
-           $services = $this->service->all();
-           $zones = $this->zone->all();
            $categories = $this->category->all();
            $services = $this->service->all();
            $zones = $this->zone->all();

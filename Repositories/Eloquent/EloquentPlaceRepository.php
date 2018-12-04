@@ -8,6 +8,7 @@ use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Iplaces\Repositories\Collection;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Iplaces\Entities\Weather;
 
 
 class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRepository

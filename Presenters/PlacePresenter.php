@@ -4,6 +4,7 @@ namespace Modules\Iplaces\Presenters;
 
 use Laracasts\Presenter\Presenter;
 use Modules\Iplaces\Entities\Status;
+use Modules\Iplaces\Entities\Weather;
 
 class PlacePresenter extends Presenter
 {
@@ -11,6 +12,7 @@ class PlacePresenter extends Presenter
      * @var \Modules\Iplaces\Entities\Status
      */
     protected $status;
+    protected $weather;
     /**
      * @var \Modules\Iplaces\Repositories\PlaceRepository
      */
@@ -21,6 +23,7 @@ class PlacePresenter extends Presenter
         parent::__construct($entity);
         $this->place = app('Modules\Iplaces\Repositories\PlaceRepository');
         $this->status = app('Modules\Iplaces\Entities\Status');
+        $this->weather=app('Modules\Iplaces\Entities\Weather');
     }
 
     /**
@@ -30,6 +33,10 @@ class PlacePresenter extends Presenter
     public function status()
     {
         return $this->status->get($this->entity->status);
+    }
+    public function weather()
+    {
+        return $this->weather->get($this->entity->weather);
     }
 
     /**
@@ -44,6 +51,22 @@ class PlacePresenter extends Presenter
                 break;
 
             case Status::ACTIVE:
+                return 'bg-green';
+                break;
+
+            default:
+                return 'bg-red';
+                break;
+        }
+    }
+    public function weatherLabelClass()
+    {
+        switch ($this->entity->status) {
+            case Weather::CLOUDY:
+                return 'bg-red';
+                break;
+
+            case Weather::WARM:
                 return 'bg-green';
                 break;
 

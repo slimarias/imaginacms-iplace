@@ -14,7 +14,6 @@ Adress field below -->
 
     ?>
 
-
         <div class="container_fluid">
             <input id="address" name="{{$field['name']}}[]" class="form-control input-md" placeholder="Address"
                    value="{{$field_values->address or ''}}">

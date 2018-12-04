@@ -13,6 +13,7 @@ use Modules\Core\Traits\NamespacedEntity;
 use Modules\Ilocations\Entities\City;
 use Modules\Ilocations\Entities\Province;
 use Modules\Iplaces\Entities\Schedule;
+use Modules\Iplaces\Entities\Range;
 
 
 class Place extends Model
@@ -21,7 +22,7 @@ class Place extends Model
 
     protected $table = 'iplaces__places';
     public $translatedAttributes = ['title','description','slug','metatitle','metadescription','metakeywords'];
-    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords','zone_id','city_id','service_id','province_id','schedule_id'];
+    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords','zone_id','city_id','service_id','province_id','schedule_id','quantity_person','weather'];
     protected $fakeColumns = ['options'];
     protected $presenter = PlacePresenter::class;
 
@@ -30,7 +31,9 @@ class Place extends Model
         'status'=>'int',
         'zone_id'=>'int',
         'schedule_id'=>'int',
-        'province_id'
+        'province_id',
+        'weather'=>'int'
+
     ];
 
     /*
@@ -84,6 +87,10 @@ class Place extends Model
     public function schedule()
     {
         return $this->belongsTo(Schedule::class);
+    }
+    public function range()
+    {
+        return $this->belongsTo(Range::class);
     }
 
     /*
@@ -160,9 +167,16 @@ class Place extends Model
      * @param Builder $query
      * @return Builder
      */
-    public function scopeInactive(Builder $query)
+    public function scopeCloudy(Builder $query)
     {
-        return $query->whereStatus(Status::INACTIVE);
+        return $query->whereWeather(Weather::CLOUDY);
     }
+
+    public function scopeWarm(Builder $query)
+    {
+        return $query->whereWeather(Weather::WARM);
+    }
+
+
 
 }
