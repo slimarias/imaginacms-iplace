@@ -39,6 +39,9 @@
                         </div>
                     </div>
                 </div>
+
+                @include('iplaces::admin.places.partials.extra-fields-edit')
+
                 <div class="col-xs-12">
                     <div class="box box-primary">
                         <div class="box-header">

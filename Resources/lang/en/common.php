@@ -21,4 +21,8 @@ return [
 
     ],
 
+    'settings' => [
+        'apimaps' => 'Api Code Maps'
+    ]
+
 ];

@@ -22,6 +22,8 @@ use Modules\Ilocations\Repositories\ProvinceRepository;
 use Modules\Ilocations\Repositories\EloquentCityRepository;
 use Modules\Iplaces\Repositories\ScheduleRepository;
 use Modules\Iplaces\Entities\Weather;
+use Modules\Iplaces\Entities\Gama;
+use Modules\Iplaces\Entities\StatusYN;
 
 class PlaceController extends AdminBaseController
 {
@@ -34,14 +36,27 @@ class PlaceController extends AdminBaseController
     private $user;
     private $zone;
     private $service;
-   private $city;
-   private $province;
-   private $schedule;
-   private $weather;
+    private $city;
+    private $province;
+    private $schedule;
+    private $weather;
+    private $gama;
+    private $statusyn;
 
-
-    public function __construct(PlaceRepository $place, Status $status, CategoryRepository $category, UserRepository $user, ZoneRepository $zone, ServiceRepository $service, CityRepository $city, ProvinceRepository $province, ScheduleRepository $schedule, Weather $weather)
-    {
+    public function __construct(
+        PlaceRepository $place, 
+        Status $status, 
+        CategoryRepository $category, 
+        UserRepository $user, 
+        ZoneRepository $zone, 
+        ServiceRepository $service, 
+        CityRepository $city, 
+        ProvinceRepository $province, 
+        ScheduleRepository $schedule, 
+        Weather $weather,
+        Gama $gama,
+        StatusYN $statusyn
+    ){
         parent::__construct();
 
         $this->place = $place;
@@ -50,10 +65,12 @@ class PlaceController extends AdminBaseController
         $this->user = $user;
         $this->zone = $zone;
         $this->service = $service;
-       $this->city = $city;
-       $this->province = $province;
+        $this->city = $city;
+        $this->province = $province;
         $this->schedule = $schedule;
-        $this->weather=$weather;
+        $this->weather = $weather;
+        $this->gama = $gama;
+        $this->statusyn = $statusyn;
     }
 
     /**
@@ -74,7 +91,7 @@ class PlaceController extends AdminBaseController
      * @return Response
      */
     public function create()
-    {//dd('sdsa');
+    {
         $statuses = $this->status->lists();
         $categories = $this->category->all();
         $users = $this->user->all();
@@ -85,9 +102,11 @@ class PlaceController extends AdminBaseController
         $schedules= $this->schedule->all();
         $weathers= $this->weather->lists();
       //  $cities = $this->city->all();
+        $gamas = $this->gama->lists();
+        $statusesyn = $this->statusyn->lists();
+       
 
-
-        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities','provinces','schedules','weathers'));
+        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities','provinces','schedules','weathers','gamas','statusesyn'));
     }
 
     /**
@@ -98,14 +117,14 @@ class PlaceController extends AdminBaseController
      */
     public function store(CreatePlaceRequest $request)
     {
-       // dd($request);
+       
         try {
-
             $this->place->create($request->all());
-
             return redirect()->route('admin.iplaces.place.index')
                 ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('iplaces::places.title.places')]));
         } catch (\Exception $e) {
+           
+            //dd($e);
             \Log::error($e);
             return redirect()->back()
                 ->withError(trans('core::core.messages.resource error', ['name' => trans('iplaces::places.title.places')]))->withInput($request->all());
@@ -132,8 +151,10 @@ class PlaceController extends AdminBaseController
         $cities=$this->city->index(null,null,$filter_city,[],[]);
         $schedules=$this->schedule->all();
         $weathers=$this->weather->lists();
+        $gamas = $this->gama->lists();
+        $statusesyn = $this->statusyn->lists();
 
-        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities','provinces','schedules','weathers'));
+        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities','provinces','schedules','weathers','gamas','statusesyn'));
     }
 
     /**

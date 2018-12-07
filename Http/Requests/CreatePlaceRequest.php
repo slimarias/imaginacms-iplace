@@ -36,12 +36,12 @@ class CreatePlaceRequest extends BaseFormRequest
     public function translationMessages()
     {
         return [
-            'title.required' => trans('iplaces::messages.name is required'),
-            'title.min2'=>trans('iplaces::messages.name is min '),
-            'description.required' => trans('iplaces::messages.description is required'),
-            'description.min2'=>trans('iplaces::messages.description is min '),
-            'category_id.required'=>trans('iplaces::messages.category is required'),
-            'address.required' => trans('iplaces::messages.address is required'),
+            'title.required' => trans('iplaces::places.messages.name is required'),
+            'title.min2'=>trans('iplaces::places.messages.name is min '),
+            'description.required' => trans('iplaces::places.messages.description is required'),
+            'description.min2'=>trans('iplaces::places.messages.description is min '),
+            'category_id.required'=>trans('iplaces::places.messages.category is required'),
+            'address.required' => trans('iplaces::places.messages.address is required'),
         ];
     }
 }

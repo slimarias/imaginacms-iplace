@@ -21,8 +21,39 @@ class Place extends Model
     use Translatable, PresentableTrait, NamespacedEntity;
 
     protected $table = 'iplaces__places';
-    public $translatedAttributes = ['title','description','slug','metatitle','metadescription','metakeywords'];
-    protected $fillable = ['title','description','slug','user_id','status','summary','address','options','category_id','created_at','metatitle','metadescription','metakeywords','zone_id','city_id','service_id','province_id','schedule_id','quantity_person','weather'];
+    public $translatedAttributes = [
+        'title',
+        'description',
+        'slug',
+        'metatitle',
+        'metadescription',
+        'metakeywords'
+    ];
+    protected $fillable = [
+        'title',
+        'description',
+        'slug',
+        'user_id',
+        'status',
+        'summary',
+        'address',
+        'options',
+        'category_id',
+        'created_at',
+        'metatitle',
+        'metadescription',
+        'metakeywords',
+        'zone_id',
+        'city_id',
+        'service_id',
+        'province_id',
+        'schedule_id',
+        'gama',
+        'quantity_person',
+        'weather',
+        'housing',
+        'transport'
+    ];
     protected $fakeColumns = ['options'];
     protected $presenter = PlacePresenter::class;
 

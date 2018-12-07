@@ -9,7 +9,8 @@ return [
         'places' => 'Place',
         'create place' => 'Create a place',
         'edit place' => 'Edit a place',
-        'categories'=>'Category'
+        'categories'=>'Category',
+        'extra-fields' => 'Extra Fields',
     ],
     'button' => [
         'create place' => 'Create a place',
@@ -35,10 +36,29 @@ return [
         'metakeywords'=>'Metakeywords',
         'metadata'=>'Meta Data',
         'gama'=>'Gama',
-        'person'=>'Quantity Person'
-
+        'person'=>'Quantity Person',
+        'weather' => 'Weather',
+        'housing' => 'Housing',
+        'transport' => 'Transport',
     ],
+
+    'gama' => [
+        'exclusive' => 'The most exclusive',
+        'high' => 'High',
+        'low' => 'Low'
+    ],
+
+    'weather' => [
+        'cloudy' => 'Cloudy',
+        'warm' => 'Warm',
+        'tempered' => 'Tempered',
+    ],
+
     'messages' => [
+        'name is required' => 'Name is required',
+        'description is required' => 'Description is required',
+        'category is required' => 'Category is required',
+        'address is required' => 'Address is required'
     ],
     'validation' => [
     ],

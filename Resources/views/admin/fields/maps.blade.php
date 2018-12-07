@@ -52,7 +52,7 @@ Adress field below -->
     <!-- no scripts -->
     {!! Theme::script('vendor/jquery-ui/jquery-ui.js')!!}
     <script type='text/javascript'
-            src="https://maps.googleapis.com/maps/api/js?key={{setting('iplaces::api')}}&extension=.js&output=embed"></script>
+            src="https://maps.googleapis.com/maps/api/js?key={{setting('iplaces::api-maps')}}&extension=.js&output=embed"></script>
     <script type="text/javascript">
 
         var geocoder;

@@ -39,6 +39,9 @@
                         </div>
                     </div>
                 </div>
+
+                @include('iplaces::admin.places.partials.extra-fields-create')
+
                 <div class="col-xs-12">
                     <div class="box box-primary">
                         <div class="box-header">
@@ -150,7 +153,7 @@
                         </div>
                         <div class="box-body">
                             <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
-                            <select class="form-control" name="city_id" id="city_id">
+                            <select class="form-control" name="city_id" id="city_id" required>
                                     <option value=""> Select </option>
                             </select><br>
                         </div>
@@ -228,85 +231,6 @@
                     </div>
                 </div>
 
-                <div class="col-xs-12 ">
-                    <div class="box box-primary">
-                        <div class="box-header">
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                            class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <div class="form-group">
-                                <label>{{trans('iplaces::places.form.gama')}}</label>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <label for="gama"><strong>{{trans('iplaces::places.form.principal')}}</strong></label>
-                            <select class="form-control" name="gama" id="gama">
-                                <option selected>Select</option>
-                                <option value="1">Lo mas exclusivo</option>
-                                <option value="2">Gama Alta</option>
-                                <option value="3">Gama Media</option>
-                                {{--
-
-                                @foreach ($schedules as $schedule)
-                                    <option value="{{$schedule->id}}" {{ old('schedule_id', 0) == $schedule->id ? 'selected' : '' }}> {{$schedule->title}}
-                                    </option>
-                                @endforeach--}}
-                            </select><br>
-                        </div>
-
-                    </div>
-                </div>
-
-               {{--  <div class="col-xs-12 ">
-                    <div class="box box-primary">
-                        <div class="box-header">
-                            <label>{{trans('iplaces::places.title')}}</label>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                            class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="box-body ">
-                            <div class='form-group{{ $errors->has("weather") ? ' has-error' : '' }}'>
-                                <label class="radio" for="{{trans('iplaces::weather.cloudy')}}">
-                                    <input type="radio" id="weather" name="weather"
-                                           value="0" {{ old('weather',0) == 0? 'checked' : '' }}>
-                                    {{trans('iplaces::weather.cloudy')}}
-                                </label>
-                                <label class="radio" for="{{trans('iplaces::weather.warm')}}">
-                                    <input type="radio" id="weather" name="weather"
-                                           value="1" {{ old('weather', 0) == 1? 'checked' : '' }}>
-                                    {{trans('iplaces::weather.warm')}}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-                <div class="col-xs-12 ">
-                    <div class="box box-primary">
-                        <div class="box-header">
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                            class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <div class="form-group">
-                                <label>{{trans('iplaces::places.form.person')}}</label>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <label for="person"></label>
-                            <div class='form-group{{ $errors->has("quantity_person") ? ' has-error' : '' }}'>
-                                {!! Form::number("quantity_person", old("quantity_person"), ['class' => 'form-control', 'placeholder' => trans('iplaces::places.form.person')]) !!}
-                                {!! $errors->first("quantity_person", '<span class="help-block">:message</span>') !!}
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
                 <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">

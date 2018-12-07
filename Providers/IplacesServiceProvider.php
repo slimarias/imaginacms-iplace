@@ -44,6 +44,7 @@ class IplacesServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishConfig('iplaces', 'permissions');
+        $this->publishConfig('iplaces', 'settings');
 
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
