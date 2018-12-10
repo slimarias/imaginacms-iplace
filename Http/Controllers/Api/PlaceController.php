@@ -33,7 +33,7 @@ class PlaceController extends BaseApiController
 
             //Request to Repository
             $places = $this->place->index($p->page, $p->take, $p->filter, $p->include);
-
+          
             //Response
             $response = ["data" => PlaceTransformers::collection($places)];
 
@@ -73,6 +73,7 @@ class PlaceController extends BaseApiController
         return response()->json($response, $status ?? 200);
     }
 
+    /*
     public function places(Request $request)
     {
         try {
@@ -149,7 +150,7 @@ class PlaceController extends BaseApiController
         return response()->json($response, $status ?? 200);
 
     }
-
+    */
     public function place(Place $place, Request $request)
     {// dd($place);
         try {

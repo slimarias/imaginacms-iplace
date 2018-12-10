@@ -2,8 +2,8 @@
 
 return [
 
-    'yes'=> 'Yes',
-    'no'=>' No',
+    'yes' => 'Yes',
+    'no' => 'No',
    
    
     

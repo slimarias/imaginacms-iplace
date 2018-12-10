@@ -19,10 +19,12 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
         $router->bind('aiplacesplace', function ($id) {
             return app(\Modules\Iplaces\Repositories\PlaceRepository::class)->find($id);
         });
+        /*
         $router->get('/', [
             'as' => 'iplace.api.places',
             'uses' => 'PlaceController@places',
         ]);
+        */
         $router->get('{aiplacesplace}', [
             'as' => 'iplace.api.place',
             'uses' => 'PlaceController@place',

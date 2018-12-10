@@ -17,7 +17,7 @@ class CategoryTransformers extends Resource
       //  $dateformat= config('asgard.iplace.config.dateformat');
         $options=$this->options;
         unset($options->mainimage,$options->metatitle,$options->metadescription);
-        return [
+        $data = [
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
@@ -32,10 +32,6 @@ class CategoryTransformers extends Resource
             'updated_at' => ($this->updated_at)
         ];
 
-        if (in_array('category',$includes)) {
-
-            $data['category']= CategoryTransformers::collection($this->categories);
-        }
         return $data;
 
 

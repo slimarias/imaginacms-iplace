@@ -11,6 +11,17 @@ namespace Modules\Iplaces\Transformers;
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\User\Transformers\UserProfileTransformer;
 
+use Modules\Iplaces\Transformers\ZoneTransformers;
+use Modules\Iplaces\Transformers\ServiceTransformers;
+use Modules\Iplaces\Transformers\ScheduleTransformers;
+
+use Modules\Iplaces\Entities\Gama;
+use Modules\Iplaces\Entities\Weather;
+use Modules\Iplaces\Entities\Status;
+use Modules\Iplaces\Entities\StatusYN;
+
+use Modules\Ilocations\Transformers\CityTransformer;
+use Modules\Ilocations\Transformers\ProvinceTransformer;
 
 class PlaceTransformers extends Resource
 {
@@ -24,21 +35,33 @@ class PlaceTransformers extends Resource
         //  $dateformat= config('asgard.iplace.config.dateformat');
         $options = $this->options;
         unset($options->mainimage, $options->metatitle, $options->metadescription);
-        return [
+
+        $includes = explode(",", $request->include);
+
+        $gama = new Gama();
+        $weather = new Weather();
+        $status = new Status();
+        $statusYN = new StatusYN();
+       
+        $data = [
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
             'status'=>$this->status,
+            'statusName' => $status->get($this->status),
             'description' => $this->description,
-            'category_id' => $this->category_id,
-            'categories' => $this->categories,
-            'service_id' => $this->service_id,
-            'services' => $this->services,
-            'zone_id' => $this->zone_id,
-            'schedule_id' => $this->schedule_id,
             'mainimage' => $this->mainimage,
             'mediumimage' => $this->mediumimage,
             'thumbails' => $this->thumbails,
+            'gama' => $this->gama,
+            'gamaNAME' => $gama->get($this->gama),
+            'quantity_person' => $this->quantity_person,
+            'weather' => $this->weather,
+            'weatherName' => $weather->get($this->weather),
+            'housing' => $this->housing,
+            'housingName' => $statusYN->get($this->housing),
+            'transport' => $this->transport,
+            'transportName' => $statusYN->get($this->transport),
             'metatitle' => $this->metatitle ?? $this->title,
             'metadescription' => $this->metadescription ?? $this->summary,
             'metakeywords' => $this->metakeywords,
@@ -46,6 +69,35 @@ class PlaceTransformers extends Resource
             'created_at' => ($this->created_at),
             'updated_at' => ($this->updated_at)
         ];
+
+        /*Transform Relation Ships*/
+
+        if (in_array('services', $includes)) {
+            $data['servicies']= ServiceTransformers::collection($this->services);
+        }
+
+        if (in_array('schedule', $includes)) {
+            $data['schedule']= new ScheduleTransformers($this->schedule);
+        }
+
+        if (in_array('category', $includes)) {
+            $data['category'] = new CategoryTransformers($this->category);
+            $data['categories']= CategoryTransformers::collection($this->categories);
+        }
+
+        if (in_array('zone', $includes)) {
+            $data['zone'] = new ZoneTransformers($this->zone);
+        }
+
+        if (in_array('province', $includes)) {
+            $data['province'] = new ProvinceTransformer($this->province);
+        }
+
+        if (in_array('city', $includes)) {
+            $data['city'] = new CityTransformer($this->city);
+        }
+
+        return $data;
     }
 
 
