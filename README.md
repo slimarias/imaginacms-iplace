@@ -1,5 +1,8 @@
 # asgardcms-iplaces
 
+## Settings
+    - Api maps from Google
+
 ## General Status (For Places and other else)
     - INACTIVE = 0;
     - ACTIVE = 1;
