@@ -15,15 +15,19 @@ class SavePlaceImage
     public function handle(PlaceWasCreated $event)
     {
         $id = $event->entity->id;
+
         if (!empty($event->data['mainimage'])) {
             $mainimage = saveImage($event->data['mainimage'], "assets/iplaces/place/" . $id . ".jpg");
             if(isset($event->data['options'])){
                 $options=(array)$event->data['options'];
-            }else{$options = array();}
+            }else{
+                $options = array();
+            }
             $options["mainimage"] = $mainimage;
             $event->data['options'] = json_encode($options);
         }else{
-            $event->data['options'] = json_encode($event->data['options']);
+            $options["mainimage"] = null;
+            $event->data['options'] = json_encode($options);
         }
         if (!empty($event->data['gallery']) && !empty($id)) {
             if (count(\Storage::disk('publicmedia')->files('assets/ipaces/pace/gallery/' . $event->data['gallery']))) {
