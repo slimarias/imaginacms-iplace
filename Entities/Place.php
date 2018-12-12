@@ -25,6 +25,7 @@ class Place extends Model
         'title',
         'description',
         'slug',
+        'summary',
         'metatitle',
         'metadescription',
         'metakeywords'

@@ -128,7 +128,7 @@
                         </div>
                         <div class="box-body">
                             <label for="provinces"><strong>{{trans('iplaces::common.form.principal')}}</strong></label>
-                            <select class="form-control" name="province_id" id="province_id">
+                            <select class="form-control" name="province_id" id="province_id" required>
                                 <option value=""> Select </option>
                                 @foreach ($provinces as $province)
                                     <option value="{{$province->id}}" {{ old('province_id', 0) == $province->id ? 'selected' : '' }}> {{$province->name}}

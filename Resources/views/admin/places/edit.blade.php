@@ -130,7 +130,7 @@
                         </div>
                         <div class="box-body">
                             <label for="provinces"><strong>{{trans('iplaces::common.form.principal')}}</strong></label>
-                            <select class="form-control" name="province_id" id="province_id">
+                            <select class="form-control" name="province_id" id="province_id" required>
                                 @foreach ($provinces as $province)
                                     <option value="{{$province->id}}" {{ old('province_id', $place->province_id) == $province->id ? 'selected' : '' }}> {{$province->name}}
                                     </option>
@@ -156,7 +156,7 @@
                         </div>
                         <div class="box-body">
                             <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
-                            <select class="form-control" name="city_id" id="city_id">
+                            <select class="form-control" name="city_id" id="city_id" required>
                                 @foreach ($cities as $city)
                                     <option value="{{$city->id}}" {{ old('city_id', $place->city_id) == $city->id ? 'selected' : '' }}> {{$city->name}}
                                     </option>

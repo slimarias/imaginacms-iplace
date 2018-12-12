@@ -44,7 +44,7 @@
                         </div>
                         <div class="box-body">
                             <div class='form-group{{ $errors->has("quantity_person") ? ' has-error' : '' }}'>
-                                {!! Form::number("quantity_person", old("quantity_person"), ['class' => 'form-control', 'placeholder' => trans('iplaces::places.form.person')]) !!}
+                                {!! Form::number("quantity_person", old("quantity_person",0), ['class' => 'form-control', 'placeholder' => trans('iplaces::places.form.person')]) !!}
                                 {!! $errors->first("quantity_person", '<span class="help-block">:message</span>') !!}
                             </div>
                         </div>

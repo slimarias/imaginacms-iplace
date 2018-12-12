@@ -13,6 +13,13 @@
         {!! $errors->first("{$lang}.slug", '<span class="help-block">:message</span>') !!}
     </div>
 
+    <div class='form-group{{ $errors->has("$lang.summary") ? ' has-error' : '' }}'>
+        {!! Form::label("{$lang}[summary]", trans('iplaces::places.form.summary')) !!}
+        <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->summary : '' ?>
+        {!! Form::textarea("{$lang}[summary]", old("$lang.summary",$old), ['class' => 'form-control','rows'=>2, 'placeholder' => trans('iplaces::places.form.summary')]) !!}
+        {!! $errors->first("$lang.summary", '<span class="help-block">:message</span>') !!}
+    </div>
+
     <?php $old = $place->hasTranslation($lang) ? $place->translate($lang)->description : '' ?>
     <div class='form-group{{ $errors->has("$lang.description") ? ' has-error' : '' }}'>
         @editor('description', trans('iplaces::places.form.description'), old("$lang.description", $old), $lang)

@@ -10,10 +10,12 @@ class PlaceTranslation extends Model
     protected $fillable = ['title','summary','description','slug','metatitle','metadescription','metakeywords'];
     protected $table = 'iplaces__place_translations';
 
-    protected function setSummaryAttribute($value){
+    protected function setDescriptionAttribute($value){
 
-        if(!empty($value)){
-            $this->attributes['summary'] = $value;
+        $this->attributes['description'] = $value;
+
+        if(!empty($this->attributes['summary'])){
+            $this->attributes['summary'] = $this->attributes['summary'];
         } else {
             $this->attributes['summary'] = substr(strip_tags($this->attributes['description']),0,150);
         }

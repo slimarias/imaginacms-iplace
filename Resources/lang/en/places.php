@@ -56,7 +56,11 @@ return [
 
     'messages' => [
         'name is required' => 'Name is required',
+        'name is min 2' => 'Name is min 2',
         'description is required' => 'Description is required',
+        'description is min 2' => 'Description is min 2',
+        'slug is required' => 'Slug is required',
+        'slug is min 2' => 'Slug is min 2',
         'category is required' => 'Category is required',
         'address is required' => 'Address is required'
     ],
