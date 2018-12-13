@@ -13,7 +13,7 @@ class CreateIplacesPlaceCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('iplaces_place_category', function (Blueprint $table) {
+        Schema::create('iplaces__place_category', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
             $table->integer('place_id')->unsigned();
@@ -30,6 +30,6 @@ class CreateIplacesPlaceCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('iplaces_place_category');
+        Schema::dropIfExists('iplaces__place_category');
     }
 }

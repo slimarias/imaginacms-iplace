@@ -27,7 +27,7 @@ class Service extends Model
 
     public function places()
     {
-        return $this->belongsToMany(Place::class, 'iplaces_place_service');
+        return $this->belongsToMany(Place::class, 'iplaces__place_service');
     }
     protected function setSlugAttribute($value)
     {

@@ -94,12 +94,12 @@ class Place extends Model
     }
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'iplaces_place_category');
+        return $this->belongsToMany(Category::class, 'iplaces__place_category');
     }
 
     public function services()
     {
-        return $this->belongsToMany(Service::class, 'iplaces_place_service');
+        return $this->belongsToMany(Service::class, 'iplaces__place_service');
     }
     public function zone()
     {

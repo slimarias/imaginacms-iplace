@@ -45,7 +45,7 @@ class Category extends Model
 
     public function places()
     {
-        return $this->belongsToMany(Place::class, 'iplaces_place_category');
+        return $this->belongsToMany(Place::class, 'iplaces__place_category');
     }
 
     //generar url automatica

@@ -13,7 +13,7 @@ class CreateIplacesPlaceServiceTable extends Migration
      */
     public function up()
     {
-        Schema::create('iplaces_place_service', function (Blueprint $table) {
+        Schema::create('iplaces__place_service', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('place_id')->unsigned();
             $table->integer('service_id')->unsigned();
@@ -29,6 +29,6 @@ class CreateIplacesPlaceServiceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('iplaces_place_service');
+        Schema::dropIfExists('iplaces__place_service');
     }
 }
