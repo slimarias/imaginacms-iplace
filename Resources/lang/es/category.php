@@ -17,8 +17,8 @@ return [
         'id'=>'Id',
         'title'=>'Titulo',
         'slug'=>'Slug',
-        'status'=>'Status'
-
+        'status'=>'Status',
+        'parent' => 'Padre',
     ],
     'form' => [
         'title'=>'Titulo',

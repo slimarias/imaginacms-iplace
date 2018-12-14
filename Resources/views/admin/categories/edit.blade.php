@@ -77,8 +77,7 @@
                                 </option>
                                 @if(count($categories))
                                     @foreach ($categories as $cat)
-                                        <option value="{{$cat->id}}"> {{$cat->title}}
-                                        </option>
+                                        <option value="{{$cat->id}}" {{ old('parent_id',$category->parent_id) == $cat->id ? 'selected' : '' }}> {{$cat->title}}</option>
                                     @endforeach
                                 @endif
                             </select><br>
@@ -97,11 +96,11 @@
                         <div class="box-body ">
                             <div class='form-group{{ $errors->has("status") ? ' has-error' : '' }}'>
                                 <label class="radio" for="{{trans('iplaces::status.inactive')}}">
-                                    <input type="radio" id="status" name="status" value="0" checked>
+                                    <input type="radio" id="status" name="status" value="0" @if($category->status==0) checked @endif>
                                     {{trans('iplaces::status.inactive')}}
                                 </label>
                                 <label class="radio" for="{{trans('iplaces::status.active')}}">
-                                    <input type="radio" id="status" name="status" value="1">
+                                    <input type="radio" id="status" name="status" value="1" @if($category->status==1) checked @endif>
                                     {{trans('iplaces::status.active')}}
                                 </label>
                             </div>

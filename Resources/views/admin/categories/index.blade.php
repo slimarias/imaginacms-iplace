@@ -32,6 +32,7 @@
                                 <th>{{ trans('iplaces::places.table.id') }}</th>
                                 <th>{{ trans('iplaces::places.table.title') }}</th>
                                 <th>{{ trans('iplaces::places.table.slug') }}</th>
+                                <th>{{ trans('iplaces::category.table.parent')}}</th>
                                 <th>{{ trans('iplaces::places.table.status') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
@@ -54,6 +55,13 @@
                                 <td>
                                     <a href="{{ route('admin.iplaces.category.edit', [$category->id]) }}">
                                         {{ $category->slug }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.iplaces.category.edit', [$category->id]) }}">
+                                        @if($category->parent_id!=0)
+                                        {{ $category->parent->title}}
+                                        @endif
                                     </a>
                                 </td>
                                 <td>
@@ -83,6 +91,7 @@
                                 <th>{{ trans('iplaces::places.table.id') }}</th>
                                 <th>{{ trans('iplaces::places.table.title') }}</th>
                                 <th>{{ trans('iplaces::places.table.slug') }}</th>
+                                <th>{{ trans('iplaces::category.table.parent')}}</th>
                                 <th>{{ trans('iplaces::places.table.status') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th>{{ trans('core::core.table.actions') }}</th>
