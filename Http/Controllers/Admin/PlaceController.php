@@ -80,7 +80,7 @@ class PlaceController extends AdminBaseController
      */
     public function index()
     {
-        $places = $this->place->paginate(20);
+        $places = $this->place->all();
 
         return view('iplaces::admin.places.index', compact('places'));
     }
