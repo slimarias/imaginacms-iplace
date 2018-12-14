@@ -39,7 +39,7 @@ class CategoryController extends AdminBaseController
      */
     public function index()
     {
-        $categories = $this->category->paginate(20);
+        $categories = $this->category->all();
 
         return view('iplaces::admin.categories.index', compact('categories'));
     }
@@ -53,7 +53,7 @@ class CategoryController extends AdminBaseController
     {
 
         $statuses = $this->status->lists();
-        $categories = $this->category->paginate(20);
+        $categories = $this->category->all();
         return view('iplaces::admin.categories.create',compact('categories','statuses'));
     }
 
@@ -93,7 +93,7 @@ class CategoryController extends AdminBaseController
     {
     //dd($category->mainimage);
         $statuses = $this->status->lists();
-        $categories = $this->category->paginate(20);
+        $categories = $this->category->all();
       //  $thumbnail = $this->file->findFileByZoneForEntity('thumbnail', $category);
         return view('iplaces::admin.categories.edit', compact('category', 'statuses', 'categories'));
     }
