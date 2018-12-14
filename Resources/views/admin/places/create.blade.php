@@ -131,7 +131,7 @@
                             <select class="form-control" name="province_id" id="province_id" required>
                                 <option value=""> Select </option>
                                 @foreach ($provinces as $province)
-                                    <option value="{{$province->id}}" {{ old('province_id', 0) == $province->id ? 'selected' : '' }}> {{$province->name}}
+                                    <option value="{{$province->id}}" {{ old('province_id', 0) == $province->id ? 'selected' : '' }}> {{$province->translate('en')->name}}
                                     </option>
                                 @endforeach
                             </select><br>
