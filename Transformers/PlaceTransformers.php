@@ -50,6 +50,7 @@ class PlaceTransformers extends Resource
             'status'=>$this->status,
             'statusName' => $status->get($this->status),
             'description' => $this->description,
+            'address'=> json_decode($this->address),
             'mainimage' => $this->mainimage,
             'mediumimage' => $this->mediumimage,
             'thumbails' => $this->thumbails,
