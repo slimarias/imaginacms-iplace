@@ -57,23 +57,25 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
     });
     $router->group(['prefix' => 'categories'], function (Router $router) {
 
-        $router->bind('aiplacescat', function ($id) {
-
-           return app(\Modules\Iplaces\Repositories\CategoryRepository::class)->find($id);
-        });
         $router->get('/', [
-            'as' => 'iblog.api.categories.index',
+            'as' => 'iplace.api.categories.index',
             'uses' => 'CategoryController@index',
         ]);
-        $router->get('/{slug}', [
-            'as' => 'iblog.api.categories.show',
+        $router->get('/{param}', [
+            'as' => 'iplace.api.categories.show',
             'uses' => 'CategoryController@show',
         ]);
 
+        $router->bind('aiplacescat', function ($id) {
+           return app(\Modules\Iplaces\Repositories\CategoryRepository::class)->find($id);
+        });
+        /*
         $router->get('/', [
             'as' => 'iplace.api.categories',
             'uses' => 'CategoryController@categories',
         ]);
+        */
+
         $router->get('{aiplacescat}', [
             'as' => 'iplace.api.category',
             'uses' => 'CategoryController@category',

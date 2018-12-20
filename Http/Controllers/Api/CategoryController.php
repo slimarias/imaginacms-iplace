@@ -21,12 +21,13 @@ class CategoryController extends BaseApiController
     private $category;
     public $status;
 
-    public function __construct(CategoryRepository $category, Status $status)
+    public function __construct()
     {
         parent::__construct();
-        $this->category = $category;
-        $this->status=$status;
+        $this->category = app('Modules\Iplaces\Repositories\CategoryRepository');
+        $this->status = app('Modules\Iplaces\Entities\Status');
     }
+
     public function index(Request $request){
 
         try {
@@ -37,7 +38,7 @@ class CategoryController extends BaseApiController
             $categories = $this->category->index($p->page, $p->take, $p->filter, $p->include);
 
             //Response
-            $response = ["data" => CategoryTransformer::collection($categories)];
+            $response = ["data" => CategoryTransformers::collection($categories)];
 
             //If request pagination add meta-page
             $p->page ? $response["meta"] = ["page" => $this->pageTransformer($categories)] : false;
@@ -51,18 +52,19 @@ class CategoryController extends BaseApiController
 
         return response()->json($response, $status ?? 200);
     }
+
     public function show($slug, Request $request)
     {
         try {
             //Get Parameters from URL.
-            $p = $this->parametersUrl(false, false, false, []);
+            $params = $this->parametersUrl(false, false, false, []);
 
             //Request to Repository
-            $category = $this->category->show($slug, $p->include);
+            $category = $this->category->show($slug, $params);
 
             //Response
             $response = [
-                "data" => is_null($category) ? false : new CategoryTransformer($category)];
+                "data" => is_null($category) ? false : new CategoryTransformers($category)];
         } catch (\Exception $e) {
             //Message Error
             $status = 500;

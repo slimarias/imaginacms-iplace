@@ -17,16 +17,16 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         /*== RELATIONSHIPS ==*/
         if (count($include)) {
             //Include relationships for default
-            $includeDefault = [];
+            $includeDefault = ['translations'];
             $query->with(array_merge($includeDefault, $include));
         }
 
         /*== FILTER ==*/
         if ($filter) {
-            //Filter by slug
-            if (isset($filter->slug)) {
-                $query->where('slug', $filter->slug);
-            }
+
+            //set language translation
+            if (isset($filter->locale))
+                \App::setLocale($filter->locale ?? null);
 
             //Filter by parent_id
             if (isset($filter->parentId) && is_array($filter->parentId)) {
@@ -36,9 +36,9 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             //Filter by parent_slug
             if (isset($filter->parentSlug) && is_array($filter->parentSlug)) {
                 $query->whereIn('parent_id', function ($query) use ($filter) {
-                    $query->select('iblog__categories.id')
-                        ->from('iblog__categories')
-                        ->whereIn('iblog__categories.slug', $filter->parentSlug);
+                    $query->select('iplaces__categories.id')
+                        ->from('iplaces__categories')
+                        ->whereIn('iplaces__categories.slug', $filter->parentSlug);
                 });
             }
 
@@ -56,13 +56,17 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             if (isset($filter->search) && !empty($filter->search)) {
                 //Get the words separately from the criterion
                 $words = explode(' ', trim($filter->search));
-
+        
                 //Add condition of search to query
-                $query->where(function ($query) use ($words) {
+                $lang = \App::getLocale();//Get language
+                $query->whereHas('translations', function ($query) use ($words,$lang){
+                  $query->where(function ($query) use ($words,$lang) {
                     foreach ($words as $index => $word) {
-                        $query->where('title', 'like', "%" . $word . "%")
-                            ->orWhere('description', 'like', "%" . $word . "%");
+                      $query->where('locale', $lang)
+                      ->where('title', 'like', "%" . $word . "%")
+                        ->orWhere('description', 'like', "%" . $word . "%");
                     }
+                  });
                 });
             }
 
@@ -82,28 +86,44 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         }
     }
 
-    public function show($param, $include)
+    public function show($criteria, $params)
     {
-        $isID = (int)$param >= 1 ? true : false;
-
+        
         //Initialize Query
         $query = $this->model->query();
 
-        if ($isID) {//if is by ID
-            $query = $this->model->where('id', $param);
-        } else {//if is by Slug
-            $query = $this->model->where('slug', $param);
-        }
-
         /*== RELATIONSHIPS ==*/
-        if (count($include)) {
+        if (count($params->include)) {
             //Include relationships for default
-            $includeDefault = [];
-            $query->with(array_merge($includeDefault, $include));
+            $includeDefault = ['translations'];//set translations by default
+            $query->with(array_merge($includeDefault, $params->include));
         }
 
-        /*=== REQUEST ===*/
-        return $query->first();
+        // FILTERS
+        if(isset($params->filter)){
+
+            $filter = $params->filter;
+
+            //set language translation
+            if (isset($filter->locale))
+                \App::setLocale($params->filter->locale ?? null);
+        }
+
+        // First, find record by ID
+        $duplicateQuery = clone $query;
+        $result = $duplicateQuery->where('id', $criteria)->first();
+
+        // If not give results, find by slug
+        if (!$result){
+            $lang = \App::getLocale();//Get language
+            $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
+                $query->where('locale', $lang)
+                ->where('slug', $criteria);
+            })->first();
+        }
+
+        return $result;
+
     }
 
     public function create($data)

@@ -23,3 +23,18 @@ https://mydomain.com/api/iplace/places?include=category,schedule,zone,province,c
 #### Get a place (Parameter = ID )
 
 https://mydomain.com/api/iplace/places/1?include=category,schedule,zone,province,city,services
+
+#### Get a place (Parameter = slug )
+
+https://mydomain.com/api/iplace/places/prueba-1?include=category,schedule,zone,province,city,services
+
+### Categories
+
+#### List all categories with relations
+
+https://mydomain.com/api/iplace/categories
+
+#### Get a category (Parameter = ID )
+
+https://mydomain.com/api/iplace/categories/40
+
