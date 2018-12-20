@@ -34,7 +34,20 @@ https://mydomain.com/api/iplace/places/prueba-1?include=category,schedule,zone,p
 
 https://mydomain.com/api/iplace/categories
 
-#### Get a category (Parameter = ID )
+#### Get a category (Parameter = ID or Slug )
 
 https://mydomain.com/api/iplace/categories/40
+
+
+### Shedules
+    - List All = Same that category
+    - One = By id or title
+
+### Services
+    - List All = Same that category
+    - One = Same that category
+
+### Zones
+    - List All = Same that category
+    - One = By id or title
 

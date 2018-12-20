@@ -18,11 +18,10 @@ class ZoneController extends BaseApiController
 {
     private $zone;
 
-    public function __construct(ZoneRepository $zone)
+    public function __construct()
     {
         parent::__construct();
-        $this->zone = $zone;
-
+        $this->zone = app('Modules\Iplaces\Repositories\ZoneRepository');
     }
 
     public function index(Request $request){
@@ -49,14 +48,14 @@ class ZoneController extends BaseApiController
         return response()->json($response, $status ?? 200);
     }
 
-    public function show($slug, Request $request)
+    public function show($title, Request $request)
     {
         try {
             //Get Parameters from URL.
-            $p = $this->parametersUrl(false, false, false, []);
+            $params = $this->parametersUrl(false, false, false, []);
 
             //Request to Repository
-            $zone = $this->zone->show($slug, $p->include);
+            $zone = $this->zone->show($title, $params);
 
             //Response
             $response = [

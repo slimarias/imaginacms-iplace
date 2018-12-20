@@ -21,11 +21,11 @@ class ServiceController extends BaseApiController
     public $status;
 
 
-    public function __construct(ServiceRepository $service, Status $status)
+    public function __construct()
     {
         parent::__construct();
-        $this->service = $service;
-        $this->status = $status;
+        $this->service = app('Modules\Iplaces\Repositories\ServiceRepository');
+        $this->status = app('Modules\Iplaces\Entities\Status');
     }
 
     public function index(Request $request){
@@ -56,10 +56,10 @@ class ServiceController extends BaseApiController
     {
         try {
             //Get Parameters from URL.
-            $p = $this->parametersUrl(false, false, false, []);
+            $params = $this->parametersUrl(false, false, false, []);
 
             //Request to Repository
-            $service = $this->service->show($slug, $p->include);
+            $service = $this->service->show($slug, $params);
 
             //Response
             $response = [

@@ -35,10 +35,12 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
             //Filter by parent_slug
             if (isset($filter->parentSlug) && is_array($filter->parentSlug)) {
-                $query->whereIn('parent_id', function ($query) use ($filter) {
-                    $query->select('iplaces__categories.id')
-                        ->from('iplaces__categories')
-                        ->whereIn('iplaces__categories.slug', $filter->parentSlug);
+                $lang = \App::getLocale();//Get language
+                $query->whereIn('parent_id', function ($query) use ($filter,$lang) {
+                    $query->select('iplaces__category_translations.category_id')
+                        ->from('iplaces__category_translations')
+                        ->where('locale', $lang)
+                        ->whereIn('iplaces__category_translations.slug', $filter->parentSlug);
                 });
             }
 

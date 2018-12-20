@@ -55,6 +55,7 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
             'middleware' => ['api.token','token-can:iplaces.places.destroy']
         ]);
     });
+
     $router->group(['prefix' => 'categories'], function (Router $router) {
 
         $router->get('/', [
@@ -103,24 +104,26 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
 
     $router->group(['prefix' => 'services'], function (Router $router) {
 
-        $router->bind('aiplacesserv', function ($id) {
-
-            return app(\Modules\Iplaces\Repositories\ServiceRepository::class)->find($id);
-        });
-
         $router->get('/', [
-            'as' => 'iblog.api.services.index',
+            'as' => 'iplace.api.services.index',
             'uses' => 'ServiceController@index',
         ]);
         $router->get('/{slug}', [
-            'as' => 'iblog.api.services.show',
+            'as' => 'iplace.api.services.show',
             'uses' => 'ServiceController@show',
         ]);
 
+        $router->bind('aiplacesserv', function ($id) {
+            return app(\Modules\Iplaces\Repositories\ServiceRepository::class)->find($id);
+        });
+
+        /*
         $router->get('/', [
             'as' => 'iplace.api.services',
             'uses' => 'ServiceController@services',
         ]);
+        */
+
         $router->get('{aiplacesserv}', [
             'as' => 'iplace.api.category',
             'uses' => 'ServiceController@category',
@@ -145,26 +148,28 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
             'middleware' => ['api.token','token-can:iplaces.services.destroy']
         ]);
     });
+
     $router->group(['prefix' => 'zones'], function (Router $router) {
 
-        $router->bind('aiplaceszone', function ($id) {
-
-            return app(\Modules\Iplaces\Repositories\ZoneRepository::class)->find($id);
-        });
-
         $router->get('/', [
-            'as' => 'iblog.api.zones.index',
+            'as' => 'iplace.api.zones.index',
             'uses' => 'ZoneController@index',
         ]);
-        $router->get('/{slug}', [
-            'as' => 'iblog.api.zones.show',
+        $router->get('/{param}', [
+            'as' => 'iplace.api.zones.show',
             'uses' => 'ZoneController@show',
         ]);
 
+        $router->bind('aiplaceszone', function ($id) {
+            return app(\Modules\Iplaces\Repositories\ZoneRepository::class)->find($id);
+        });
+
+        /*
         $router->get('/', [
             'as' => 'iplace.api.zones',
             'uses' => 'ZoneController@zones',
         ]);
+        */
         $router->get('{aiplaceszone}', [
             'as' => 'iplace.api.category',
             'uses' => 'ZoneController@zone',
@@ -192,24 +197,26 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
 
     $router->group(['prefix' => 'schedules'], function (Router $router) {
 
-        $router->bind('aiplacesschedule', function ($id) {
-
-            return app(\Modules\Iplaces\Repositories\ScheduleRepository::class)->find($id);
-        });
-
         $router->get('/', [
-            'as' => 'iblog.api.schedules.index',
+            'as' => 'iplace.api.schedules.index',
             'uses' => 'ScheduleController@index',
         ]);
-        $router->get('/{slug}', [
-            'as' => 'iblog.api.schedules.show',
+        $router->get('/{param}', [
+            'as' => 'iplace.api.schedules.show',
             'uses' => 'ScheduleController@show',
         ]);
 
+        $router->bind('aiplacesschedule', function ($id) {
+            return app(\Modules\Iplaces\Repositories\ScheduleRepository::class)->find($id);
+        });
+
+        /*
         $router->get('/', [
             'as' => 'iplace.api.schedules',
             'uses' => 'ScheduleController@schedules',
         ]);
+        */
+
         $router->get('{aiplacesschedule}', [
             'as' => 'iplace.api.category',
             'uses' => 'ScheduleController@schedule',

@@ -22,14 +22,14 @@ class ScheduleController extends BaseApiController
 {
 private $schedule;
 
-    public function __construct(ScheduleRepository $schedule)
+    public function __construct()
     {
         parent::__construct();
-        $this->schedule = $schedule;
-
+        $this->schedule = app('Modules\Iplaces\Repositories\ScheduleRepository');
     }
 
     public function index(Request $request){
+        
         try {
             //Get Parameters from URL.
             $p = $this->parametersUrl(1, 12, false, []);
@@ -57,10 +57,10 @@ private $schedule;
     {
         try {
             //Get Parameters from URL.
-            $p = $this->parametersUrl(false, false, false, []);
+            $params = $this->parametersUrl(false, false, false, []);
 
             //Request to Repository
-            $schedule = $this->schedule->show($slug, $p->include);
+            $schedule = $this->schedule->show($slug, $params);
 
             //Response
             $response = [
