@@ -156,9 +156,6 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
             'uses' => 'ZoneController@destroy',
             'middleware' => 'can:iplaces.zones.destroy'
         ]);
-// append
-
-
     });
 
     $router->group(['prefix' => '/schedules'], function (Router $router) {
@@ -196,11 +193,48 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
             'uses' => 'ScheduleController@destroy',
             'middleware' => 'can:iplaces.schedules.destroy'
         ]);
-// append
-
-
+        
     });
 
+    $router->group(['prefix' => '/spaces'], function (Router $router) {
+
+        $router->bind('space', function ($id) {
+            return app('Modules\Iplaces\Repositories\SpaceRepository')->find($id);
+        });
+        $router->get('spaces', [
+            'as' => 'admin.iplaces.space.index',
+            'uses' => 'SpaceController@index',
+            'middleware' => 'can:iplaces.spaces.index'
+        ]);
+        $router->get('spaces/create', [
+            'as' => 'admin.iplaces.space.create',
+            'uses' => 'SpaceController@create',
+            'middleware' => 'can:iplaces.spaces.create'
+        ]);
+        $router->post('spaces', [
+            'as' => 'admin.iplaces.space.store',
+            'uses' => 'SpaceController@store',
+            'middleware' => 'can:iplaces.spaces.create'
+        ]);
+        $router->get('spaces/{space}/edit', [
+            'as' => 'admin.iplaces.space.edit',
+            'uses' => 'SpaceController@edit',
+            'middleware' => 'can:iplaces.spaces.edit'
+        ]);
+        $router->put('spaces/{space}', [
+            'as' => 'admin.iplaces.space.update',
+            'uses' => 'SpaceController@update',
+            'middleware' => 'can:iplaces.spaces.edit'
+        ]);
+        $router->delete('spaces/{space}', [
+            'as' => 'admin.iplaces.space.destroy',
+            'uses' => 'SpaceController@destroy',
+            'middleware' => 'can:iplaces.spaces.destroy'
+        ]);
+    
+    });
+    
+    // append
  /*
 
     $router->group(['prefix' => '/ranges'], function (Router $router) {

@@ -12,7 +12,9 @@ use Modules\Iplaces\Events\Handlers\SaveCategoryImage;
 use Modules\Iplaces\Events\Handlers\SaveServiceImage;
 use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Iplaces\Events\Handlers\SavePlaceImage;
-
+use Modules\Iplaces\Events\SpaceWasCreated;
+use Modules\Iplaces\Events\SpaceWasDeleted;
+use Modules\Iplaces\Events\Handlers\SaveSpaceImage;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -35,7 +37,12 @@ class EventServiceProvider extends ServiceProvider
         ServiceWasDeleted::class => [
             SaveServiceImage::class,
         ],
-
+        SpaceWasCreated::class => [
+            SaveSpaceImage::class,
+        ],
+        SpaceWasDeleted::class => [
+            SaveSpaceImage::class,
+        ],
 
     ];
 }

@@ -33,7 +33,9 @@ class IplacesServiceProvider extends ServiceProvider
             $event->load('categories', array_dot(trans('iplaces::categories')));
             $event->load('services', array_dot(trans('iplaces::services')));
             $event->load('zones', array_dot(trans('iplaces::zones')));
+            $event->load('spaces', array_dot(trans('iplaces::spaces')));
             // append translations
+
 
 
 
@@ -122,7 +124,20 @@ class IplacesServiceProvider extends ServiceProvider
             }
         );
 
+        $this->app->bind(
+            'Modules\Iplaces\Repositories\SpaceRepository',
+            function () {
+                $repository = new \Modules\Iplaces\Repositories\Eloquent\EloquentSpaceRepository(new \Modules\Iplaces\Entities\Space());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Iplaces\Repositories\Cache\CacheSpaceDecorator($repository);
+            }
+        );
 // add bindings
+
 
 
 

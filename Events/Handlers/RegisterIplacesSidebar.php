@@ -88,6 +88,15 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('iplaces.schedules.index')
                     );
                 });
+                $item->item(trans('iplaces::spaces.title.spaces'), function (Item $item) {
+                    $item->icon('fa fa-square-o');
+                    $item->weight(0);
+                    $item->append('admin.iplaces.space.create');
+                    $item->route('admin.iplaces.space.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('iplaces.spaces.index')
+                    );
+                });
 
               /*
                 $item->item(trans('iplaces::ranges.title.ranges'), function (Item $item) {
