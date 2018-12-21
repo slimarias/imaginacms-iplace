@@ -5,9 +5,17 @@
             {!! Form::text("{$lang}[title]", old("{$lang}.title", $old), ['class' => 'form-control', 'data-slug' => 'source', 'placeholder' => trans('iplaces::services.form.title')]) !!}
             {!! $errors->first("{$lang}.title", '<span class="help-block">:message</span>') !!}
         </div>
+
+        <div class='form-group{{ $errors->has("{$lang}[slug]") ? ' has-error' : '' }}'>
+            {!! Form::label("{$lang}[slug]", trans('iplaces::spaces.form.slug')) !!}
+            <?php $old = $space->hasTranslation($lang) ? $space->translate($lang)->slug : '' ?>
+            {!! Form::text("{$lang}[slug]", old("{$lang}.slug", $old), ['class' => 'form-control slug', 'data-slug' => 'target', 'placeholder' => trans('iplaces::places.form.slug')]) !!}
+            {!! $errors->first("{$lang}.slug", '<span class="help-block">:message</span>') !!}
+        </div>
+
         <?php $old = $space->hasTranslation($lang) ? $space->translate($lang)->description : '' ?>
         <div class='form-group{{ $errors->has("$lang.description") ? ' has-error' : '' }}'>
-        @editor('content', trans('iplaces::spaces.form.description'), old("$lang.description", $old), $lang)
+        @editor('description', trans('iplaces::spaces.form.description'), old("$lang.description", $old), $lang)
         </div>
     
         <div class="col-xs-12" style="padding-top: 35px;">

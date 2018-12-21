@@ -11,6 +11,7 @@ use Modules\Iplaces\Events\ServiceWasCreated;
 use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\Iplaces\Entities\Status;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\Iplaces\Entities\Servtype;
 
 class ServiceController extends AdminBaseController
 {
@@ -19,13 +20,15 @@ class ServiceController extends AdminBaseController
      */
     private $service;
     public $status;
+    public $servtype;
 
-    public function __construct(ServiceRepository $service, Status $status)
+    public function __construct(ServiceRepository $service, Status $status, Servtype $servtype)
     {
         parent::__construct();
 
         $this->service = $service;
         $this->status=$status;
+        $this->servtype=$servtype;
     }
 
     /**
@@ -48,8 +51,9 @@ class ServiceController extends AdminBaseController
     public function create()
     {
         $statuses = $this->status->lists();
+        $servtypes = $this->servtype->lists();
         $services = $this->service->paginate(20);
-        return view('iplaces::admin.services.create',compact('services','statuses'));
+        return view('iplaces::admin.services.create',compact('services','statuses','servtypes'));
     }
 
     /**
@@ -84,9 +88,10 @@ class ServiceController extends AdminBaseController
      */
     public function edit(Service $service)
     {//dd($service);
-        $services = $this->service->paginate(20);
+        //$services = $this->service->paginate(20);
         $statuses = $this->status->lists();
-        return view('iplaces::admin.services.edit', compact('service','services','statuses'));
+        $servtypes = $this->servtype->lists();
+        return view('iplaces::admin.services.edit', compact('service','statuses','servtypes'));
     }
 
     /**

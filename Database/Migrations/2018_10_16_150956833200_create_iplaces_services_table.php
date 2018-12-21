@@ -17,6 +17,7 @@ class CreateIplacesServicesTable extends Migration
             $table->increments('id');
             $table->integer('status')->default(0)->unsigned();
             $table->text('options')->default('')->nullable();
+            $table->integer('servtype')->default(0)->unsigned();
             $table->timestamps();
         });
     }

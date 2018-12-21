@@ -99,6 +99,23 @@
                     </div>
                 </div>
 
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">     
+                            <div class="form-group">
+                                <label>{{trans('iplaces::services.form.servtype')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <select class="form-control" name="servtype" id="servtype">
+                                @foreach ($servtypes as $index => $servtype)
+                                    <option value="{{$index}}" {{ old('servtype',0) == $index ? 'selected' : '' }}>{{$servtype}}</option>
+                                @endforeach
+                            </select><br>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

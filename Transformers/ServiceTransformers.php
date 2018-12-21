@@ -6,7 +6,7 @@ namespace Modules\Iplaces\Transformers;
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\User\Transformers\UserProfileTransformer;
 use Modules\Iplaces\Events\ServiceWasCreated;
-
+use Modules\Iplaces\Entities\Servtype;
 
 class ServiceTransformers extends Resource
 {
@@ -14,6 +14,7 @@ class ServiceTransformers extends Resource
     public function toArray($request)
     {
 
+        $servtype = new Servtype();
       //  $dateformat= config('asgard.iplace.config.dateformat');
         $options=$this->options;
         unset($options->mainimage,$options->metatitle,$options->metadescription);
@@ -23,6 +24,8 @@ class ServiceTransformers extends Resource
             'slug' => $this->slug,
             'status'=>$this->status,
             'description' => $this->description,
+            'type' => $this->servtype,
+            'typeName' => $servtype->get($this->servtype),
             'mainimage' => $this->mainimage,
             'metatitle'=>$this->metatitle??$this->title,
             'metadescription'=>$this->metadescription,
@@ -32,13 +35,7 @@ class ServiceTransformers extends Resource
             'updated_at' => ($this->updated_at)
         ];
 
-       /* if (in_array('service',$includes)) {
-
-            $data['service']= ServiceTransformers::collection($this->services);
-        }
-        return $data;
-*/
-
+       
     }
 
 

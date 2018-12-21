@@ -25,18 +25,18 @@
                 <div class="panel-collapse collapse" id="aditional{{$lang}}">
                     <div class="box-body">
                         <div class='form-group{{ $errors->has("{$lang}.metatitle") ? ' has-error' : '' }}'>
-                            {!! Form::label("{$lang}[metatitle]", trans('iplaces::services.form.metatitle')) !!}
-                            {!! Form::text("{$lang}[metatitle]", old("{$lang}.metatitle"), ['class' => 'form-control', 'data-slug' => 'source', 'placeholder' => trans('iplaces::services.form.metatitle')]) !!}
+                            {!! Form::label("{$lang}[metatitle]", trans('iplaces::common.form.metatitle')) !!}
+                            {!! Form::text("{$lang}[metatitle]", old("{$lang}.metatitle"), ['class' => 'form-control', 'data-slug' => 'source', 'placeholder' => trans('iplaces::common.form.metatitle')]) !!}
                             {!! $errors->first("{$lang}.metatitle", '<span class="help-block">:message</span>') !!}
                         </div>
     
                         <div class='form-group{{ $errors->has("{$lang}.metakeywords") ? ' has-error' : '' }}'>
-                            {!! Form::label("{$lang}[metakeywords]", trans('iplaces::services.form.metakeywords')) !!}
-                            {!! Form::text("{$lang}[metakeywords]", old("{$lang}.metakeywords"), ['class' => 'form-control', 'data-slug' => 'source', 'placeholder' => trans('iplaces::services.form.metakeywords')]) !!}
+                            {!! Form::label("{$lang}[metakeywords]", trans('iplaces::common.form.metakeywords')) !!}
+                            {!! Form::text("{$lang}[metakeywords]", old("{$lang}.metakeywords"), ['class' => 'form-control', 'data-slug' => 'source', 'placeholder' => trans('iplaces::common.form.metakeywords')]) !!}
                             {!! $errors->first("{$lang}.metakeywords", '<span class="help-block">:message</span>') !!}
                         </div>
     
-                        @editor('metadescription', trans('iplaces::services.form.metadescription'),
+                        @editor('metadescription', trans('iplaces::common.form.metadescription'),
                         old("{$lang}.metadescription"), $lang)
                     </div>
                 </div>

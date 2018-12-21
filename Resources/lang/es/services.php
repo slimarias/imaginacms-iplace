@@ -25,11 +25,18 @@ return [
         'slug'=>'Slug',
         'description'=>'Descripcion',
         'services'=>'Servicios',
-        'principal'=>'Principal'
+        'principal'=>'Principal',
+        'servtype' => 'Tipo',
     ],
     'messages' => [
 
     ],
     'validation' => [
     ],
+
+    'types' => [
+        'principal' => 'Principal',
+        'others' => 'Otros',
+    ],
+
 ];
