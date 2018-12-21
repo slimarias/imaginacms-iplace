@@ -101,6 +101,13 @@ class Place extends Model
     {
         return $this->belongsToMany(Service::class, 'iplaces__place_service');
     }
+
+    public function spaces()
+    {
+        return $this->belongsToMany(Space::class, 'iplaces__place_space');
+    }
+
+
     public function zone()
     {
         return $this->belongsTo(Zone::class);

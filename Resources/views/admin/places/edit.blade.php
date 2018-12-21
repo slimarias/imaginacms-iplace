@@ -214,6 +214,24 @@
                 <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>{{trans('iplaces::spaces.form.spaces')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            @include('iplaces::admin.fields.checklist.spaces')
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
                             <label>{{trans('iplaces::status.title')}}</label>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i

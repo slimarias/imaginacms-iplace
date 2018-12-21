@@ -272,6 +272,9 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
     event(new PlaceWasCreated($place, $data));
     $place->categories()->sync(array_get($data, 'categories', []));
     $place->services()->sync(array_get($data, 'services', []));
+    $place->spaces()->sync(array_get($data, 'spaces', []));
+
+
     return $this->find($place->id);
   }
 
@@ -280,6 +283,8 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
     $model->update($data);
     $model->categories()->sync(array_get($data, 'categories', []));
     $model->services()->sync(array_get($data, 'services', []));
+    $model->spaces()->sync(array_get($data, 'spaces', []));
+
     return $model;
   }
 

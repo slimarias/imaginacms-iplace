@@ -20,6 +20,7 @@ return [
         'status'=>'Status',
     ],
     'form' => [
+        'spaces' => 'Spaces',
         'title'=>'Title',
         'slug'=>'Slug',
         'description'=>'Description',

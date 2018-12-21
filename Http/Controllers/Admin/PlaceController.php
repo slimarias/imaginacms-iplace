@@ -24,6 +24,7 @@ use Modules\Iplaces\Repositories\ScheduleRepository;
 use Modules\Iplaces\Entities\Weather;
 use Modules\Iplaces\Entities\Gama;
 use Modules\Iplaces\Entities\StatusYN;
+use Modules\Iplaces\Repositories\SpaceRepository;
 
 class PlaceController extends AdminBaseController
 {
@@ -42,6 +43,7 @@ class PlaceController extends AdminBaseController
     private $weather;
     private $gama;
     private $statusyn;
+    private $space;
 
     public function __construct(
         PlaceRepository $place, 
@@ -55,7 +57,8 @@ class PlaceController extends AdminBaseController
         ScheduleRepository $schedule, 
         Weather $weather,
         Gama $gama,
-        StatusYN $statusyn
+        StatusYN $statusyn,
+        SpaceRepository $space
     ){
         parent::__construct();
 
@@ -71,6 +74,7 @@ class PlaceController extends AdminBaseController
         $this->weather = $weather;
         $this->gama = $gama;
         $this->statusyn = $statusyn;
+        $this->space = $space;
     }
 
     /**
@@ -104,9 +108,9 @@ class PlaceController extends AdminBaseController
       //  $cities = $this->city->all();
         $gamas = $this->gama->lists();
         $statusesyn = $this->statusyn->lists();
-       
+        $spaces = $this->space->all();
 
-        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities','provinces','schedules','weathers','gamas','statusesyn'));
+        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities','provinces','schedules','weathers','gamas','statusesyn','spaces'));
     }
 
     /**
@@ -153,8 +157,9 @@ class PlaceController extends AdminBaseController
         $weathers=$this->weather->lists();
         $gamas = $this->gama->lists();
         $statusesyn = $this->statusyn->lists();
+        $spaces = $this->space->all();
 
-        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities','provinces','schedules','weathers','gamas','statusesyn'));
+        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities','provinces','schedules','weathers','gamas','statusesyn','spaces'));
     }
 
     /**
