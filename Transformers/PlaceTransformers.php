@@ -78,6 +78,10 @@ class PlaceTransformers extends Resource
             $data['servicies']= ServiceTransformers::collection($this->services);
         }
 
+        if (in_array('spaces', $includes)) {
+            $data['spaces'] = SpaceTransformers::collection($this->spaces);
+        }
+
         if (in_array('schedule', $includes)) {
             $data['schedule']= new ScheduleTransformers($this->schedule);
         }

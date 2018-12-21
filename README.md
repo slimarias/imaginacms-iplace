@@ -14,19 +14,19 @@
 
 #### List all places with relations
 
-https://mydomain.com/api/iplace/places?include=category,schedule,zone,province,city,services
+https://mydomain.com/api/iplace/places?include=category,schedule,zone,province,city,services,spaces
 
 #### List all places with Relations,Pagination and Filter
 
-https://mydomain.com/api/iplace/places?include=category,schedule,zone,province,city,services&page=1&filter={"categories":[1,2],"gama":[0],"qperson":10,"zones":[2]}
+https://mydomain.com/api/iplace/places?include=category,schedule,zone,province,city,services,spaces&page=1&filter={"categories":[1,2],"gama":[0],"qperson":10,"zones":[2]}
 
 #### Get a place (Parameter = ID )
 
-https://mydomain.com/api/iplace/places/1?include=category,schedule,zone,province,city,services
+https://mydomain.com/api/iplace/places/1?include=category,schedule,zone,province,city,services,spaces
 
 #### Get a place (Parameter = slug )
 
-https://mydomain.com/api/iplace/places/prueba-1?include=category,schedule,zone,province,city,services
+https://mydomain.com/api/iplace/places/prueba-1?include=category,schedule,zone,province,city,services,spaces
 
 ### Categories
 
