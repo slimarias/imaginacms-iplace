@@ -4,6 +4,7 @@
 namespace Modules\Iplaces\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Modules\Iplaces\Entities\Status;
 
 class SpaceTransformers extends Resource
 {
@@ -14,11 +15,14 @@ class SpaceTransformers extends Resource
         $options=$this->options;
         unset($options->mainimage,$options->metatitle,$options->metadescription);
 
+        $status = new Status();
+
         return [
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
             'status'=>$this->status,
+            'statusName' => $status->get($this->status),
             'description' => $this->description,
             'mainimage' => $this->mainimage,
             'metatitle'=>$this->metatitle??$this->title,

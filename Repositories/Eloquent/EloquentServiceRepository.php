@@ -56,6 +56,11 @@ class EloquentServiceRepository extends EloquentBaseRepository implements Servic
                 });
             }
 
+            //Get specific services by Type
+            if (isset($filter->servType) && is_array($filter->servType)) {
+                $query->whereIn('servtype', $filter->servType);
+            }
+
             //Add order By
             $orderBy = isset($filter->orderBy) ? $filter->orderBy : 'created_at';
             $orderType = isset($filter->orderType) ? $filter->orderType : 'desc';

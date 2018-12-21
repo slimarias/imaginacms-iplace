@@ -6,6 +6,10 @@
 ## General Status (For Places and other else)
     - INACTIVE = 0;
     - ACTIVE = 1;
+
+## Types (For services)
+    - PRINCIPAL = 0;
+    - OTHER = 1;
   
 ## Api Examples
 
@@ -46,8 +50,15 @@ https://mydomain.com/api/iplace/categories/40
 ### Services
     - List All = Same that category
     - One = Same that category
+    - Example for a type of service
+        https://mydomain.com/api/iplace/services?&filter={"servType":[0]}
+
 
 ### Zones
     - List All = Same that category
     - One = By id or title
+
+### Space
+    - List All = Same that category
+    - One = Same that category
 
