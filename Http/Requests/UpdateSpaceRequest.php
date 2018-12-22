@@ -15,7 +15,8 @@ class UpdateSpaceRequest extends BaseFormRequest
     {
         return [
             'title'=>'required|min:2',
-           
+            'description'=>'required|min:2',
+            'slug'=>'required|min:2',
         ];
     }
 

@@ -15,7 +15,7 @@ class Service extends Model
 
     protected $table = 'iplaces__services';
     public $translatedAttributes = ['title', 'description', 'slug','metatitle','metadescription','metakeywords'];
-    protected $fillable = ['title', 'description', 'slug', 'options','status','metatitle','metadescription','metakeywords'];
+    protected $fillable = ['title', 'description', 'slug', 'options','status','servtype','metatitle','metadescription','metakeywords'];
     protected $fakeColumns = ['options'];
 
     protected $presenter = ServicePresenter::class;

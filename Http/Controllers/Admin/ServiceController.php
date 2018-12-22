@@ -11,7 +11,6 @@ use Modules\Iplaces\Events\ServiceWasCreated;
 use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\Iplaces\Entities\Status;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
-use Modules\Iplaces\Entities\Servtype;
 
 class ServiceController extends AdminBaseController
 {
@@ -88,10 +87,10 @@ class ServiceController extends AdminBaseController
      */
     public function edit(Service $service)
     {//dd($service);
-        $services = $this->service->paginate(20);
+        //$services = $this->service->paginate(20);
         $statuses = $this->status->lists();
         $servtypes = $this->servtype->lists();
-        return view('iplaces::admin.services.edit', compact('service','services','statuses','servtypes'));
+        return view('iplaces::admin.services.edit', compact('service','statuses','servtypes'));
     }
 
     /**

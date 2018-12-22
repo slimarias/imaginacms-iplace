@@ -242,6 +242,20 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
         ]);
     });
 
+    $router->group(['prefix' => 'spaces'], function (Router $router) {
+
+        $router->get('/', [
+            'as' => 'iplace.api.spaces.index',
+            'uses' => 'SpaceController@index',
+        ]);
+        $router->get('/{param}', [
+            'as' => 'iplace.api.spaces.show',
+            'uses' => 'SpaceController@show',
+        ]);
+        
+    });
+
+
     /*
 
     $router->group(['prefix' => 'ranges'], function (Router $router) {
