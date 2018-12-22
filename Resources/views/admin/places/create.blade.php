@@ -156,7 +156,10 @@
                         <div class="box-body">
                             <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
                             <select class="form-control" name="city_id" id="city_id" required>
-                                    <option value=""> Select </option>
+                                @foreach ($cities as $city)
+                                    <option value="{{$city->id}}" {{ old('city_id', 0) == $city->id ? 'selected' : '' }}> {{$city->name}}
+                                    </option>
+                                @endforeach
                             </select><br>
                         </div>
 
@@ -351,7 +354,7 @@
         });
     </script>
 
-    <script>
+  {{--  <script>
         $(document).ready(function () {
             $('#province_id').change(function () {
                var province='{"province_id":'+$("#province_id").val()+'}';
@@ -392,14 +395,14 @@
                         }
 
                         $('#providerautocomple').val("");
-                        $('#data-holder').val("");--}}
+                        $('#data-holder').val("");
                     }
                 });
 
             })
 
         });
-    </script>
+    </script> --}}
     <style>
 
         .nav-tabs-custom > .nav-tabs > li.active {

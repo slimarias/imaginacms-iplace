@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIplacesServicesTable extends Migration
+class CreateRelatedPlaceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +13,10 @@ class CreateIplacesServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('iplaces__services', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
+        Schema::create('iplaces__related_place', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('status')->default(0)->unsigned();
-            $table->text('options')->default('')->nullable();
-            $table->integer('servtype')->default(0)->unsigned();
+            $table->integer('place_id')->unsigned();
+            $table->integer('related_id')->unsigned();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateIplacesServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('iplaces__services');
+        Schema::dropIfExists('related_place');
     }
 }

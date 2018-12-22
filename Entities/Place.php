@@ -10,7 +10,7 @@ use Laracasts\Presenter\PresentableTrait;
 use Modules\Iplaces\Presenters\PlacePresenter;
 use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Core\Traits\NamespacedEntity;
-use Modules\Ilocations\Entities\City;
+use Modules\Iplaces\Entities\City;
 use Modules\Ilocations\Entities\Province;
 use Modules\Iplaces\Entities\Schedule;
 use Modules\Iplaces\Entities\Range;
@@ -53,7 +53,8 @@ class Place extends Model
         'quantity_person',
         'weather',
         'housing',
-        'transport'
+        'transport',
+        'rating'
     ];
     protected $fakeColumns = ['options'];
     protected $presenter = PlacePresenter::class;

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIplacesServicesTable extends Migration
+class CreateIplacesCitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,11 @@ class CreateIplacesServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('iplaces__services', function (Blueprint $table) {
+        Schema::create('iplaces__cities', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('status')->default(0)->unsigned();
+            $table->integer('province_id')->unsigned();
             $table->text('options')->default('')->nullable();
-            $table->integer('servtype')->default(0)->unsigned();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateIplacesServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('iplaces__services');
+        Schema::dropIfExists('iplaces__cities');
     }
 }

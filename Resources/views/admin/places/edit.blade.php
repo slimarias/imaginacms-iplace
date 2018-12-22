@@ -158,7 +158,7 @@
                             <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
                             <select class="form-control" name="city_id" id="city_id" required>
                                 @foreach ($cities as $city)
-                                    <option value="{{$city->id}}" {{ old('city_id', $place->city_id) == $city->id ? 'selected' : '' }}> {{$city->translate('en')->name}}
+                                    <option value="{{$city->id}}" {{ old('city_id', $place->city_id) == $city->id ? 'selected' : '' }}> {{$city->title}}
                                     </option>
                                 @endforeach
 
@@ -314,8 +314,7 @@
             </div>
         </div>
     {!! Form::close() !!}
-
-   {{--     @include('iperformers::admin.fields.gallery',['entry'=>$prefromer??'','field'=>['name'=>'gallery', 'label'=>trans('iperformers::performers.form.gallery'),'route_upload'=>route('iplace.api.performers.gallery.store'),'route_delete'=>route('iperformers.api.performers.gallery.delete'),'folder'=>'assets/iperformers/performers/gallery/','label_drag'=>trans('iperformers::performers.form.drag')]])--}}
+        @include('iplaces::admin.fields.gallery',['entry'=>$prefromer??'','field'=>['name'=>'gallery', 'label'=>trans('iplaces::places.form.gallery'),'route_upload'=>route('iplaces.places.gallery.store'),'route_delete'=>route('iplaces.places.gallery.delete'),'folder'=>'assets/iplaces/places/gallery/','label_drag'=>trans('iplaces::places.form.drag')]])
     </div>
 
 @stop
@@ -351,7 +350,7 @@
             });
         });
     </script>
-    <script>
+   {{-- <script>
         $(document).ready(function () {
             $('#province_id').change(function () {
                 var province='{"province_id":'+$("#province_id").val()+'}';
@@ -392,14 +391,14 @@
                         }
 
                         $('#providerautocomple').val("");
-                        $('#data-holder').val("");--}}
+                        $('#data-holder').val("");
                     }
                 });
 
             })
 
         });
-    </script>
+    </script>--}}
     <style>
 
         .nav-tabs-custom > .nav-tabs > li.active {

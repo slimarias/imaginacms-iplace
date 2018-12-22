@@ -37,6 +37,12 @@ return [
         'edit' => 'iplaces::spaces.edit resource',
         'destroy' => 'iplaces::spaces.destroy resource',
     ],
+    'iplaces.cities' => [
+        'index' => 'iplaces::cities.list resource',
+        'create' => 'iplaces::cities.create resource',
+        'edit' => 'iplaces::cities.edit resource',
+        'destroy' => 'iplaces::cities.destroy resource',
+    ],
 // append
 
 

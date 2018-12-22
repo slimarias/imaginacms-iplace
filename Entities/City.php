@@ -1,0 +1,30 @@
+<?php
+
+namespace Modules\Iplaces\Entities;
+
+use Dimsav\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Traits\NamespacedEntity;
+use Modules\Ilocations\Entities\Province;
+use Laracasts\Presenter\PresentableTrait;
+
+class City extends Model
+{
+    use Translatable, PresentableTrait, NamespacedEntity;
+
+    protected $table = 'iplaces__cities';
+    public $translatedAttributes = ['title','description'];
+    protected $fillable = ['title','description','options','province_id',];
+    protected $fakeColumns = ['options'];
+    protected $casts = [
+        'options' => 'array'
+    ];
+    public function places()
+    {
+        return $this->hasMany(Place::class);
+    }
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+}

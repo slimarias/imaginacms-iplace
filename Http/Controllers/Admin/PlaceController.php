@@ -8,7 +8,6 @@ use Modules\Iplaces\Entities\Category;
 use Modules\Iplaces\Entities\Place;
 use Modules\Iplaces\Http\Requests\CreatePlaceRequest;
 use Modules\Iplaces\Http\Requests\UpdatePlaceRequest;
-use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
@@ -17,7 +16,7 @@ use Modules\Iplaces\Repositories\ZoneRepository;
 use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\User\Repositories\UserRepository;
 use Modules\User\Transformers\UserProfileTransformer;
-use Modules\Ilocations\Repositories\CityRepository;
+use Modules\Iplaces\Repositories\CityRepository;
 use Modules\Ilocations\Repositories\ProvinceRepository;
 use Modules\Ilocations\Repositories\EloquentCityRepository;
 use Modules\Iplaces\Repositories\ScheduleRepository;
@@ -105,7 +104,7 @@ class PlaceController extends AdminBaseController
         $provinces = $this->province->index(null,null,$filter,[],[]);
         $schedules= $this->schedule->all();
         $weathers= $this->weather->lists();
-      //  $cities = $this->city->all();
+        $cities = $this->city->all();
         $gamas = $this->gama->lists();
         $statusesyn = $this->statusyn->lists();
         $spaces = $this->space->all();
@@ -121,7 +120,7 @@ class PlaceController extends AdminBaseController
      */
     public function store(CreatePlaceRequest $request)
     {
-       
+
         try {
             $this->place->create($request->all());
             return redirect()->route('admin.iplaces.place.index')
@@ -151,8 +150,7 @@ class PlaceController extends AdminBaseController
         $services = $this->service->all();
         $filter=json_decode(json_encode(['country_id'=>48]));
         $provinces = $this->province->index(null,null,$filter,[],[]);
-        $filter_city = json_decode(json_encode(['province_id'=>$place->province_id]));
-        $cities=$this->city->index(null,null,$filter_city,[],[]);
+        $cities=$this->city->all();
         $schedules=$this->schedule->all();
         $weathers=$this->weather->lists();
         $gamas = $this->gama->lists();
@@ -227,5 +225,51 @@ class PlaceController extends AdminBaseController
         return redirect()->route('admin.ibusiness.userbusiness.edit', [$places->id])
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('ibusiness::userbusinesses.title.userbusinesses')]));
 
+    }
+
+    public function galleryStore(Request $request)
+    {
+        try{
+            $original_filename = $request->file('file')->getClientOriginalName();
+
+            $idplace = $request->input('idedit');
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $allowedextensions = array('JPG', 'JPEG', 'PNG', 'GIF');
+
+            if (!in_array(strtoupper($extension), $allowedextensions)) {
+                return 0;
+            }
+            $disk = 'publicmedia';
+            $image = \Image::make($request->file('file'));
+            $name = str_slug(str_replace('.' . $extension, '', $original_filename), '-');
+
+
+            $image->resize(config('asgard.places.config.imagesize.width'), config('asgard.iplaces.config.imagesize.height'), function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            if (config('asgard.iplaces.config.watermark.activated')) {
+                $image->insert(config('asgard.iplaces.config.watermark.url'), config('asgard.iplaces.config.watermark.position'), config('asgard.iplaces.config.watermark.x'), config('asgard.iplaces.config.watermark.y'));
+            }
+            $nameimag = $name . '.' . $extension;
+            $destination_path = 'assets/iplaces/place/gallery/' . $idplace . '/' . $nameimag;
+
+            \Storage::disk($disk)->put($destination_path, $image->stream($extension, '100'));
+
+            return array('direccion' => $destination_path);
+        }
+        catch (\Exception $e){
+            return $e->getMessage();
+        }
+
+    }
+
+    public function galleryDelete(Request $request)
+    {
+        $disk = "publicmedia";
+        $dirdata = $request->input('dirdata');
+        \Storage::disk($disk)->delete($dirdata);
+        return array('success' => true);
     }
 }

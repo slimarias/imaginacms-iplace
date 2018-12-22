@@ -98,16 +98,16 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
 
-              /*
-                $item->item(trans('iplaces::ranges.title.ranges'), function (Item $item) {
+          
+                $item->item(trans('iplaces::cities.title.cities'), function (Item $item) {
                     $item->icon('fa fa-exchange');
                     $item->weight(0);
-                    $item->append('admin.iplaces.range.create');
-                    $item->route('admin.iplaces.range.index');
+                    $item->append('admin.iplaces.city.create');
+                    $item->route('admin.iplaces.city.index');
                     $item->authorize(
-                        $this->auth->hasAccess('iplaces.ranges.index')
+                        $this->auth->hasAccess('iplaces.cities.index')
                     );
-                });*/
+                });
 
             });
         });

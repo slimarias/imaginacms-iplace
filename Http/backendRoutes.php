@@ -45,6 +45,16 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
             'as' => 'admin.ibusiness.userbusiness.addPosts',
             'uses' => 'PlaceController@addPosts'
         ]);
+        $router->post('gallery', [
+            'as' => 'iplaces.places.gallery.store',
+            'uses' => 'PlaceController@galleryStore',
+            //'middleware' => ['api.token','token-can:iplaces.places.create']
+        ]);
+        $router->post('gallery/delete', [
+            'as' => 'iplaces.places.gallery.delete',
+            'uses' => 'PlaceController@galleryDelete',
+            // 'middleware' => ['api.token','token-can:iplaces.places.create']
+        ]);
     });
 
     $router->group(['prefix' => 'categories'], function (Router $router) {
@@ -233,49 +243,40 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
         ]);
     
     });
-    
-    // append
- /*
-
-    $router->group(['prefix' => '/ranges'], function (Router $router) {
-
-        $router->bind('range', function ($id) {
-            return app('Modules\Iplaces\Repositories\RangeRepository')->find($id);
+    $router->group(['prefix' => '/cities'], function (Router $router) {
+        $router->bind('iplacesacity', function ($id) {
+            return app('Modules\Iplaces\Repositories\CityRepository')->find($id);
         });
         $router->get('/', [
-            'as' => 'admin.iplaces.range.index',
-            'uses' => 'RangeController@index',
-            'middleware' => 'can:iplaces.ranges.index'
+            'as' => 'admin.iplaces.city.index',
+            'uses' => 'CityController@index',
+            'middleware' => 'can:iplaces.cities.index'
         ]);
         $router->get('create', [
-            'as' => 'admin.iplaces.range.create',
-            'uses' => 'RangeController@create',
-            'middleware' => 'can:iplaces.ranges.create'
+            'as' => 'admin.iplaces.city.create',
+            'uses' => 'CityController@create',
+            'middleware' => 'can:iplaces.cities.create'
         ]);
         $router->post('/', [
-            'as' => 'admin.iplaces.range.store',
-            'uses' => 'RangeController@store',
-            'middleware' => 'can:iplaces.ranges.create'
+            'as' => 'admin.iplaces.city.store',
+            'uses' => 'CityController@store',
+            'middleware' => 'can:iplaces.cities.create'
         ]);
-        $router->get('{range}/edit', [
-            'as' => 'admin.iplaces.range.edit',
-            'uses' => 'RangeController@edit',
-            'middleware' => 'can:iplaces.ranges.edit'
+        $router->get('{iplacesacity}/edit', [
+            'as' => 'admin.iplaces.city.edit',
+            'uses' => 'CityController@edit',
+            'middleware' => 'can:iplaces.cities.edit'
         ]);
-        $router->put('{range}', [
-            'as' => 'admin.iplaces.range.update',
-            'uses' => 'RangeController@update',
-            'middleware' => 'can:iplaces.ranges.edit'
+        $router->put('/{iplacesacity}', [
+            'as' => 'admin.iplaces.city.update',
+            'uses' => 'CityController@update',
+            'middleware' => 'can:iplaces.cities.edit'
         ]);
-        $router->delete('{range}', [
-            'as' => 'admin.iplaces.range.destroy',
-            'uses' => 'RangeController@destroy',
-            'middleware' => 'can:iplaces.ranges.destroy'
+        $router->delete('/{iplacesacity}', [
+            'as' => 'admin.iplaces.city.destroy',
+            'uses' => 'CityController@destroy',
+            'middleware' => 'can:iplaces.cities.destroy'
         ]);
-// append
-
-
     });
- */
 });
 

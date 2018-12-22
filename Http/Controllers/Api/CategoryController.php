@@ -6,11 +6,10 @@ namespace Modules\Iplaces\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
-use Modules\Iplaces\Http\Controllers\Api\BaseApiController;
+use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 use Modules\Iplaces\Entities\Category;
 use Modules\Iplaces\Repositories\PlaceRepository;
 use Modules\Iplaces\Repositories\CategoryRepository;
-use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Iplaces\Transformers\CategoryTransformers;
 use Modules\Iplaces\Entities\Status;
 

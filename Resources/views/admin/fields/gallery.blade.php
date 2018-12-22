@@ -1,4 +1,4 @@
-!-- field_type_name -->
+
 @if(empty($entry->id))
     <?php $rand = str_random(5);?>
     @push('left_fields')
@@ -11,7 +11,6 @@
 
 
 <div class="col-md-9">
-    {{-- dd(public_path()) --}}
     <div class="box">
         <div class="box-header with-border"><h3 class="box-title">{!!$field['label']!!}</h3>
             <div class="box-tools pull-right">
