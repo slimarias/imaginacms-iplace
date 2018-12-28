@@ -41,7 +41,34 @@
                 </div>
 
                 @include('iplaces::admin.places.partials.extra-fields-create')
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>{{trans('iplaces::places.form.galleries')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body ">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6">
+                                    <label for="options[videos]"><strong>{{trans('iplaces::place.form.Gallery')}}</strong></label>
+                                    <button disabled type="button" data-toggle="modal" data-target="#modalGallery" class="form-control btn btn-primary btn-flat">{{ trans('iplaces::place.form.View Gallery') }}</button>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <label for="options[videos]"><strong>{{trans('iplaces::place.form.videos')}}</strong></label>
+                                    <textarea id="options" class="form-control" name="options[videos]" rows="3">{{ old('options[videos]')}}</textarea>
+                                </div>
+                            </div>
 
+
+                        </div>
+                    </div>
+                </div>
                 <div class="col-xs-12">
                     <div class="box box-primary">
                         <div class="box-header">
@@ -156,8 +183,29 @@
                         <div class="box-body">
                             <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
                             <select class="form-control" name="city_id" id="city_id" required>
-                                @foreach ($cities as $city)
-                                    <option value="{{$city->id}}" {{ old('city_id', 0) == $city->id ? 'selected' : '' }}> {{$city->name}}
+                                    <option value=""> Select </option>
+                            </select><br>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label>{{trans('iplaces::common.form.cities')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <label for="sites"><strong>{{trans('iplaces::cities.form.principal')}}</strong></label>
+                            <select class="form-control" name="site_id" id="site_id" required>
+                                @foreach ($sites as $site)
+                                    <option value="{{$site->id}}" {{ old('site_id', 0) == $site->id ? 'selected' : '' }}> {{$site->title}}
                                     </option>
                                 @endforeach
                             </select><br>
@@ -165,7 +213,6 @@
 
                     </div>
                 </div>
-
                 <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">
@@ -205,6 +252,10 @@
                         </div>
                         <div class="box-body">
                             @include('iplaces::admin.fields.checklist.services')
+
+                        </div>
+                        <div class="box-body">
+                            @include('iplaces::admin.fields.checklist.services-second')
 
                         </div>
                     </div>
@@ -255,7 +306,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xs-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <label>{{trans('iplaces::places.form.validate')}}</label>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body ">
+                            <div class='form-group{{ $errors->has("validated") ? ' has-error' : '' }}'>
+                                <label class="checkbox" for="{{trans('iplaces::places.form.validate')}}">
+                                    <input type="checkbox" id="validated" name="validated"
+                                           value="1" {{ old('status',1) == 1? 'checked' : '' }}>
+                                    {{trans('iplaces::places.form.validate')}}
+                                </label>
 
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-xs-12 ">
                     <div class="box box-primary">
                         <div class="box-header">
@@ -354,7 +426,7 @@
         });
     </script>
 
-  {{--  <script>
+    <script>
         $(document).ready(function () {
             $('#province_id').change(function () {
                var province='{"province_id":'+$("#province_id").val()+'}';
@@ -392,7 +464,7 @@
                                 newid+=1;
 
 
-                        }
+                        }--}}
 
                         $('#providerautocomple').val("");
                         $('#data-holder').val("");
@@ -402,7 +474,7 @@
             })
 
         });
-    </script> --}}
+    </script>
     <style>
 
         .nav-tabs-custom > .nav-tabs > li.active {

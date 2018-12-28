@@ -17,7 +17,7 @@ class PlaceTranslation extends Model
         if(!empty($this->attributes['summary'])){
             $this->attributes['summary'] = $this->attributes['summary'];
         } else {
-            $this->attributes['summary'] = substr(strip_tags($this->attributes['description']),0,150);
+            $this->attributes['summary'] = isubstr(strip_tags($this->attributes['description']),150);
         }
 
     }

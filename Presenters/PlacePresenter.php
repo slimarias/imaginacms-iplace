@@ -61,7 +61,7 @@ class PlacePresenter extends Presenter
     }
     public function weatherLabelClass()
     {
-        switch ($this->entity->status) {
+        switch ($this->entity->weather) {
             case Weather::CLOUDY:
                 return 'bg-red';
                 break;

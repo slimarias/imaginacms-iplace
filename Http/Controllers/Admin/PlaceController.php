@@ -16,7 +16,8 @@ use Modules\Iplaces\Repositories\ZoneRepository;
 use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\User\Repositories\UserRepository;
 use Modules\User\Transformers\UserProfileTransformer;
-use Modules\Iplaces\Repositories\CityRepository;
+use Modules\Ilocations\Repositories\CityRepository;
+use Modules\Iplaces\Repositories\CityRepository as SiteRepository;
 use Modules\Ilocations\Repositories\ProvinceRepository;
 use Modules\Ilocations\Repositories\EloquentCityRepository;
 use Modules\Iplaces\Repositories\ScheduleRepository;
@@ -37,6 +38,7 @@ class PlaceController extends AdminBaseController
     private $zone;
     private $service;
     private $city;
+    private $site;
     private $province;
     private $schedule;
     private $weather;
@@ -51,7 +53,8 @@ class PlaceController extends AdminBaseController
         UserRepository $user, 
         ZoneRepository $zone, 
         ServiceRepository $service, 
-        CityRepository $city, 
+        CityRepository $city,
+        SiteRepository $site,
         ProvinceRepository $province, 
         ScheduleRepository $schedule, 
         Weather $weather,
@@ -68,6 +71,7 @@ class PlaceController extends AdminBaseController
         $this->zone = $zone;
         $this->service = $service;
         $this->city = $city;
+        $this->site = $site;
         $this->province = $province;
         $this->schedule = $schedule;
         $this->weather = $weather;
@@ -99,17 +103,19 @@ class PlaceController extends AdminBaseController
         $categories = $this->category->all();
         $users = $this->user->all();
         $zones = $this->zone->all();
-        $services = $this->service->all();
+        $services = $this->service->whereType(0);
+        $servicesSecond = $this->service->whereType(1);
         $filter=json_decode(json_encode(['country_id'=>48]));
         $provinces = $this->province->index(null,null,$filter,[],[]);
         $schedules= $this->schedule->all();
         $weathers= $this->weather->lists();
-        $cities = $this->city->all();
+        $sites = $this->site->all();
         $gamas = $this->gama->lists();
+        $related=$this->place->all();
         $statusesyn = $this->statusyn->lists();
         $spaces = $this->space->all();
 
-        return view('iplaces::admin.places.create', compact('categories', 'statuses', 'users', 'zones', 'services','cities','provinces','schedules','weathers','gamas','statusesyn','spaces'));
+        return view('iplaces::admin.places.create', compact('categories','related', 'statuses', 'users', 'zones', 'services','servicesSecond','sites','provinces','schedules','weathers','gamas','statusesyn','spaces'));
     }
 
     /**
@@ -147,17 +153,21 @@ class PlaceController extends AdminBaseController
         $categories = $this->category->all();
         $users = $this->user->all();
         $zones = $this->zone->all();
-        $services = $this->service->all();
+        $services = $this->service->whereType(0);
+        $servicesSecond = $this->service->whereType(1);
         $filter=json_decode(json_encode(['country_id'=>48]));
         $provinces = $this->province->index(null,null,$filter,[],[]);
-        $cities=$this->city->all();
+        $sites=$this->site->all();
+        $filter_city = json_decode(json_encode(['province_id'=>$place->province_id]));
+        $cities=$this->city->index(null,null,$filter_city,[],[]);
         $schedules=$this->schedule->all();
         $weathers=$this->weather->lists();
+        $related=$this->place->all();
         $gamas = $this->gama->lists();
         $statusesyn = $this->statusyn->lists();
         $spaces = $this->space->all();
 
-        return view('iplaces::admin.places.edit', compact('place', 'statuses', 'categories', 'users', 'zones', 'services','cities','provinces','schedules','weathers','gamas','statusesyn','spaces'));
+        return view('iplaces::admin.places.edit', compact('place','related', 'cities','statuses', 'categories', 'users', 'zones', 'services','sites','provinces','schedules','weathers','gamas','statusesyn','spaces','servicesSecond'));
     }
 
     /**
@@ -243,8 +253,7 @@ class PlaceController extends AdminBaseController
             $image = \Image::make($request->file('file'));
             $name = str_slug(str_replace('.' . $extension, '', $original_filename), '-');
 
-
-            $image->resize(config('asgard.places.config.imagesize.width'), config('asgard.iplaces.config.imagesize.height'), function ($constraint) {
+            $image->resize(config('asgard.iplaces.config.imagesize.width'), config('asgard.iplaces.config.imagesize.height'), function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });

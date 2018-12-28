@@ -129,7 +129,7 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
   }
 
   //Filter Frontend Index
-  public function wherebyFilter($page, $take, $filter, $include)
+  public function wherebyFilter($page, $take, $filter=null, $include=null)
   {
     //Initialize Query
     $query = $this->model->query();
@@ -179,6 +179,14 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
         $query->whereIn('city_id', $filter->cities);
 
       }
+      if (isset($filter->quantity_person) && is_array($filter->quantity_person)) {
+
+            $query->where('quantity_person', $filter->quantity_person);
+        }
+        if (isset($filter->gama) && is_array($filter->gama)) {
+
+            $query->where('gama', $filter->gama);
+        }
       //Add order for zone
       if (isset($filter->zones) && is_array($filter->zones)) {
 
@@ -279,7 +287,8 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
   }
 
   public function update($model, $data)
-  {//dd($data);
+  {
+
     $model->update($data);
     $model->categories()->sync(array_get($data, 'categories', []));
     $model->services()->sync(array_get($data, 'services', []));
@@ -293,13 +302,16 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
    */
   public function findBySlug($slug)
   {
+     $query=$this->model->query();
     if (method_exists($this->model, 'translations')) {
-      return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
+     $query->whereHas('translations', function (Builder $q) use ($slug) {
         $q->where('slug', $slug);
-      })->with('categories', 'city', 'category', 'translations', 'province')->first();
+      })->with('categories', 'city', 'category', 'translations', 'province');
+    }else{
+        $query->where('slug', $slug)->with('categories', 'city', 'category', 'province');
     }
-
-    return $this->model->with('categories', 'city', 'category', 'province')->where('slug', $slug)->first();
+      $query->whereStatus(Status::ACTIVE);
+    return $query->firstOrFail();
   }
 
   public function whereCategory($id)

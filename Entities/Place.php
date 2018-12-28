@@ -10,7 +10,8 @@ use Laracasts\Presenter\PresentableTrait;
 use Modules\Iplaces\Presenters\PlacePresenter;
 use Modules\Iplaces\Events\PlaceWasCreated;
 use Modules\Core\Traits\NamespacedEntity;
-use Modules\Iplaces\Entities\City;
+use Modules\Iplaces\Entities\City as Site;
+use Modules\Ilocations\Entities\City;
 use Modules\Ilocations\Entities\Province;
 use Modules\Iplaces\Entities\Schedule;
 use Modules\Iplaces\Entities\Range;
@@ -46,6 +47,7 @@ class Place extends Model
         'metakeywords',
         'zone_id',
         'city_id',
+        'site_id',
         'service_id',
         'province_id',
         'schedule_id',
@@ -54,7 +56,9 @@ class Place extends Model
         'weather',
         'housing',
         'transport',
-        'rating'
+        'rating',
+        'validated',
+        'order'
     ];
     protected $fakeColumns = ['options'];
     protected $presenter = PlacePresenter::class;
@@ -114,9 +118,13 @@ class Place extends Model
         return $this->belongsTo(Zone::class);
     }
 
-    public function city()
+       public function city()
     {
         return $this->belongsTo(City::class);
+    }
+    public function site()
+    {
+        return $this->belongsTo(Site::class);
     }
 
     public function province()
@@ -128,11 +136,6 @@ class Place extends Model
     {
         return $this->belongsTo(Schedule::class);
     }
-    public function range()
-    {
-        return $this->belongsTo(Range::class);
-    }
-
     /*
      * -------------
      * IMAGE
@@ -167,9 +170,7 @@ class Place extends Model
     }
 
 
-    public function getUrlAttribute() {
-
-       // \URL::route(\LaravelLocalization::getCurrentLocale(
+    public function getUrlAttribute(){
 
         return  \URL::route('iplaces.place.show', [$this->category->slug,$this->slug]);
     }

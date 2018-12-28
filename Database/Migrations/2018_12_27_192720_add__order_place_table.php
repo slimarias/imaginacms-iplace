@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRatingPlaceTable extends Migration
+class AddOrderPlaceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class AddRatingPlaceTable extends Migration
     public function up()
     {
         Schema::table('iplaces__places', function (Blueprint $table) {
-            $table->float('rating',3,2)->default('3');
-            $table->boolean('validated')->default(false);
+            $table->integer('order')->default(0);
         });
     }
 
@@ -27,7 +26,7 @@ class AddRatingPlaceTable extends Migration
     public function down()
     {
         Schema::table('iplaces__places', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
+            $table->dropColumn('order');
         });
     }
 }

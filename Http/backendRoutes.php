@@ -93,9 +93,9 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
         ]);
     });
 
-    $router->group(['prefix' => '/services'], function (Router $router) {
+    $router->group(['prefix' => 'services'], function (Router $router) {
 
-        $router->bind('service', function ($id) {
+        $router->bind('iplacesaservice', function ($id) {
             return app('Modules\Iplaces\Repositories\ServiceRepository')->find($id);
         });
         $router->get('/', [
@@ -113,17 +113,17 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
             'uses' => 'ServiceController@store',
             'middleware' => 'can:iplaces.services.create'
         ]);
-        $router->get('{service}/edit', [
+        $router->get('{iplacesaservice}/edit', [
             'as' => 'admin.iplaces.service.edit',
             'uses' => 'ServiceController@edit',
             'middleware' => 'can:iplaces.services.edit'
         ]);
-        $router->put('{service}', [
+        $router->put('{iplacesaservice}', [
             'as' => 'admin.iplaces.service.update',
             'uses' => 'ServiceController@update',
             'middleware' => 'can:iplaces.services.edit'
         ]);
-        $router->delete('{service}', [
+        $router->delete('{iplacesaservice}', [
             'as' => 'admin.iplaces.service.destroy',
             'uses' => 'ServiceController@destroy',
             'middleware' => 'can:iplaces.services.destroy'
@@ -131,7 +131,7 @@ $router->group(['prefix' => 'iplaces'], function (Router $router) {
 
     });
 
-    $router->group(['prefix' => '/zones'], function (Router $router) {
+    $router->group(['prefix' => 'zones'], function (Router $router) {
 
         $router->bind('zone', function ($id) {
             return app('Modules\Iplaces\Repositories\ZoneRepository')->find($id);

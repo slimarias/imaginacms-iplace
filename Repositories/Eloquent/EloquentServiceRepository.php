@@ -5,6 +5,7 @@ namespace Modules\Iplaces\Repositories\Eloquent;
 use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Iplaces\Events\ServiceWasCreated;
+use Modules\Iplaces\Entities\Servtype;
 
 class EloquentServiceRepository extends EloquentBaseRepository implements ServiceRepository
 {
@@ -123,4 +124,11 @@ class EloquentServiceRepository extends EloquentBaseRepository implements Servic
     }
 
 
+    public function whereType($type)
+    {
+        $query=$this->model->query();
+
+        $query->where('servtype',$type);
+        return $query->get();
+    }
 }

@@ -1,9 +1,8 @@
 <div class="row checkbox">
-
     <div class="col-xs-12">
-        <label for="provinces"><strong>{{trans('iplaces::places.form.services.principal')}}</strong></label>
+        <label for="provinces"><strong>{{trans('iplaces::places.form.services.secondary')}}</strong></label>
         <div class="content-serv" style="max-height:300px;overflow-y: auto;">
-            @if(count($services)>0)
+            @if(count($servicesSecond)>0)
                 @php
                     if(isset($place->services) && count($place->services)>0){
                     $oldServ = array();
@@ -18,13 +17,13 @@
 
                 <ul class="checkbox" style="list-style: none;padding-left: 5px;">
 
-                    @foreach ($services as $service)
+                    @foreach ($servicesSecond as $serviceSecond)
                       
                             <li style="padding-top: 5px">
                                 <label>
                                     <input type="checkbox" class="flat-blue jsInherit" name="services[]"
-                                           value="{{$service->id}}"
-                                           @isset($oldServ) @if(in_array($service->id, $oldServ)) checked="checked" @endif @endisset> {{$service->title}}
+                                           value="{{$serviceSecond->id}}"
+                                           @isset($oldServ) @if(in_array($serviceSecond->id, $oldServ)) checked="checked" @endif @endisset> {{$serviceSecond->title}}
                                 </label>
                               
                             </li>

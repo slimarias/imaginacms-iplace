@@ -17,7 +17,7 @@
             <div class="row">
 
                 {{-- GAMAS --}}
-                <div class="col-xs-8">
+                <div class="col-xs-4">
                     <div class="box">
                         <div class="box-header">     
                             <div class="form-group">
@@ -33,7 +33,22 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="col-xs-4">
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="form-group">
+                                <label>{{trans('iplaces::places.form.rating')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class='form-group{{ $errors->has("rating") ? ' has-error' : '' }}'>
+                                <?php $old = $place->rating; ?>
+                                {!! Form::number("rating", old("rating",$old), ['step'=>'0.01','class' => 'form-control', 'placeholder' => trans('iplaces::places.form.rating')]) !!}
+                                {!! $errors->first("rating", '<span class="help-block">:message</span>') !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {{-- Quantity Person--}}
                 <div class="col-xs-4">
                     <div class="box">
@@ -109,7 +124,24 @@
                     </div>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="form-group">
+                                <label>{{trans('iplaces::places.form.order')}}</label>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class='form-group{{ $errors->has("order") ? ' has-error' : '' }}'>
+                                <?php $old = $place->order; ?>
+                                {!! Form::number("order", old("order",$old), ['class' => 'form-control', 'placeholder' => trans('iplaces::places.form.order')]) !!}
+                                {!! $errors->first("order", '<span class="help-block">:message</span>') !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

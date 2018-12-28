@@ -34,6 +34,7 @@ class IplacesServiceProvider extends ServiceProvider
             $event->load('services', array_dot(trans('iplaces::services')));
             $event->load('zones', array_dot(trans('iplaces::zones')));
             $event->load('spaces', array_dot(trans('iplaces::spaces')));
+            $event->load('cities', array_dot(trans('iplaces::cities')));
             // append translations
 
 
@@ -47,7 +48,7 @@ class IplacesServiceProvider extends ServiceProvider
     {
         $this->publishConfig('iplaces', 'permissions');
         $this->publishConfig('iplaces', 'settings');
-
+        $this->publishConfig('iplaces', 'config');
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
@@ -134,6 +135,18 @@ class IplacesServiceProvider extends ServiceProvider
                 }
 
                 return new \Modules\Iplaces\Repositories\Cache\CacheSpaceDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Iplaces\Repositories\CityRepository',
+            function () {
+                $repository = new \Modules\Iplaces\Repositories\Eloquent\EloquentCityRepository(new \Modules\Iplaces\Entities\City());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Iplaces\Repositories\Cache\CacheCityDecorator($repository);
             }
         );
 // add bindings

@@ -20,7 +20,7 @@ use Modules\Iplaces\Entities\Weather;
 use Modules\Iplaces\Entities\Status;
 use Modules\Iplaces\Entities\StatusYN;
 
-use Modules\Ilocations\Transformers\CityTransformer;
+use Modules\Iplaces\Transformers\CityTransformers;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
 
 class PlaceTransformers extends Resource
@@ -100,7 +100,7 @@ class PlaceTransformers extends Resource
         }
 
         if (in_array('city', $includes)) {
-            $data['city'] = new CityTransformer($this->city);
+            $data['city'] = new CityTransformers($this->city);
         }
 
         return $data;
