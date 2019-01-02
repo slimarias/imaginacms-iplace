@@ -180,7 +180,16 @@ class Place extends Model
         return json_decode(json_decode($value));
 
     }
+    public function getVideosAttribute(){
 
+        if (isset($this->options->videos)&&!empty($this->options->videos)){
+
+            $videos = explode(',',$this->options->videos);
+
+            return $videos;
+        }
+        return null;
+    }
     /*
   |--------------------------------------------------------------------------
   | SCOPES

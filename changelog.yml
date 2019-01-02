@@ -1,5 +1,8 @@
 url: https://github.com/imagina/asgardcms-iplace
 versions:
+    "1.0.1":
+        added:
+        changed:
     "1.0.0":
         added:
         - Initial Module

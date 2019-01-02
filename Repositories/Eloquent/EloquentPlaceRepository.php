@@ -183,10 +183,7 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
 
             $query->where('quantity_person', $filter->quantity_person);
         }
-        if (isset($filter->gama) && is_array($filter->gama)) {
 
-            $query->where('gama', $filter->gama);
-        }
       //Add order for zone
       if (isset($filter->zones) && is_array($filter->zones)) {
 
@@ -219,7 +216,17 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
           $q->whereIn('service_id', $filter->services);
         });
       }
+        if (isset($filter->cities) && is_array($filter->cities)) {
+            is_array($filter->cities) ? true : $filter->cities = [$filter->cities];
+            $query->whereIn('city_id', $filter->cities);
+        }
 
+        if (isset($filter->quantity_persons)) {
+            $query->where('quantity_person','<=', $filter->quantity_persons);
+        }
+        if (isset($filter->gama)) {
+            $query->where('gama', $filter->gama);
+        }
       //Add order By
       $orderBy = isset($filter->orderBy) ? $filter->orderBy : 'created_at';
       $orderType = isset($filter->orderType) ? $filter->orderType : 'desc';

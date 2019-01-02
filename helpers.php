@@ -157,7 +157,7 @@ if (! function_exists('get_places')) {
     if($options['order']=='RAND') {
       $places->inRandomOrder();
     } else {
-      $places->orderBy('created_at', $options['order']);
+      $places->orderBy('order', $options['order']);
     }
     return $places->get();
   }
@@ -210,7 +210,7 @@ if (!function_exists('get_Iplaces_categories')) {
     }
     $categories->skip($options['skip'])
       ->take($options['take'])
-      ->orderBy('order', $options['order']);
+      ->orderBy('created_at', $options['order']);
 
     return $categories->get();
 

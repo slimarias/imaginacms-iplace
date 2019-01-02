@@ -10,81 +10,135 @@
 @stop
 
 @section('title')
-    {{ $category->title ?? "Lugares" }} | @parent
+  {{ $category->title ?? "Lugares" }} | @parent
 @stop
+
+
 
 @section('content')
 
-    <div class="layout-artists">
-        <div class="banner">
-            <div class="container">
-                <div class="row justify-content-start align-items-end">
-                    <div class="col-md-12 col-lg-6">
-                        <div class="text-white my-0">
-                            ¿Necesitas contratar artistas o músicos para tu próximo eventos?
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div id="places-category"
+         class="page blog-category-lugares">
+        <div class="container">
+            <nav class="mt-3" aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent justify-content-end rounded-0 mb-0">
+                    <li class="breadcrumb-item">
+                        <a class="text-primary" href="{{url('/')}}">Inicio</a>
+                    </li>
+                    <li class="breadcrumb-item active text-gray-color" aria-current="page">
+                        @if(isset($category->title) && !empty($category->title))
+                            {{$category->title}}
+                        @else
+                            Lugares
+                        @endif
+                    </li>
+                </ol>
+            </nav>
         </div>
 
-        <div class="bg-light pb-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-auto ml-auto">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb bg-transparent mb-5">
-                                <li class="breadcrumb-item"><a class="text-primary" href="{{ URL::to('/') }}">Inicio</a>
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page">Artista</li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <div class="col-12 text-center msn">
-                        <p>Para que tus eventos sean los más recordados, consulta nuestro directorio de artistas
-                            exclusivos y elige el que más te guste. San Agustín trae los mejores artistas de todos los
-                            géneros, grupos musicales, bandas, imitadores y muchos más.</p>
-                    </div>
-                </div>
-            </div>
+        <div class="page-content container pb-3 pl-lg-0 mt-lg-2">
+            <h2 class="places-title text-gray-dark mb-3">
+                @if(isset($category->title) && !empty($category->title))
+                    {{$category->title}}
+                @else
+                    Lugares
+                @endif
+            </h2>
         </div>
 
-        <div class="pt-5">
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-md-7 col-lg-8">
 
-                        <div class="row">
 
-                            @if(count($places))
+        <div class="container pl-lg-0">
+            <div class="row">
+                <div class="col-xl-9 mb-5">
+                    <div class="row places-grid">
+                        @if (isset($places) && !empty($places))
+                            @if(count($places) >= 1)
                                 @foreach($places as $place)
-                                    <div class="col-lg-6">
-                                        <div class="card mb-5 px-2 pt-4 shadow-sm">
-                                            <a href="{{$place->url}}">
-                                                <div class="img-artista">
-                                                    <img class="card-img-top" src="{{ $place->mediumimage}}"
-                                                         alt="Card image cap">
-                                                </div>
-                                                <div class="card-body p-0">
-                                                    <h5 class="card-title text-center my-3">{{ $place->title}}</h5>
-                                                </div>
-                                            </a>
-                                        </div>
+
+
+                                    <!-- Blog Post -->
+                                    <div class="col-md-6 col-lg-4 post post{{$place->id}} mb-5">
+                                        <a class="place-image d-block position-relative" href="{{$place->url}}">
+                                            @if(isset($place->mediumimage)&&!empty($place->mediumimage))
+                                                <img class="cover-img"
+                                                     src="{{ $place->mediumimage}}"
+                                                     alt="{{$place->title}}"/>
+                                            @else
+                                                <img class="image"
+                                                     src="{{url('modules/iblog/img/post/default.jpg')}}"
+                                                     alt="{{$place->title}}"/>
+                                            @endif
+                                            @if($place->validated)
+                                            <img class="top-badge position-absolute" src="{{Theme::url('img/new/top-badge.png')}}">
+                                                @endif
+                                            <div class="top-stripe position-absolute w-100"></div>
+                                            <div class="bottom-stripe position-absolute w-100">
+                                                @for($i = 0; $i < intval($place->rating); $i++)
+                                                    <i class="fa fa-star mr-1"></i>
+                                                @endfor
+                                            </div>
+                                        </a>
+
+                                        <h3 class="place-title text-gray-dark mt-3">{{$place->title}}</h3>
+
+                                        <a class="btn-link text-white text-center bg-primary mt-1" href="{{$place->url}}">Ver más +</a>
                                     </div>
                                 @endforeach
-                            @endif
-                        </div>
 
-                    </div>
-                    <div class="col-md-5 col-lg-4">
-                        @include('iplaces::frontend.partials.filters')
+                                <!-- PAGINATION -->
+                                @if(!isset($categoriesPost)&&empty($categoriesPost))
+                                    <div class="col-12 mt-3">
+                                        {{$places->links('pagination::bootstrap-4')}}
+                                    </div>
+                                @endif
+                            @else
+
+                                <div class="col-12">
+                                    <h4 class="text-center">
+                                        No hay lugares con esta(s) categoría(s) <i class="fa fa-frown-o"></i>
+                                    </h4>
+                                </div>
+
+                            @endif
+                        @endif
                     </div>
                 </div>
+
+                <aside class="col-xl-3">
+
+                    @include('iplaces.partials.filters')
+
+                   {{--@include('iplaces.widgets.categories_new')--}}
+
+                    <div class="card card-registration border border-primary">
+                        <div class="card-body text-gray-dark text-center p-0">
+                            <h5 class="card-title mb-3"><strong>Se parte de San Agustín</strong></h5>
+
+                            <p class="card-text mb-3">
+                                Si eres un profesional, tienes una empresa de eventos, tienes un lugar o eres un artista
+                                puedes aparecer en San Agustín, ofrecer tus servicios y productos.
+                            </p>
+
+                            <h5 class="card-subtitle text-primary mt-1 mb-3"><strong>Haz crecer tu negocio</strong></h5>
+
+                            <a class="btn-sign-up text-white bg-primary mt-1 mx-auto" href="{{URL::to('/contacto')}}">Regístrate Gratis</a>
+                        </div>
+                    </div>
+                </aside>
             </div>
         </div>
 
+        @include('partials.widgets.tourism')
+
+        @include('partials.widgets.ideas-tips')
+
+        @include('partials.clients')
+
+        @include('partials.subscription')
+
+        @include('partials.map')
+
+        @include('partials.registration')
     </div>
 @stop
-
-
-
