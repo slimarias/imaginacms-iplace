@@ -1,6 +1,6 @@
 url: https://github.com/imagina/asgardcms-iplace
 versions:
-    "1.0.1":
+    "1.3.0":
         added:
           - Parent index categories
           - Address transformer
