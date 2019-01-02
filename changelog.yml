@@ -2,7 +2,15 @@ url: https://github.com/imagina/asgardcms-iplace
 versions:
     "1.0.1":
         added:
+          - Parent index categories
+          - Address transformer
+          - new Entity Spaces
+          - CacheCityDecorator
         changed:
+          - Fixes, bugs, new fields backend crud
+          - Resolved bug img
+          - Solved bug categories
+          - Places entity
     "1.0.0":
         added:
         - Initial Module
