@@ -26,8 +26,7 @@ class IplacesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerBindings();
-        $this->app['events']->listen(BuildingSidebar::class, RegisterIplacesSidebar::class);
-
+          $this->app['events']->listen(BuildingSidebar::class, RegisterIplacesSidebar::class);
         $this->app['events']->listen(LoadingBackendTranslations::class, function (LoadingBackendTranslations $event) {
             $event->load('places', array_dot(trans('iplaces::places')));
             $event->load('categories', array_dot(trans('iplaces::categories')));
@@ -35,12 +34,6 @@ class IplacesServiceProvider extends ServiceProvider
             $event->load('zones', array_dot(trans('iplaces::zones')));
             $event->load('spaces', array_dot(trans('iplaces::spaces')));
             $event->load('cities', array_dot(trans('iplaces::cities')));
-            // append translations
-
-
-
-
-
         });
     }
 

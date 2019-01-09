@@ -41,7 +41,7 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->icon('fa fa-grav');
                 $item->weight(10);
                 $item->authorize(
-                     /* append */
+                    $this->auth->hasAccess('iplaces.places.index')
                 );
                 $item->item(trans('iplaces::places.title.places'), function (Item $item) {
                     $item->icon('fa fa-grav');
@@ -98,7 +98,6 @@ class RegisterIplacesSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
 
-          
                 $item->item(trans('iplaces::cities.title.cities'), function (Item $item) {
                     $item->icon('fa fa-exchange');
                     $item->weight(0);

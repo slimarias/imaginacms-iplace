@@ -11,6 +11,7 @@ use Modules\Iplaces\Events\ServiceWasCreated;
 use Modules\Iplaces\Repositories\ServiceRepository;
 use Modules\Iplaces\Entities\Status;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\Iplaces\Entities\Servtype;
 
 class ServiceController extends AdminBaseController
 {

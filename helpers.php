@@ -85,7 +85,7 @@ if (!function_exists('saveImage')) {
 }
 
 //OBTENER LUGARES
-if (! function_exists('get_places')) {
+if (!function_exists('get_places')) {
 
   function get_places($options=array())
   {
@@ -163,7 +163,7 @@ if (! function_exists('get_places')) {
   }
 }
 
-if(! function_exists('format_date')){
+if(!function_exists('format_date')){
 
   function format_date($date,$format){
 
@@ -174,7 +174,7 @@ if(! function_exists('format_date')){
 
 }
 
-if (! function_exists('placegallery')){
+if (!function_exists('placegallery')){
 
   function placegallery($id){
     $images = Storage::disk('publicmedia')->files('assets/iplaces/place/gallery/' . $id);
