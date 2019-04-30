@@ -50,13 +50,13 @@
                                 </button>
                             </div>
                             <div class="form-group">
-                                <label>{{trans('iplaces::places.form.galleries')}}</label>
+                                <label>{{trans('iplaces::places.form.gallery')}}</label>
                             </div>
                         </div>
                         <div class="box-body ">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6">
-                                    <label for="options[videos]"><strong>{{trans('iplaces::place.form.Gallery')}}</strong></label>
+                                    <label for="options[videos]"><strong>{{trans('iplaces::place.form.gallery')}}</strong></label>
                                     <button type="button" data-toggle="modal" data-target="#modalGallery" class="form-control btn btn-primary btn-flat">{{ trans('iplaces::place.form.View Gallery') }}</button>
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
@@ -203,12 +203,12 @@
                                 </button>
                             </div>
                             <div class="form-group">
-                                <label>{{trans('iplaces::common.form.cities')}}</label>
+                                <label>{{trans('iplaces::common.form.sites')}}</label>
                             </div>
                         </div>
                         <div class="box-body">
                             <label for="cities"><strong>{{trans('iplaces::zones.form.principal')}}</strong></label>
-                            <select class="form-control" name="city_id" id="city_id" required>
+                            <select class="form-control" name="site_id" id="site_id" required>
                                 @foreach ($sites as $site)
                                     <option value="{{$site->id}}" {{ old('site_id', $place->site_id) == $site->id ? 'selected' : '' }}> {{$site->title}}
                                     </option>

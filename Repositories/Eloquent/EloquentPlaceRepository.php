@@ -84,6 +84,12 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
         is_array($filter->zones) ? true : $filter->zones = [$filter->zones];
         $query->whereIn('zone_id', $filter->zones);
       }
+
+        if (isset($filter->schedules)) {
+            $query->where('schedule_id', $filter->schedules);
+        }
+
+
       //Add order for category
 
       if (isset($filter->categories) && is_array($filter->categories)) {
@@ -97,7 +103,7 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
       //Add order by province
       if (isset($filter->provinces) && is_array($filter->provinces)) {
         is_array($filter->provinces) ? true : $filter->cities = [$filter->provinces];
-        $query->whereIn('province_id', $filter->cities);
+        $query->whereIn('province_id', $filter->provinces);
 
       }
 

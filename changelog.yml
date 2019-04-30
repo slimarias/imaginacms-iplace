@@ -1,5 +1,15 @@
 url: https://github.com/imagina/asgardcms-iplace
 versions:
+    "1.3.2":
+        changed:
+          - Api routes
+          - Category Controller Api
+          - PlaceController Api
+          - ScheduleController Api
+          - Create and edit Admin View Places
+        removed:
+         - function helper saveImage
+         - BaseApiController
     "1.3.1":
         added:
           - Use Servicetype in Service Admin Controller

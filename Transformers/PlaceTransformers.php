@@ -69,7 +69,12 @@ class PlaceTransformers extends Resource
             'metakeywords' => $this->metakeywords,
             'options' => $options,
             'created_at' => ($this->created_at),
-            'updated_at' => ($this->updated_at)
+            'updated_at' => ($this->updated_at),
+            'city' => $this->city_id,
+            'province' => $this->city_id,
+            'zone' => $this->zone_id,
+            'schedule' => $this->schedule_id,
+
         ];
 
         /*Transform Relation Ships*/

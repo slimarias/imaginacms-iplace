@@ -7,12 +7,7 @@ use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
-use Modules\Iplaces\Entities\Category;
-use Modules\Iplaces\Repositories\PlaceRepository;
-use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Iplaces\Transformers\CategoryTransformers;
-use Modules\Iplaces\Entities\Status;
-
 use Route;
 
 class CategoryController extends BaseApiController
@@ -27,396 +22,161 @@ class CategoryController extends BaseApiController
         $this->status = app('Modules\Iplaces\Entities\Status');
     }
 
-    public function index(Request $request){
-
+    /**
+     * GET ITEMS
+     *
+     * @return mixed
+     */
+    public function index(Request $request)
+    {
         try {
             //Get Parameters from URL.
-            $p = $this->parametersUrl(1, 12, false, []);
+            $params = $this->getParamsRequest($request);
 
             //Request to Repository
-            $categories = $this->category->index($p->page, $p->take, $p->filter, $p->include);
+            $dataEntity = $this->category->getItemsBy($params);
 
             //Response
-            $response = ["data" => CategoryTransformers::collection($categories)];
+            $response = ["data" => CategoryTransformers::collection($dataEntity)];
 
             //If request pagination add meta-page
-            $p->page ? $response["meta"] = ["page" => $this->pageTransformer($categories)] : false;
+            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
         } catch (\Exception $e) {
-            //Message Error
-            $status = 500;
-            $response = [
-                "errors" => $e->getMessage()
-            ];
+            \Log::error($e);
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
         }
 
-        return response()->json($response, $status ?? 200);
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
 
-    public function show($slug, Request $request)
+    /**
+     * GET A ITEM
+     *
+     * @param $criteria
+     * @return mixed
+     */
+    public function show($criteria, Request $request)
     {
         try {
             //Get Parameters from URL.
-            $params = $this->parametersUrl(false, false, false, []);
+            $params = $this->getParamsRequest($request);
 
             //Request to Repository
-            $category = $this->category->show($slug, $params);
+            $dataEntity = $this->category->getItem($criteria, $params);
+
+            //Break if no found item
+            if (!$dataEntity) throw new Exception('Item not found', 204);
 
             //Response
-            $response = [
-                "data" => is_null($category) ? false : new CategoryTransformers($category)];
+            $response = ["data" => new CategoryTransformers($dataEntity)];
+
+            //If request pagination add meta-page
+            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
         } catch (\Exception $e) {
-            //Message Error
-            $status = 500;
-            $response = [
-                "errors" => $e->getMessage()
-            ];
+            \Log::error($e);
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
         }
 
-        return response()->json($response, $status ?? 200);
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
 
-
-//get
-    public function categories(Request $request)
+    /**
+     * CREATE A ITEM
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function create(Request $request)
     {
-       //dd($request)
-        try {;
-            if(isset($request->include)){
-                $includes = explode(",", $request->include);
-            }else{
-                $includes=null;
-            }
-            if (isset($request->filters) && !empty($request->filters)) {
-                $filters = json_decode($request->filters);
-                $results = $this->category->whereFilters($filters, $includes);
-
-                if (isset($filters->take)) {
-                    $response = [
-                        'meta' => [
-                            "take" => $filters->take ?? 5,
-                            "skip" => $filters->skip ?? 0,
-                        ],
-                        'data' => CategoryTransformers::collection($results),
-                    ];
-                } else {
-                    $response = [
-                        'meta' => [
-                            "total-pages" => $results->lastPage(),
-                            "per_page" => $results->perPage(),
-                            "total-item" => $results->total()
-                        ],
-                        'data' => CategoryTransformers::collection($results),
-                        'links' => [
-                            "self" => $results->currentPage(),
-                            "first" => $results->hasMorePages(),
-                            "prev" => $results->previousPageUrl(),
-                            "next" => $results->nextPageUrl(),
-                            "last" => $results->lastPage()
-                        ]
-
-                    ];
-                }
-            } else {
-                $paginate = $request->paginate ?? 12;
-
-                $results = $this->category->paginate($paginate);
-                $response = [
-                    'meta' => [
-                        "total-pages" => $results->lastPage(),
-                        "per_page" => $results->perPage(),
-                        "total-item" => $results->total()
-                    ],
-                    'data' => CategoryTransformers::collection($results),
-                    'links' => [
-                        "self" => $results->currentPage(),
-                        "first" => $results->hasMorePages(),
-                        "prev" => $results->previousPageUrl(),
-                        "next" => $results->nextPageUrl(),
-                        "last" => $results->lastPage()
-                    ]
-
-                ];
-            }
-
-        } catch (\Exception $e) {
-            Log::error($e);
-            $status = 500;
-            $response = ['errors' => [
-                "code" => "501",
-                "source" => [
-                    "pointer" => url($request->path()),
-                ],
-                "title" => "Error Query Categories",
-                "detail" => $e->getMessage()
-            ]
-            ];
-        }
-
-        return response()->json($response, $status ?? 200);
-
-    }
-//get
-    public function category(Category $category, Request $request)
-    {
-       // dd($request);
+        \DB::beginTransaction();
         try {
+            $data = $request->input('attributes') ?? [];//Get data  
+            //Validate Request
+            $this->validateRequestApi(new CustomRequest($data));
 
-            if (isset($category->id) && !empty($category->id)) {
+            //Create item
+            $dataEntity = $this->category->create($data);
 
-                $response = [
-                    "meta" => [
-                        "metatitle" => $category->metatitle,
-                        "metadescription" => $category->metadescription
-                    ],
-                    "type" => "category",
-                    "id" => $category->id,
-                    "attributes" => new CategoryTransformers($category),
-                ];
-
-                $includes = explode(",", $request->include);
-                // is_array($request->include) ? true : $request->include = [$request->include];
-
-                if (in_array('parent', $includes)) {
-                    if ($category->parent) {
-                        $response["relationships"]["parent"] = new CategoryTransformers($category->parent);
-                    } else {
-                        $response["relationships"]["parent"] = array();
-                    }
-                }
-                if (in_array('children', $includes)) {
-
-                    $response["relationships"]["children"] = CategoryTransformers::collection($category->children()->paginate(12));
-                }
-
-
-            } else {
-                $status = 404;
-                $response = ['errors' => [
-                    "code" => "404",
-                    "source" => [
-                        "pointer" => url($request->path()),
-                    ],
-                    "title" => "Not Found",
-                    "detail" => 'Query empty'
-                ]
-                ];
-            }
+            //Response
+            $response = ["data" => new CategoryTransformers($dataEntity)];
+            \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-            Log::error($e);
-            $status = 500;
-            $response = ['errors' => [
-                "code" => "501",
-                "source" => [
-                    "pointer" => url($request->path()),
-                ],
-                "title" => "Error Query Category",
-                "detail" => $e->getMessage()
-            ]
-            ];
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
         }
-
-        return response()->json($response, $status ?? 200);
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
-//get
-    public function posts(Category $category, Request $request)
+
+    /**
+     * UPDATE ITEM
+     *
+     * @param $criteria
+     * @param Request $request
+     * @return mixed
+     */
+    public function update($criteria, Request $request)
     {
+        \DB::beginTransaction(); //DB Transaction
         try {
-            $includes = explode(",", $request->include);
-            if (isset($request->filters) && !empty($request->filters)) {
-                $filters = json_decode($request->filters);
-                $filters->categories = $category->id;
+            //Get data
+            $data = $request->input('attributes') ?? [];//Get data
 
-                $results = $this->post->whereFilters($filters, $includes);
+            //Validate Request
+            $this->validateRequestApi(new CustomRequest($data));
 
-                if (isset($filters->take)) {
-                    $response = [
-                        'meta' => [
-                            "take" => $filters->take ?? 5,
-                            "skip" => $filters->skip ?? 0,
-                        ],
-                        'data' => CategoryTransformers::collection($results),
-                    ];
-                } else {
-                    $response = [
-                        'meta' => [
-                            "total-pages" => $results->lastPage(),
-                            "per_page" => $results->perPage(),
-                            "total-item" => $results->total()
-                        ],
-                        'data' => CategoryTransformers::collection($results),
-                        'links' => [
-                            "self" => $results->currentPage(),
-                            "first" => $results->hasMorePages(),
-                            "prev" => $results->previousPageUrl(),
-                            "next" => $results->nextPageUrl(),
-                            "last" => $results->lastPage()
-                        ]
+            //Get Parameters from URL.
+            $params = $this->getParamsRequest($request);
 
-                    ];
-                }
-            } else {
+            //Request to Repository
+            $this->category->updateBy($criteria, $data, $params);
 
-                $results = $this->post->whereFilters((object)$filter = ['categories' => $category->id, 'paginate' => $request->paginate ?? 12], $request->includes ?? false);
-                $response = [
-                    'meta' => [
-                        "total-pages" => $results->lastPage(),
-                        "per_page" => $results->perPage(),
-                        "total-item" => $results->total()
-                    ],
-                    'data' => CategoryTransformers::collection($results),
-                    'links' => [
-                        "self" => $results->currentPage(),
-                        "first" => $results->hasMorePages(),
-                        "prev" => $results->previousPageUrl(),
-                        "next" => $results->nextPageUrl(),
-                        "last" => $results->lastPage()
-                    ]
-
-                ];
-            }if(isset($request->category_id)){
-
-            }else{
-
-            }
-
+            //Response
+            $response = ["data" => 'Item Updated'];
+            \DB::commit();//Commit to DataBase
         } catch (\Exception $e) {
-            $status = 500;
-            $response = ['errors' => [
-                "code" => "501",
-                "source" => [
-                    "pointer" => url($request->path()),
-                ],
-                "title" => "Error Query Categories",
-                "detail" => $e->getMessage()
-            ]
-            ];
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
         }
 
-        return response()->json($response, $status ?? 200);
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
-//post
-    public function store(Request $request)
+
+    /**
+     * DELETE A ITEM
+     *
+     * @param $criteria
+     * @return mixed
+     */
+    public function delete($criteria, Request $request)
     {
+        \DB::beginTransaction();
         try {
-            $category = $this->category->create($request->all());
-            $status = 200;
-            $response = [
-                'susses' => [
-                    'code' => '201',
-                    "source" => [
-                        "pointer" => url($request->path())
-                    ],
-                    "title" => trans('core::core.messages.resource created', ['name' => trans('iplace::categories.singular')]),
-                    "detail" => [
-                        'id' => $category->id
-                    ]
-                ]
-            ];
+            //Get params
+            $params = $this->getParamsRequest($request);
+
+            //call Method delete
+            $this->category->deleteBy($criteria, $params);
+
+            //Response
+            $response = ["data" => "Item deleted"];
+            \DB::commit();//Commit to Data Base
         } catch (\Exception $e) {
-            Log::error($e);
-            $status = 500;
-            $response = ['errors' => [
-                "code" => "501",
-                "source" => [
-                    "pointer" => url($request->path()),
-                ],
-                "title" => "Error Query Categories",
-                "detail" => $e->getMessage()
-            ]
-            ];
-        }
-        return response()->json($response, $status ?? 200);
-
-    }
-    //put
-    public function update(Category $category, Request $request)
-    {
-
-        try {
-
-            if (isset($category->id) && !empty($category->id)) {
-                $options = (array)$request->options ?? array();
-                isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/iplace/category/" . $category->id . ".jpg") : false;
-                $request['options'] = json_encode($options);
-                $category = $this->category->update($category, $request->all());
-
-                $status = 200;
-                $response = [
-                    'susses' => [
-                        'code' => '201',
-                        "source" => [
-                            "pointer" => url($request->path())
-                        ],
-                        "title" => trans('core::core.messages.resource updated', ['name' => trans('iplace::categories.singular')]),
-                        "detail" => [
-                            'id' => $category->id
-                        ]
-                    ]
-                ];
-
-
-            } else {
-                $status = 404;
-                $response = ['errors' => [
-                    "code" => "404",
-                    "source" => [
-                        "pointer" => url($request->path()),
-                    ],
-                    "title" => "Not Found",
-                    "detail" => 'Query empty'
-                ]
-                ];
-            }
-        } catch (\Exception $e) {
-            Log::error($e);
-            $status = 500;
-            $response = ['errors' => [
-                "code" => "501",
-                "source" => [
-                    "pointer" => url($request->path()),
-                ],
-                "title" => "Error Query Category",
-                "detail" => $e->getMessage()
-            ]
-            ];
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
         }
 
-        return response()->json($response, $status ?? 200);
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
-//delete
-    public function delete(Category $category, Request $request)
-    {
-        try {
-
-            $this->category->destroy($category);
-            $status = 200;
-            $response = [
-                'susses' => [
-                    'code' => '201',
-                    "title" => trans('core::core.messages.resource deleted', ['name' => trans('iplace::categories.singular')]),
-                    "detail" => [
-                        'id' => $category->id
-                    ]
-                ]
-            ];
-
-        } catch (\Exception $e) {
-            Log::error($e);
-            $status = 500;
-            $response = ['errors' => [
-                "code" => "501",
-                "source" => [
-                    "pointer" => url($request->path()),
-                ],
-                "title" => "Error Query Category",
-                "detail" => $e->getMessage()
-            ]
-            ];
-        }
-
-        return response()->json($response, $status ?? 200);
-    }
-
 
 
 }

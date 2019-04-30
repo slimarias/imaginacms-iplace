@@ -198,7 +198,7 @@
                                 </button>
                             </div>
                             <div class="form-group">
-                                <label>{{trans('iplaces::common.form.cities')}}</label>
+                                <label>{{trans('iplaces::common.form.sites')}}</label>
                             </div>
                         </div>
                         <div class="box-body">

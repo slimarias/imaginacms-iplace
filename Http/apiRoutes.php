@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Router;
 
-$router->group(['prefix'=>'iplace'],function (Router $router){
+$router->group(['prefix' => 'iplace'], function (Router $router) {
 
     $router->group(['prefix' => 'places'], function (Router $router) {
 
@@ -15,44 +15,37 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
             'as' => 'iplace.api.places.show',
             'uses' => 'PlaceController@show',
         ]);
-
-        $router->bind('aiplacesplace', function ($id) {
-            return app(\Modules\Iplaces\Repositories\PlaceRepository::class)->find($id);
-        });
         /*
         $router->get('/', [
             'as' => 'iplace.api.places',
             'uses' => 'PlaceController@places',
         ]);
         */
-        $router->get('{aiplacesplace}', [
-            'as' => 'iplace.api.place',
-            'uses' => 'PlaceController@place',
-        ]);
+
         $router->post('/', [
             'as' => 'iplace.api.places.store',
-            'uses' => 'PlaceController@store',
-            'middleware' => ['api.token','token-can:iplaces.places.create']
+            'uses' => 'PlaceController@create',
+            'middleware' => ['api.token', 'token-can:iplaces.places.create']
         ]);
         $router->post('aiplacesplace', [
             'as' => 'iplace.api.places.gallery.store',
             'uses' => 'PlaceController@galleryStore',
-            'middleware' => ['api.token','token-can:iplaces.places.create']
+            'middleware' => ['api.token', 'token-can:iplaces.places.create']
         ]);
         $router->post('aiplacesplace/delete', [
             'as' => 'iplace.api.places.gallery.delete',
             'uses' => 'PlaceController@galleryDelete',
-            'middleware' => ['api.token','token-can:iplaces.places.create']
+            'middleware' => ['api.token', 'token-can:iplaces.places.create']
         ]);
         $router->put('{aiplacesplace}', [
             'as' => 'iplace.api.places.update',
             'uses' => 'PlaceController@update',
-            'middleware' =>['api.token','token-can:iplaces.places.edit']
+            'middleware' => ['api.token', 'token-can:iplaces.places.edit']
         ]);
         $router->delete('{aiplacesplace}', [
             'as' => 'iplace.api.places.delete',
             'uses' => 'PlaceController@delete',
-            'middleware' => ['api.token','token-can:iplaces.places.destroy']
+            'middleware' => ['api.token', 'token-can:iplaces.places.destroy']
         ]);
     });
 
@@ -68,7 +61,7 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
         ]);
 
         $router->bind('aiplacescat', function ($id) {
-           return app(\Modules\Iplaces\Repositories\CategoryRepository::class)->find($id);
+            return app(\Modules\Iplaces\Repositories\CategoryRepository::class)->find($id);
         });
         /*
         $router->get('/', [
@@ -88,17 +81,17 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
         $router->post('/', [
             'as' => 'iplace.api.categories.store',
             'uses' => 'CategoryController@store',
-            'middleware' => ['api.token','token-can:iplaces.categories.create']
+            'middleware' => ['api.token', 'token-can:iplaces.categories.create']
         ]);
         $router->put('{aiplacescat}', [
             'as' => 'iplace.api.categories.update',
             'uses' => 'CategoryController@update',
-            'middleware' =>['api.token','token-can:iplaces.categories.edit']
+            'middleware' => ['api.token', 'token-can:iplaces.categories.edit']
         ]);
         $router->delete('{aiplacescat}', [
             'as' => 'iplace.api.categories.delete',
             'uses' => 'CategoryController@delete',
-            'middleware' => ['api.token','token-can:iplaces.categories.destroy']
+            'middleware' => ['api.token', 'token-can:iplaces.categories.destroy']
         ]);
     });
 
@@ -135,17 +128,17 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
         $router->post('/', [
             'as' => 'iplace.api.services.store',
             'uses' => 'ServiceController@store',
-            'middleware' => ['api.token','token-can:iplaces.services.create']
+            'middleware' => ['api.token', 'token-can:iplaces.services.create']
         ]);
         $router->put('{aiplacesserv}', [
             'as' => 'iplace.api.services.update',
             'uses' => 'ServiceController@update',
-            'middleware' =>['api.token','token-can:iplaces.services.edit']
+            'middleware' => ['api.token', 'token-can:iplaces.services.edit']
         ]);
         $router->delete('{aiplacesserv}', [
             'as' => 'iplace.api.services.delete',
             'uses' => 'ServiceController@delete',
-            'middleware' => ['api.token','token-can:iplaces.services.destroy']
+            'middleware' => ['api.token', 'token-can:iplaces.services.destroy']
         ]);
     });
 
@@ -181,17 +174,17 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
         $router->post('/', [
             'as' => 'iplace.api.zones.store',
             'uses' => 'ZoneController@store',
-            'middleware' => ['api.token','token-can:iplaces.zones.create']
+            'middleware' => ['api.token', 'token-can:iplaces.zones.create']
         ]);
         $router->put('{aiplaceszone}', [
             'as' => 'iplace.api.zones.update',
             'uses' => 'ZoneController@update',
-            'middleware' =>['api.token','token-can:iplaces.zones.edit']
+            'middleware' => ['api.token', 'token-can:iplaces.zones.edit']
         ]);
         $router->delete('{aiplaceszone}', [
             'as' => 'iplace.api.zones.delete',
             'uses' => 'ZoneController@delete',
-            'middleware' => ['api.token','token-can:iplaces.zones.destroy']
+            'middleware' => ['api.token', 'token-can:iplaces.zones.destroy']
         ]);
     });
 
@@ -228,17 +221,17 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
         $router->post('/', [
             'as' => 'iplace.api.schedules.store',
             'uses' => 'ScheduleController@store',
-            'middleware' => ['api.token','token-can:iplaces.schedules.create']
+            'middleware' => ['api.token', 'token-can:iplaces.schedules.create']
         ]);
         $router->put('{aiplacesschedule}', [
             'as' => 'iplace.api.schedules.update',
             'uses' => 'ScheduleController@update',
-            'middleware' =>['api.token','token-can:iplaces.schedules.edit']
+            'middleware' => ['api.token', 'token-can:iplaces.schedules.edit']
         ]);
         $router->delete('{aiplacesschedule}', [
             'as' => 'iplace.api.schedules.delete',
             'uses' => 'ScheduleController@delete',
-            'middleware' => ['api.token','token-can:iplaces.schedules.destroy']
+            'middleware' => ['api.token', 'token-can:iplaces.schedules.destroy']
         ]);
     });
 
@@ -252,7 +245,7 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
             'as' => 'iplace.api.spaces.show',
             'uses' => 'SpaceController@show',
         ]);
-        
+
     });
 
 
@@ -304,4 +297,152 @@ $router->group(['prefix'=>'iplace'],function (Router $router){
     });
     
 */
+});
+
+
+$router->group(["prefix" => 'iplaces'], function (Router $router) {
+    $router->group(["prefix" => 'places'], function (Router $router) {
+        //Route create
+        $router->post('/', [
+            'as' => 'api.iplaces.places.create',
+            'uses' => 'PlaceController@create',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route index
+        $router->get('/', [
+            'as' => 'api.iplaces.places.get.items.by',
+            'uses' => 'PlaceController@index',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route show
+        $router->get('/{criteria}', [
+            'as' => 'api.iplaces.places.get.item',
+            'uses' => 'PlaceController@show',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route update
+        $router->put('/{criteria}', [
+            'as' => 'api.iplaces.places.update',
+            'uses' => 'PlaceController@update',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route delete
+        $router->delete('/{criteria}', [
+            'as' => 'api.iplaces.places.delete',
+            'uses' => 'PlaceController@delete',
+            'middleware' => ['auth:api']
+        ]);
+    });
+    $router->group(["prefix" => 'categories'], function (Router $router) {
+        //Route create
+        $router->post('/', [
+            'as' => 'api.iplaces.categories.create',
+            'uses' => 'CategoryController@create',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route index
+        $router->get('/', [
+            'as' => 'api.iplaces.categories.get.items.by',
+            'uses' => 'CategoryController@index',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route show
+        $router->get('/{criteria}', [
+            'as' => 'api.iplaces.categories.get.item',
+            'uses' => 'CategoryController@show',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route update
+        $router->put('/{criteria}', [
+            'as' => 'api.iplaces.categories.update',
+            'uses' => 'CategoryController@update',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route delete
+        $router->delete('/{criteria}', [
+            'as' => 'api.iplaces.categories.delete',
+            'uses' => 'CategoryController@delete',
+            'middleware' => ['auth:api']
+        ]);
+    });
+    $router->group(["prefix" => 'schedules'], function (Router $router) {
+        //Route create
+        $router->post('/', [
+            'as' => 'api.iplaces.schedules.create',
+            'uses' => 'ScheduleController@create',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route index
+        $router->get('/', [
+            'as' => 'api.iplaces.schedules.get.items.by',
+            'uses' => 'ScheduleController@index',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route show
+        $router->get('/{criteria}', [
+            'as' => 'api.iplaces.schedules.get.item',
+            'uses' => 'ScheduleController@show',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route update
+        $router->put('/{criteria}', [
+            'as' => 'api.iplaces.schedules.update',
+            'uses' => 'ScheduleController@update',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route delete
+        $router->delete('/{criteria}', [
+            'as' => 'api.iplaces.schedules.delete',
+            'uses' => 'ScheduleController@delete',
+            'middleware' => ['auth:api']
+        ]);
+    });
+    $router->group(["prefix" => 'entity'], function (Router $router) {
+        //Route create
+        $router->post('/', [
+            'as' => 'api.iplaces.entity.create',
+            'uses' => 'EntityApiController@create',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route index
+        $router->get('/', [
+            'as' => 'api.iplaces.entity.get.items.by',
+            'uses' => 'EntityApiController@index',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route show
+        $router->get('/{criteria}', [
+            'as' => 'api.iplaces.entity.get.item',
+            'uses' => 'EntityApiController@show',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route update
+        $router->put('/{criteria}', [
+            'as' => 'api.iplaces.entity.update',
+            'uses' => 'EntityApiController@update',
+            'middleware' => ['auth:api']
+        ]);
+
+        //Route delete
+        $router->delete('/{criteria}', [
+            'as' => 'api.iplaces.entity.delete',
+            'uses' => 'EntityApiController@delete',
+            'middleware' => ['auth:api']
+        ]);
+    });
 });
