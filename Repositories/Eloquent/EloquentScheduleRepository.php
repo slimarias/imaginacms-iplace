@@ -101,7 +101,9 @@ class EloquentScheduleRepository extends EloquentBaseRepository implements Sched
 
   public function create($data)
   {
-    return $this->model->create($data);
+      $schedule= $this->model->create($data);
+      event(new ScheduleWasCreated($schedule, $data));
+      return $this->find($schedule->id);
   }
 
 

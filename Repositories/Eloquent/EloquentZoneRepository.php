@@ -101,7 +101,9 @@ class EloquentZoneRepository extends EloquentBaseRepository implements ZoneRepos
 
   public function create($data)
   {
-    return $this->model->create($data);
+      $zone= $this->model->create($data);
+      event(new ZoneWasCreated($zone, $data));
+      return $this->find($zone->id);
   }
 
 

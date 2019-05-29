@@ -110,11 +110,13 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
 
   public function create($data)
   {
-    $place = $this->model->create($data);
-
-    $place->categories()->sync(array_get($data, 'categories', []));
-    $model->schedules()->sync(array_get($data, 'schedules', []));
-    event(new CreateMedia($place,$data));
+      // dd($data);
+      $place = $this->model->create($data);
+      event(new PlaceWasCreated($place, $data));
+      $place->categories()->sync(array_get($data, 'categories', []));
+      $place->services()->sync(array_get($data, 'services', []));
+      $place->spaces()->sync(array_get($data, 'spaces', []));
+      event(new CreateMedia($place,$data));
   }
 
 
@@ -162,4 +164,44 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
     $model ? $model->delete() : false;
     event(new DeleteMedia($model->id, get_class($model)));
   }
+
+    public function update($model, $data)
+    {
+
+        $model->update($data);
+        $model->categories()->sync(array_get($data, 'categories', []));
+        $model->services()->sync(array_get($data, 'services', []));
+        $model->spaces()->sync(array_get($data, 'spaces', []));
+
+        return $model;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function findBySlug($slug)
+    {
+        $query=$this->model->query();
+        if (method_exists($this->model, 'translations')) {
+            $query->whereHas('translations', function (Builder $q) use ($slug) {
+                $q->where('slug', $slug);
+            })->with('categories', 'city', 'category', 'translations', 'province');
+        }else{
+            $query->where('slug', $slug)->with('categories', 'city', 'category', 'province');
+        }
+        $query->whereStatus(Status::ACTIVE);
+        return $query->firstOrFail();
+    }
+
+    public function whereCategory($id)
+    {
+        is_array($id) ? true : $id = [$id];
+        $query = $this->model->with('city', 'category', 'province');
+        $query->whereHas('categories', function (Builder $q) use ($id) {
+            $q->whereIn('category_id', $id);
+        });
+        $query->orderBy("created_at", "desc");
+        $query->whereStatus(Status::ACTIVE);
+        return $query->paginate(12);
+    }
 }

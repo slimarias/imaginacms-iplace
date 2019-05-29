@@ -100,11 +100,6 @@ class EloquentServiceRepository extends EloquentBaseRepository implements Servic
     return $query->where($field ?? 'id', $criteria)->first();
   }
 
-  public function create($data)
-  {
-    return $this->model->create($data);
-  }
-
 
   public function updateBy($criteria, $data, $params = false)
   {
@@ -142,4 +137,21 @@ class EloquentServiceRepository extends EloquentBaseRepository implements Servic
     $model = $query->where($field ?? 'id', $criteria)->first();
     $model ? $model->delete() : false;
   }
+
+    public function create($data)
+    {
+        // dd($data);
+        $service= $this->model->create($data);
+        event(new ServiceWasCreated($service, $data));
+        return $this->find($service->id);
+    }
+
+
+    public function whereType($type)
+    {
+        $query=$this->model->query();
+
+        $query->where('servtype',$type);
+        return $query->get();
+    }
 }

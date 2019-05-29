@@ -104,8 +104,10 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
   public function create($data)
   {
-    $category = $this->model->create($data);
+      $category= $this->model->create($data);
+      event(new CategoryWasCreated($category, $data));
     event(new CreateMedia($category,$data));
+      return $this->find($category->id);
   }
 
 

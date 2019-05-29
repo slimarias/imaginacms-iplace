@@ -99,10 +99,12 @@ class EloquentSpaceRepository extends EloquentBaseRepository implements SpaceRep
     return $query->where($field ?? 'id', $criteria)->first();
   }
 
-  public function create($data)
-  {
-    return $this->model->create($data);
-  }
+    public function create($data)
+    {
+        $space= $this->model->create($data);
+        event(new SpaceWasCreated($space, $data));
+        return $this->find($space->id);
+    }
 
 
   public function updateBy($criteria, $data, $params = false)
