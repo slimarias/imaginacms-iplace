@@ -1,5 +1,8 @@
 url: https://github.com/imagina/asgardcms-iplace
 versions:
+    "1.4.1":
+      added:
+        - Metods CacheDecoreitor all entities
     "1.4.0":
       added:
         - Permissions mange

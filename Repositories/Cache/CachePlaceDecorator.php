@@ -27,4 +27,33 @@ class CachePlaceDecorator extends BaseCacheDecorator implements PlaceRepository
             return $this->repository->wherebyFilter($page, $take, $filter, $include);
         });
     }
+
+    public function getItemsBy($params)
+    {
+        return $this->remember(function () use ($params) {
+            return $this->repository->getItemsBy($params);
+        });
+    }
+
+    public function getItem($criteria, $params)
+    {
+        return $this->remember(function () use ($criteria, $params) {
+            return $this->repository->getItem($criteria, $params);
+        });
+    }
+
+
+    public function updateBy($criteria, $data, $params)
+    {
+        return $this->remember(function () use ($criteria, $data, $params) {
+            return $this->repository->updateBy($criteria, $data, $params);
+        });
+    }
+
+    public function deleteBy($criteria, $params)
+    {
+        return $this->remember(function () use ($criteria, $params) {
+            return $this->repository->deleteBy($criteria, $params);
+        });
+    }
 }
