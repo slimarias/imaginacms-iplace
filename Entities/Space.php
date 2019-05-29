@@ -6,14 +6,16 @@ use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Iplaces\Presenters\SpacePresenter;
 use Laracasts\Presenter\PresentableTrait;
+use Modules\Media\Support\Traits\MediaRelation;
+use Modules\Media\Entities\File;
 
 class Space extends Model
 {
-    use Translatable,PresentableTrait;
+    use Translatable,PresentableTrait, MediaRelation;
 
     protected $table = 'iplaces__spaces';
-    public $translatedAttributes = ['title', 'description', 'slug','metatitle','metadescription','metakeywords'];
-    protected $fillable = ['title', 'description', 'slug', 'options','status','metatitle','metadescription','metakeywords'];
+    public $translatedAttributes = ['title', 'description', 'slug','meta_title','meta_description','meta_keywords'];
+    protected $fillable = ['title', 'description', 'slug', 'options','status','meta_title','meta_description','meta_keywords'];
     protected $fakeColumns = ['options'];
 
     protected $presenter = SpacePresenter::class;
@@ -36,7 +38,7 @@ class Space extends Model
         }
     }
 
-    public function getMainimageAttribute()
+    public function getMainImageAttribute()
     {
         $image=$this->options->mainimage ?? 'modules/iplaces/img/default.jpg';
         $v=strftime('%u%w%g%k%M%S', strtotime($this->updated_at));

@@ -10,7 +10,7 @@ class CreatePlaceRequest extends BaseFormRequest
     {
         return [
             'category_id'=>'required',
-            'address'=>'required'
+            //'address'=>'required'
         ];
     }
 

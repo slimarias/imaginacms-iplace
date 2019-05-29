@@ -7,176 +7,177 @@ use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
-use Modules\Iplaces\Transformers\CategoryTransformers;
+use Modules\Iplaces\Http\Requests\CreateCategoryRequest;
+use Modules\Iplaces\Http\Requests\UpdateCategoryRequest;
+use Modules\Iplaces\Repositories\CategoryRepository;
+use Modules\Iplaces\Transformers\CategoryTransformer;
 use Route;
 
 class CategoryController extends BaseApiController
 {
-    private $category;
-    public $status;
+  private $category;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->category = app('Modules\Iplaces\Repositories\CategoryRepository');
-        $this->status = app('Modules\Iplaces\Entities\Status');
+  public function __construct(CategoryRepository $category)
+  {
+    parent::__construct();
+    $this->category = $category;
+  }
+
+
+  /**
+   * GET ITEMS
+   *
+   * @return mixed
+   */
+  public function index(Request $request)
+  {
+    try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+
+      //Request to Repository
+      $categories = $this->category->getItemsBy($params);
+
+      //Response
+      $response = ["data" => CategoryTransformer::collection($categories)];
+
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($categories)] : false;
+    } catch (\Exception $e) {
+      \Log::error($e);
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
 
-    /**
-     * GET ITEMS
-     *
-     * @return mixed
-     */
-    public function index(Request $request)
-    {
-        try {
-            //Get Parameters from URL.
-            $params = $this->getParamsRequest($request);
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
 
-            //Request to Repository
-            $dataEntity = $this->category->getItemsBy($params);
 
-            //Response
-            $response = ["data" => CategoryTransformers::collection($dataEntity)];
+  /**
+   * GET A ITEM
+   *
+   * @param $criteria
+   * @return mixed
+   */
+  public function show($criteria, Request $request)
+  {
+    try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
 
-            //If request pagination add meta-page
-            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
-        } catch (\Exception $e) {
-            \Log::error($e);
-            $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
-        }
+      //Request to Repository
+      $category = $this->category->getItem($criteria, $params);
 
-        //Return response
-        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+      //Break if no found item
+      if (!$category) throw new \Exception('Item not found', 204);
+
+      //Response
+      $response = ["data" => new CategoryTransformer($category)];
+
+    } catch (\Exception $e) {
+      \Log::error($e);
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
 
-    /**
-     * GET A ITEM
-     *
-     * @param $criteria
-     * @return mixed
-     */
-    public function show($criteria, Request $request)
-    {
-        try {
-            //Get Parameters from URL.
-            $params = $this->getParamsRequest($request);
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
 
-            //Request to Repository
-            $dataEntity = $this->category->getItem($criteria, $params);
+  /**
+   * CREATE A ITEM
+   *
+   * @param Request $request
+   * @return mixed
+   */
+  public function create(Request $request)
+  {
+    \DB::beginTransaction();
+    try {
+      $data = $request->input('attributes') ?? [];//Get data
+      //Validate Request
+      $this->validateRequestApi(new CreateCategoryRequest((array)$data));
 
-            //Break if no found item
-            if (!$dataEntity) throw new Exception('Item not found', 204);
+      //Create item
+      $category = $this->category->create($data);
 
-            //Response
-            $response = ["data" => new CategoryTransformers($dataEntity)];
+      //Response
+      $response = ["data" => ""];
+      \DB::commit(); //Commit to Data Base
+    } catch (\Exception $e) {
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+    }
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
 
-            //If request pagination add meta-page
-            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
-        } catch (\Exception $e) {
-            \Log::error($e);
-            $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
-        }
+  /**
+   * UPDATE ITEM
+   *
+   * @param $criteria
+   * @param Request $request
+   * @return mixed
+   */
+  public function update($criteria, Request $request)
+  {
+    \DB::beginTransaction(); //DB Transaction
+    try {
+      //Get data
+      $data = $request->input('attributes') ?? [];//Get data
 
-        //Return response
-        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+      //Validate Request
+      $this->validateRequestApi(new UpdateCategoryRequest((array)$data));
+
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+
+      //Request to Repository
+      $this->category->updateBy($criteria, $data, $params);
+
+      //Response
+      $response = ["data" => 'Item Updated'];
+      \DB::commit();//Commit to DataBase
+    } catch (\Exception $e) {
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
 
-    /**
-     * CREATE A ITEM
-     *
-     * @param Request $request
-     * @return mixed
-     */
-    public function create(Request $request)
-    {
-        \DB::beginTransaction();
-        try {
-            $data = $request->input('attributes') ?? [];//Get data  
-            //Validate Request
-            $this->validateRequestApi(new CustomRequest($data));
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
 
-            //Create item
-            $dataEntity = $this->category->create($data);
+  /**
+   * DELETE A ITEM
+   *
+   * @param $criteria
+   * @return mixed
+   */
+  public function delete($criteria, Request $request)
+  {
+    \DB::beginTransaction();
+    try {
+      //Get params
+      $params = $this->getParamsRequest($request);
 
-            //Response
-            $response = ["data" => new CategoryTransformers($dataEntity)];
-            \DB::commit(); //Commit to Data Base
-        } catch (\Exception $e) {
-            \DB::rollback();//Rollback to Data Base
-            $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
-        }
-        //Return response
-        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+      //call Method delete
+      $this->category->deleteBy($criteria, $params);
+
+      //Response
+      $response = ["data" => ""];
+      \DB::commit();//Commit to Data Base
+    } catch (\Exception $e) {
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
 
-    /**
-     * UPDATE ITEM
-     *
-     * @param $criteria
-     * @param Request $request
-     * @return mixed
-     */
-    public function update($criteria, Request $request)
-    {
-        \DB::beginTransaction(); //DB Transaction
-        try {
-            //Get data
-            $data = $request->input('attributes') ?? [];//Get data
-
-            //Validate Request
-            $this->validateRequestApi(new CustomRequest($data));
-
-            //Get Parameters from URL.
-            $params = $this->getParamsRequest($request);
-
-            //Request to Repository
-            $this->category->updateBy($criteria, $data, $params);
-
-            //Response
-            $response = ["data" => 'Item Updated'];
-            \DB::commit();//Commit to DataBase
-        } catch (\Exception $e) {
-            \DB::rollback();//Rollback to Data Base
-            $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
-        }
-
-        //Return response
-        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
-    }
-
-    /**
-     * DELETE A ITEM
-     *
-     * @param $criteria
-     * @return mixed
-     */
-    public function delete($criteria, Request $request)
-    {
-        \DB::beginTransaction();
-        try {
-            //Get params
-            $params = $this->getParamsRequest($request);
-
-            //call Method delete
-            $this->category->deleteBy($criteria, $params);
-
-            //Response
-            $response = ["data" => "Item deleted"];
-            \DB::commit();//Commit to Data Base
-        } catch (\Exception $e) {
-            \DB::rollback();//Rollback to Data Base
-            $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
-        }
-
-        //Return response
-        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
-    }
+    //Return response
+    return response()->json($response, $status ?? 200);
+  }
 
 
 }

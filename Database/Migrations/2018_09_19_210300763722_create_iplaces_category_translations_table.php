@@ -18,9 +18,9 @@ class CreateIplacesCategoryTranslationsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('description')->nullable();
-            $table->string('metatitle');
-            $table->text('metakeywords');
-            $table->text('metadescription');
+            $table->string('meta_title');
+            $table->text('meta_keywords');
+            $table->text('meta_description');
             // Your translatable fields
 
             $table->integer('category_id')->unsigned();

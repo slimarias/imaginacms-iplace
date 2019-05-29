@@ -10,16 +10,18 @@ use Modules\Iplaces\Presenters\CategoryPresenter;
 use Modules\Iplaces\Events\CategoryWasCreated;
 use Modules\Core\Traits\NamespacedEntity;
 use Laracasts\Presenter\PresentableTrait;
+use Modules\Media\Support\Traits\MediaRelation;
+use Modules\Media\Entities\File;
 
 
 class Category extends Model
 {
-    use Translatable, PresentableTrait, NamespacedEntity;
+    use Translatable, PresentableTrait, NamespacedEntity, MediaRelation;
     //use Sluggable;
 
     protected $table = 'iplaces__categories';
-    public $translatedAttributes = ['title', 'description', 'slug','metatitle','metadescription','metakeywords'];
-    protected $fillable = ['title', 'description', 'slug', 'parent_id', 'options','status','metatitle','metadescription','metakeywords'];
+    public $translatedAttributes = ['title', 'description', 'slug','meta_title','meta_description','meta_keywords'];
+    protected $fillable = ['title', 'description', 'slug', 'parent_id', 'options','status','meta_title','meta_description','meta_keywords'];
     protected $fakeColumns = ['options'];
     protected $presenter = CategoryPresenter::class;
 
@@ -62,28 +64,18 @@ class Category extends Model
      * IMAGE
      * -------------
      */
+  public function getMainImageAttribute(){
 
-    public function getMainimageAttribute()
-    {
-        $image=$this->options->mainimage ?? 'modules/iplaces/img/default.jpg';
-        $v=strftime('%u%w%g%k%M%S', strtotime($this->updated_at));
-      // dd($v) ;
-        return url($image.'?v='.$v);
-
-    }
-
-    public function getMediumimageAttribute()
-    {
-
-        return str_replace('.jpg', '_mediumThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/default.jpg');
-    }
-
-    public function getThumbailsAttribute()
-    {
-
-        return str_replace('.jpg', '_smallThumb.jpg', $this->options->mainimage ?? 'modules/iplaces/img/default.jpg');
-    }
-
+    $thumbnail = $this->files()->where('zone', 'mainimage')->first();
+    if(!$thumbnail) return [
+      'mimeType' => 'image/jpeg',
+      'path' =>url('modules/iblog/img/post/default.jpg')
+    ];
+    return [
+      'mimeType' => $thumbnail->mimetype,
+      'path' => $thumbnail->path_string
+    ];
+  }
 
     /**
      * @return mixed

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PlaceTranslation extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['title','summary','description','slug','metatitle','metadescription','metakeywords'];
+    protected $fillable = ['title','summary','description','slug','meta_title','meta_description','meta_keywords'];
     protected $table = 'iplaces__place_translations';
 
     protected function setDescriptionAttribute($value){
@@ -22,22 +22,22 @@ class PlaceTranslation extends Model
 
     }
 
-    protected function setMetatitleAttribute($value){
+    protected function setMetaTitleAttribute($value){
 
         if(!empty($value)){
-            $this->attributes['metatitle'] = $value;
+            $this->attributes['meta_title'] = $value;
         } else {
-            $this->attributes['metatitle'] = $this->attributes['title'];
+            $this->attributes['meta_title'] = $this->attributes['title'];
         }
 
     }
 
-    protected function setMetadescriptionAttribute($value){
+    protected function setMetaDescriptionAttribute($value){
 
         if(!empty($value)){
-            $this->attributes['metadescription'] = $value;
+            $this->attributes['meta_description'] = $value;
         } else {
-            $this->attributes['metadescription'] = substr(strip_tags($this->attributes['description']),0,150);
+            $this->attributes['meta_description'] = substr(strip_tags($this->attributes['description']),0,150);
         }
 
     }

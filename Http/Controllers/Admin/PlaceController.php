@@ -105,7 +105,7 @@ class PlaceController extends AdminBaseController
         $zones = $this->zone->all();
         $services = $this->service->whereType(0);
         $servicesSecond = $this->service->whereType(1);
-        $filter=json_decode(json_encode(['country_id'=>48]));
+        $filter=json_decode(json_encode(['country_id'=>1]));
         $provinces = $this->province->index(null,null,$filter,[],[]);
         $schedules= $this->schedule->all();
         $weathers= $this->weather->lists();
@@ -155,7 +155,7 @@ class PlaceController extends AdminBaseController
         $zones = $this->zone->all();
         $services = $this->service->whereType(0);
         $servicesSecond = $this->service->whereType(1);
-        $filter=json_decode(json_encode(['country_id'=>48]));
+        $filter=json_decode(json_encode(['country_id'=>1]));
         $provinces = $this->province->index(null,null,$filter,[],[]);
         $sites=$this->site->all();
         $filter_city = json_decode(json_encode(['province_id'=>$place->province_id]));

@@ -8,16 +8,14 @@ use Modules\User\Transformers\UserProfileTransformer;
 use Modules\Iplaces\Events\ServiceWasCreated;
 use Modules\Iplaces\Entities\Servtype;
 
-class ServiceTransformers extends Resource
+class ServiceTransformer extends Resource
 {
 
     public function toArray($request)
     {
 
         $servtype = new Servtype();
-      //  $dateformat= config('asgard.iplace.config.dateformat');
-        $options=$this->options;
-        unset($options->mainimage,$options->metatitle,$options->metadescription);
+      
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -25,14 +23,14 @@ class ServiceTransformers extends Resource
             'status'=>$this->status,
             'description' => $this->description,
             'type' => $this->servtype,
-            'typeName' => $servtype->get($this->servtype),
-            'mainimage' => $this->mainimage,
-            'metatitle'=>$this->metatitle??$this->title,
-            'metadescription'=>$this->metadescription,
-            'metakeywords'=>$this->metakeywords,
+            'typeName' => $servtype->get($this->serv_type),
+            'mainImage' => $this->main_image,
+            'metaTitle'=>$this->meta_title??$this->title,
+            'metaDescription'=>$this->meta_description,
+            'metaKeywords'=>$this->meta_keywords,
             'options' => $options,
-            'created_at' => ($this->created_at),
-            'updated_at' => ($this->updated_at)
+            'createdAt' => ($this->created_at),
+            'updatedAt' => ($this->updated_at)
         ];
 
        

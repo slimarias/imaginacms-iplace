@@ -25,7 +25,7 @@ class CreateIplacesPlacesTable extends Migration
             $table->integer('zone_id')->unsigned();
             $table->integer('service_id')->unsigned();
             $table->integer('schedule_id')->unsigned();
-            $table->text('address');
+            $table->text('address')->nullable();
             $table->integer('range_id')->unsigned();
             $table->integer('gama')->default(0)->unsigned();
             $table->integer('quantity_person')->default(0)->unsigned();

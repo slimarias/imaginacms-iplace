@@ -6,9 +6,11 @@ use Modules\Core\Repositories\BaseRepository;
 
 interface ServiceRepository extends BaseRepository
 {
-    /**
-     * @param $type
-     * @return mixed
-     */
-    public function whereType($type);
+      public function getItemsBy($params);
+
+        public function getItem($criteria, $params);
+
+        public function updateBy($criteria, $data, $params);
+
+        public function deleteBy($criteria, $params);
 }

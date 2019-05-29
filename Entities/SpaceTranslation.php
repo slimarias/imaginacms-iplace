@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SpaceTranslation extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['title','description','slug','metatitle','metadescription','metakeywords'];
+    protected $fillable = ['title','description','slug','meta_title','meta_description','meta_keywords'];
     protected $table = 'iplaces__space_translations';
 
     protected function setSummaryAttribute($value){
@@ -20,32 +20,32 @@ class SpaceTranslation extends Model
 
     }
 
-    protected function setMetatitleAttribute($value){
+    protected function setMetaTitleAttribute($value){
 
         if(!empty($value)){
-            $this->attributes['metatitle'] = $value;
+            $this->attributes['meta_title'] = $value;
         } else {
-            $this->attributes['metatitle'] = $this->attributes['title'];
+            $this->attributes['meta_title'] = $this->attributes['title'];
         }
 
     }
 
-    protected function setMetadescriptionAttribute($value){
+    protected function setMetaDescriptionAttribute($value){
 
         if(!empty($value)){
-            $this->attributes['metadescription'] = $value;
+            $this->attributes['meta_description'] = $value;
         } else {
-            $this->attributes['metadescription'] = substr(strip_tags($this->attributes['description']),0,150);
+            $this->attributes['meta_description'] = substr(strip_tags($this->attributes['description']),0,150);
         }
 
     }
 
-    protected function setMetakeywordsAttribute($value){
+    protected function setMetaKeywordsAttribute($value){
 
         if(!empty($value)){
-            $this->attributes['metakeywords'] = $value;
+            $this->attributes['meta_keywords'] = $value;
         } else {
-            $this->attributes['metakeywords'] =  $this->attributes['title'];
+            $this->attributes['meta_keywords'] =  $this->attributes['title'];
         }
 
     }

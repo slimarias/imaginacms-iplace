@@ -19,9 +19,9 @@ class CreateIplacesSpaceTranslationsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('description');
-            $table->string('metatitle');
-            $table->text('metakeywords');
-            $table->text('metadescription');
+            $table->string('meta_title');
+            $table->text('meta_keywords');
+            $table->text('meta_description');
 
             $table->text('options')->default('')->nullable();
 

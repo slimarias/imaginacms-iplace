@@ -8,14 +8,16 @@ use Modules\Iplaces\Presenters\ServicePresenter;
 use Modules\Iplaces\Events\ServiceWasCreated;
 use Modules\Core\Traits\NamespacedEntity;
 use Laracasts\Presenter\PresentableTrait;
+use Modules\Media\Support\Traits\MediaRelation;
+use Modules\Media\Entities\File;
 
 class Service extends Model
 {
-    use Translatable,PresentableTrait, NamespacedEntity;
+    use Translatable,PresentableTrait, NamespacedEntity, MediaRelation;
 
     protected $table = 'iplaces__services';
-    public $translatedAttributes = ['title', 'description', 'slug','metatitle','metadescription','metakeywords'];
-    protected $fillable = ['title', 'description', 'slug', 'options','status','servtype','metatitle','metadescription','metakeywords'];
+    public $translatedAttributes = ['title', 'description', 'slug','meta_title','meta_description','meta_keywords'];
+    protected $fillable = ['title', 'description', 'slug', 'options','status','serv_type','meta_title','meta_description','meta_keywords'];
     protected $fakeColumns = ['options'];
 
     protected $presenter = ServicePresenter::class;
@@ -38,13 +40,17 @@ class Service extends Model
             $this->attributes['slug'] = str_slug($this->attributes['title'], '-');
         }
     }
-    public function getMainimageAttribute()
+    public function getMainImageAttribute()
     {
-        $image=$this->options->mainimage ?? 'modules/iplaces/img/default.jpg';
-        $v=strftime('%u%w%g%k%M%S', strtotime($this->updated_at));
-        // dd($v) ;
-        return url($image.'?v='.$v);
-
+      $thumbnail = $this->files()->where('zone', 'mainimage')->first();
+      if(!$thumbnail) return [
+        'mimeType' => 'image/jpeg',
+        'path' =>url('modules/iblog/img/post/default.jpg')
+      ];
+      return [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
     }
 
     public function getUrlAttribute()

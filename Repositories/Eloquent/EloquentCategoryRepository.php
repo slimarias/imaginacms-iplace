@@ -2,6 +2,9 @@
 
 namespace Modules\Iplaces\Repositories\Eloquent;
 
+use Modules\Ihelpers\Events\CreateMedia;
+use Modules\Ihelpers\Events\DeleteMedia;
+use Modules\Ihelpers\Events\UpdateMedia;
 use Modules\Iplaces\Repositories\CategoryRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Iplaces\Events\CategoryWasCreated;
@@ -9,132 +12,141 @@ use Modules\Iplaces\Events\CategoryWasCreated;
 class EloquentCategoryRepository extends EloquentBaseRepository implements CategoryRepository
 {
 
-    public function index($page, $take, $filter, $include)
-    {
-        //Initialize Query
-        $query = $this->model->query();
+  public function getItemsBy($params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
 
-        /*== RELATIONSHIPS ==*/
-        if (count($include)) {
-            //Include relationships for default
-            $includeDefault = ['translations'];
-            $query->with(array_merge($includeDefault, $include));
-        }
-
-        /*== FILTER ==*/
-        if ($filter) {
-
-            //set language translation
-            if (isset($filter->locale))
-                \App::setLocale($filter->locale ?? null);
-
-            //Filter by parent_id
-            if (isset($filter->parentId) && is_array($filter->parentId)) {
-                $query->whereIn('parent_id', $filter->parentId);
-            }
-
-            //Filter by parent_slug
-            if (isset($filter->parentSlug) && is_array($filter->parentSlug)) {
-                $lang = \App::getLocale();//Get language
-                $query->whereIn('parent_id', function ($query) use ($filter,$lang) {
-                    $query->select('iplaces__category_translations.category_id')
-                        ->from('iplaces__category_translations')
-                        ->where('locale', $lang)
-                        ->whereIn('iplaces__category_translations.slug', $filter->parentSlug);
-                });
-            }
-
-            //Filter excluding categories by ID
-            if (isset($filter->excludeById) && is_array($filter->excludeById)) {
-                $query->whereNotIn('id', $filter->excludeById);
-            }
-
-            //Get specific categories by ID
-            if (isset($filter->includeById) && is_array($filter->includeById)) {
-                $query->whereIn('id', $filter->includeById);
-            }
-
-            //Search filter
-            if (isset($filter->search) && !empty($filter->search)) {
-                //Get the words separately from the criterion
-                $words = explode(' ', trim($filter->search));
-        
-                //Add condition of search to query
-                $lang = \App::getLocale();//Get language
-                $query->whereHas('translations', function ($query) use ($words,$lang){
-                  $query->where(function ($query) use ($words,$lang) {
-                    foreach ($words as $index => $word) {
-                      $query->where('locale', $lang)
-                      ->where('title', 'like', "%" . $word . "%")
-                        ->orWhere('description', 'like', "%" . $word . "%");
-                    }
-                  });
-                });
-            }
-
-            //Add order By
-            $orderBy = isset($filter->orderBy) ? $filter->orderBy : 'created_at';
-            $orderType = isset($filter->orderType) ? $filter->orderType : 'desc';
-            $query->orderBy($orderBy, $orderType);
-        }
-
-        /*=== REQUEST ===*/
-        if ($page) {//Return request with pagination
-            $take ? true : $take = 12; //If no specific take, query default take is 12
-            return $query->paginate($take);
-        } else {//Return request without pagination
-            $take ? $query->take($take) : false; //Set parameter take(limit) if is requesting
-            return $query->get();
-        }
+    /*== RELATIONSHIPS ==*/
+    if (in_array('*', $params->include)) {//If Request all relationships
+      $query->with([]);
+    } else {//Especific relationships
+      $includeDefault = [];//Default relationships
+      if (isset($params->include))//merge relations with default relationships
+        $includeDefault = array_merge($includeDefault, $params->include);
+      $query->with($includeDefault);//Add Relationships to query
     }
 
-    public function show($criteria, $params)
-    {
-        
-        //Initialize Query
-        $query = $this->model->query();
+    /*== FILTERS ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;//Short filter
 
-        /*== RELATIONSHIPS ==*/
-        if (count($params->include)) {
-            //Include relationships for default
-            $includeDefault = ['translations'];//set translations by default
-            $query->with(array_merge($includeDefault, $params->include));
-        }
+      //Filter by date
+      if (isset($filter->date)) {
+        $date = $filter->date;//Short filter date
+        $date->field = $date->field ?? 'created_at';
+        if (isset($date->from))//From a date
+          $query->whereDate($date->field, '>=', $date->from);
+        if (isset($date->to))//to a date
+          $query->whereDate($date->field, '<=', $date->to);
+      }
 
-        // FILTERS
-        if(isset($params->filter)){
+      //Order by
+      if (isset($filter->order)) {
+        $orderByField = $filter->order->field ?? 'created_at';//Default field
+        $orderWay = $filter->order->way ?? 'desc';//Default way
+        $query->orderBy($orderByField, $orderWay);//Add order to query
+      }
 
-            $filter = $params->filter;
-
-            //set language translation
-            if (isset($filter->locale))
-                \App::setLocale($params->filter->locale ?? null);
-        }
-
-        // First, find record by ID
-        $duplicateQuery = clone $query;
-        $result = $duplicateQuery->where('id', $criteria)->first();
-
-        // If not give results, find by slug
-        if (!$result){
-            $lang = \App::getLocale();//Get language
-            $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
-                $query->where('locale', $lang)
-                ->where('slug', $criteria);
-            })->first();
-        }
-
-        return $result;
-
+      //add filter by search
+      if (isset($filter->search)) {
+        //find search in columns
+        $query->where('id', 'like', '%' . $filter->search . '%')
+          ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
+          ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+      }
     }
 
-    public function create($data)
-    {
-       // dd($data);
-        $category= $this->model->create($data);
-        event(new CategoryWasCreated($category, $data));
-        return $this->find($category->id);
+    /*== FIELDS ==*/
+    if (isset($params->fields) && count($params->fields))
+      $query->select($params->fields);
+
+    /*== REQUEST ==*/
+    if (isset($params->page) && $params->page) {
+      return $query->paginate($params->take);
+    } else {
+      $params->take ? $query->take($params->take) : false;//Take
+      return $query->get();
+    }
+  }
+
+
+  public function getItem($criteria, $params = false)
+  {
+    //Initialize query
+    $query = $this->model->query();
+
+    /*== RELATIONSHIPS ==*/
+    if (in_array('*', $params->include)) {//If Request all relationships
+      $query->with([]);
+    } else {//Especific relationships
+      $includeDefault = [];//Default relationships
+      if (isset($params->include))//merge relations with default relationships
+        $includeDefault = array_merge($includeDefault, $params->include);
+      $query->with($includeDefault);//Add Relationships to query
     }
 
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      if (isset($filter->field))//Filter by specific field
+        $field = $filter->field;
+    }
+
+    /*== FIELDS ==*/
+    if (isset($params->fields) && count($params->fields))
+      $query->select($params->fields);
+
+    /*== REQUEST ==*/
+    return $query->where($field ?? 'id', $criteria)->first();
+  }
+
+  public function create($data)
+  {
+    $category = $this->model->create($data);
+    event(new CreateMedia($category,$data));
+  }
+
+
+  public function updateBy($criteria, $data, $params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
+
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      //Update by field
+      if (isset($filter->field))
+        $field = $filter->field;
+    }
+
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+
+    $model ? $model->update((array)$data) : false;
+    event(new UpdateMedia($model,$data));
+  }
+
+  public function deleteBy($criteria, $params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
+
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      if (isset($filter->field))//Where field
+        $field = $filter->field;
+    }
+
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+    $model ? $model->delete() : false;
+    event(new DeleteMedia($model->id, get_class($model)));
+  }
 
 }

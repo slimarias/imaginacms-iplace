@@ -13,7 +13,7 @@ class Schedule extends Model
 
     protected $table = 'iplaces__schedules';
     public $translatedAttributes = ['title'];
-    protected $fillable = ['title'];
+    protected $fillable = ['title','options'];
     protected $fakeColumns = ['options'];
 
     protected $casts = [
@@ -35,5 +35,15 @@ class Schedule extends Model
             ->orWhere('depth', null)
             ->orderBy('lft', 'ASC');
     }
+
+
+
+  public function getOptionsAttribute($value) {
+    return json_decode($value);
+  }
+
+  public function setOptionsAttribute($value) {
+    $this->attributes['options'] = json_encode($value);
+  }
 
 }

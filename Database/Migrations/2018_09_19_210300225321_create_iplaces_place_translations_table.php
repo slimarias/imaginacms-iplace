@@ -19,9 +19,9 @@ class CreateIplacesPlaceTranslationsTable extends Migration
             $table->string('slug');
             $table->text('summary');
             $table->text('description');
-            $table->string('metatitle')->nullable();
-            $table->text('metakeywords')->nullable();
-            $table->text('metadescription')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->text('meta_keywords')->nullable();
+            $table->text('meta_description')->nullable();
             // Your translatable fields
 
             $table->integer('place_id')->unsigned();
