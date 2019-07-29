@@ -103,10 +103,10 @@ class PlaceController extends BaseApiController
       $this->validateRequestApi(new CreatePlaceRequest((array)$data));
 
       //Create item
-      $this->place->create($data);
+      $place = $this->place->create($data);
 
       //Response
-      $response = ["data" => ""];
+      $response = ["data" => $place];
       \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
       \DB::rollback();//Rollback to Data Base

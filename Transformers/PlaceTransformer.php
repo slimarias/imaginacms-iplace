@@ -25,21 +25,21 @@ use Modules\Ilocations\Transformers\ProvinceTransformer;
 
 class PlaceTransformer extends Resource
 {
-  
+
   /**
    * @param $request
    * @return array
    */
   public function toArray($request)
   {
-    
+
     $includes = explode(",", $request->include);
-    
+
     $gama = new Gama();
     $weather = new Weather();
     $status = new Status();
     $statusYN = new StatusYN();
-    
+
     $data = [
       'id' => $this->id,
       'title' => $this->title,
@@ -72,57 +72,58 @@ class PlaceTransformer extends Resource
       'zone' => $this->zone_id,
       'schedule' => $this->schedule_id,
       'categoryId' => $this->category_id,
-      'options' => $this->options
-    
+      'options' => $this->options,
+      'schedules' => $this->schedules,
+
     ];
-    
+
     /*Transform Relation Ships*/
-    
+
     if (in_array('services', $includes)) {
       $data['servicies'] = ServiceTransformer::collection($this->services);
     }
-    
+
     if (in_array('spaces', $includes)) {
       $data['spaces'] = SpaceTransformer::collection($this->spaces);
     }
-    
+
     if (in_array('schedule', $includes)) {
       $data['schedule'] = new ScheduleTransformer($this->schedule);
     }
-    
+
     if (in_array('schedules', $includes)) {
       $data['schedules'] = ScheduleTransformer::collection($this->schedules);
     }
-    
+
     if (in_array('category', $includes)) {
       $data['category'] = new CategoryTransformer($this->category);
       $data['categories'] = CategoryTransformer::collection($this->categories);
     }
-    
+
     if (in_array('zone', $includes)) {
       $data['zone'] = new ZoneTransformer($this->zone);
     }
-    
+
     if (in_array('province', $includes)) {
       $data['province'] = new ProvinceTransformer($this->province);
     }
-    
+
     if (in_array('city', $includes)) {
       $data['city'] = new CityTransformer($this->city);
     }
-    
+
     if (in_array('categories', $includes)) {
       $data['categories'] = CategoryTransformer::collection($this->categories);
     }
-    
-    
+
+
     $filter = json_decode($request->filter);
-    
+
     // Return data with available translations
     if (isset($filter->allTranslations) && $filter->allTranslations) {
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
-      
+
       foreach ($languages as $lang => $value) {
         $data[$lang]['title'] = $this->hasTranslation($lang) ?
           $this->translate("$lang")['title'] : '';
@@ -138,10 +139,10 @@ class PlaceTransformer extends Resource
           $this->translate("$lang")['meta_description'] : '';
       }
     }
-    
-    
+
+
     return $data;
   }
-  
-  
+
+
 }

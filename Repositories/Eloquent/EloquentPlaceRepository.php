@@ -139,7 +139,6 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
     if($model){
       $model->update((array)$data);
       $model->categories()->sync(array_get($data, 'categories', []));
-      $model->schedules()->sync(array_get($data, 'schedules', []));
       event(new UpdateMedia($model,$data));
     }
 

@@ -10,33 +10,34 @@ use Modules\Iplaces\Events\CategoryWasCreated;
 
 class CategoryTransformer extends Resource
 {
-  
+
   public function toArray($request)
   {
-    
+
     $data = [
-      'id' => $this->id,
-      'title' => $this->title,
-      'slug' => $this->slug,
-      'description' => $this->description,
-      'status' => $this->status ? true : false,
-      'parentId' => $this->parent_id,
-      'parentCategory' => new CategoryTransformer($this->parent),
+      'id' => $this->when(isset($this->id), $this->id),
+      'title' => $this->when(isset($this->title), $this->title),
+      'slug' => $this->when(isset($this->slug), $this->slug),
+      'description' => $this->when(isset($this->description), $this->description),
+      'status' => $this->status ? 1 : null,
+      'parentId' => $this->when(isset($this->parent_id),$this->parent_id),
+      'metaTitle' => $this->when($this->meta_title, $this->meta_title),
+      'options' => $this->when($this->options, $this->options),
+      'metaDescription' => $this->when($this->meta_description, $this->meta_description),
+      'metaKeywords' => $this->when($this->meta_keywords, $this->meta_keywords),
       'mainImage' => $this->main_image,
-      'metaTitle' => $this->meta_title ?? $this->title,
-      'metaDescription' => $this->meta_description,
-      'metaKeywords' => $this->meta_keywords,
-      'createdAt' => $this->created_at,
-      'updatedAt' => $this->updated_at
+      'createdAt' => $this->when($this->created_at, $this->created_at),
+      'updatedAt' => $this->when($this->updated_ay, $this->updated_ay),
+      'parent' => new CategoryTransformer($this->whenLoaded('parent')),
     ];
-    
+
     $filter = json_decode($request->filter);
-    
+
     // Return data with available translations
     if (isset($filter->allTranslations) && $filter->allTranslations) {
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
-      
+
       foreach ($languages as $lang => $value) {
         $data[$lang]['title'] = $this->hasTranslation($lang) ?
           $this->translate("$lang")['title'] : '';
@@ -51,9 +52,9 @@ class CategoryTransformer extends Resource
       }
     }
     return $data;
-    
-    
+
+
   }
-  
-  
+
+
 }

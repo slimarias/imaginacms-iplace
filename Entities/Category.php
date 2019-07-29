@@ -88,12 +88,15 @@ class Category extends Model
         return  \URL::route('iplaces.place.category', [$this->slug]);
     }
 
-    public function getOptionsAttribute($value)
-    {
-
-        return json_decode(json_decode($value));
-
+  public function getOptionsAttribute($value)
+  {
+    try {
+      return json_decode(json_decode($value));
+    } catch (\Exception $e) {
+      return json_decode($value);
     }
+
+  }
 
     /*
    |--------------------------------------------------------------------------

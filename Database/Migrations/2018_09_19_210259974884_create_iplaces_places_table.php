@@ -17,6 +17,7 @@ class CreateIplacesPlacesTable extends Migration
             $table->increments('id')->unsigned();
             // fields
             $table->text('options')->default('')->nullable();
+            $table->text('schedules')->default('')->nullable();
             $table->integer('city_id')->default(0)->unsigned();
             $table->integer('province_id')->default(0)->unsigned();
             $table->integer('status')->default(0)->unsigned();

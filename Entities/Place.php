@@ -59,7 +59,8 @@ class Place extends Model
     'rating',
     'validated',
     'order',
-    'options'
+    'options',
+    'schedules'
   ];
   protected $fakeColumns = ['options','address'];
   protected $presenter = PlacePresenter::class;
@@ -260,6 +261,14 @@ class Place extends Model
 
   public function setAddressAttribute($value) {
     $this->attributes['address'] = json_encode($value);
+  }
+
+  public function getSchedulesAttribute($value) {
+    return json_decode($value);
+  }
+
+  public function setSchedulesAttribute($value) {
+    $this->attributes['schedules'] = json_encode($value);
   }
 
 }
