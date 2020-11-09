@@ -1,49 +1,40 @@
 {
-    "name": "imagina/iplaces-module",
-    "description": "",
-    "type": "asgard-module",
-    "license": "MIT", 
-    "require": {
-        "php": ">=7.0.0",
-        "composer/installers": "~1.0",
-        "idavoll/core-module": "~3.0",
-        "imagina/ilocations-module":">=0.1"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~6.0",
-        "orchestra/testbench": "3.5.*"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Modules\\Iplaces\\": ".",
-            "Modules\\": "Modules/"
-        }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-    "authors": [
-        {
-            "name": "Imagina Colombia",
-            "email": "soporte@imaginacolombia.com"
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Modules\\Iplaces\\Providers\\IplacesServiceProvider"
-            ],
-            "aliases": {
-                
-            }
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "Modules\\Iplaces\\": ""
-        }
+  "name": "imagina/iplaces-module",
+  "description": "",
+  "type": "asgard-module",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.0.0",
+    "composer/installers": "~1.0",
+    "idavoll/core-module": "~3.0",
+    "imagina/ilocations-module": "4.0.x-dev"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "orchestra/testbench": "~3.2"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Modules\\Iplaces\\": ".",
+      "Modules\\": "Modules/"
     }
-
-
-
-
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "Imagina Colombia",
+      "email": "dev@imaginacolombia.com"
+    }
+  ],
+  "extra": {
+    "branch-alias": {
+      "dev-master": "4.0.x-dev"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\Iplaces\\": ""
+    }
+  }
 }
