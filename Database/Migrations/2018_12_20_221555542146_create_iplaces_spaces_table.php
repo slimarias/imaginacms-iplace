@@ -17,7 +17,7 @@ class CreateIplacesSpacesTable extends Migration
             $table->increments('id');
             // Your fields
             $table->integer('status')->default(0)->unsigned();
-            $table->text('options')->default('')->nullable();
+            $table->text('options')->nullable();
             $table->timestamps();
         });
     }

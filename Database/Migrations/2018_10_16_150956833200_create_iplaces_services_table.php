@@ -16,7 +16,7 @@ class CreateIplacesServicesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('status')->default(0)->unsigned();
-            $table->text('options')->default('')->nullable();
+            $table->text('options')->nullable();
             $table->integer('serv_type')->default(0)->unsigned();
             $table->timestamps();
         });

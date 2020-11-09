@@ -20,7 +20,7 @@ use Modules\Iplaces\Entities\Weather;
 use Modules\Iplaces\Entities\Status;
 use Modules\Iplaces\Entities\StatusYN;
 
-use Modules\Iplaces\Transformers\CityTransformer;
+use Modules\Ilocations\Transformers\CityTransformer;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
 
 class PlaceTransformer extends Resource
@@ -67,14 +67,14 @@ class PlaceTransformer extends Resource
       'metaKeywords' => $this->meta_keywords,
       'createdAt' => ($this->created_at),
       'updatedAt' => ($this->updated_at),
-      'city' => $this->city_id,
-      'province' => $this->city_id,
+      'cityId' => $this->city_id,
+      'provinceId' => $this->province_id,
       'zone' => $this->zone_id,
       'schedule' => $this->schedule_id,
       'categoryId' => $this->category_id,
       'options' => $this->options,
       'schedules' => $this->schedules,
-
+      'mediaFiles' => $this->mediaFiles()
     ];
 
     /*Transform Relation Ships*/

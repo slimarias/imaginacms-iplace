@@ -16,7 +16,7 @@ class CreateIplacesCitiesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('province_id')->unsigned();
-            $table->text('options')->default('')->nullable();
+            $table->text('options')->nullable();
             $table->timestamps();
         });
     }

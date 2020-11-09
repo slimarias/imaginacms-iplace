@@ -23,7 +23,7 @@ class CreateIplacesSpaceTranslationsTable extends Migration
             $table->text('meta_keywords');
             $table->text('meta_description');
 
-            $table->text('options')->default('')->nullable();
+            $table->text('options')->nullable();
 
             $table->integer('space_id')->unsigned();
             $table->string('locale')->index();

@@ -9,17 +9,17 @@ class UpdatePlaceRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'category_id'=>'required',
-            'address'=>'required'
+            //'category_id'=>'required',
+            //'address'=>'required'
         ];
     }
 
     public function translationRules()
     {
         return [
-            'title'=>'required|min:2',
-            'description'=>'required|min:2',
-            'slug'=>'required|min:2',
+            //'title'=>'required|min:2',
+            //'description'=>'required|min:2',
+            //'slug'=>'required|min:2',
         ];
     }
 

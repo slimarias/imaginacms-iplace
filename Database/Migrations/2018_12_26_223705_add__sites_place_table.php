@@ -14,7 +14,7 @@ class AddSitesPlaceTable extends Migration
     public function up()
     {
         Schema::table('iplaces__places', function (Blueprint $table) {
-            $table->integer('site_id')->unsigned();
+            $table->integer('site_id')->unsigned()->nullable();
         });
     }
 

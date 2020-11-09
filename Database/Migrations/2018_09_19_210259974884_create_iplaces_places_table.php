@@ -16,20 +16,20 @@ class CreateIplacesPlacesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
             // fields
-            $table->text('options')->default('')->nullable();
-            $table->text('schedules')->default('')->nullable();
+            $table->text('options')->nullable();
+            $table->text('schedules')->nullable();
             $table->integer('city_id')->default(0)->unsigned();
             $table->integer('province_id')->default(0)->unsigned();
             $table->integer('status')->default(0)->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('category_id')->unsigned();
-            $table->integer('zone_id')->unsigned();
-            $table->integer('service_id')->unsigned();
-            $table->integer('schedule_id')->unsigned();
-            $table->text('address')->nullable();
-            $table->integer('range_id')->unsigned();
-            $table->integer('gama')->default(0)->unsigned();
-            $table->integer('quantity_person')->default(0)->unsigned();
+            $table->integer('zone_id')->unsigned()->nullable();
+            $table->integer('service_id')->unsigned()->nullable();
+            $table->integer('schedule_id')->unsigned()->nullable();
+            $table->text('address')->nullable()->nullable();
+            $table->integer('range_id')->unsigned()->nullable();
+            $table->integer('gama')->default(0)->unsigned()->nullable();
+            $table->integer('quantity_person')->default(0)->unsigned()->nullable();
             $table->integer('weather')->default(0)->unsigned();
             $table->integer('housing')->default(0)->unsigned();
             $table->integer('transport')->default(0)->unsigned();
@@ -48,7 +48,7 @@ class CreateIplacesPlacesTable extends Migration
     public function down()
     {
         Schema::table('iplaces__places', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
+           // $table->dropForeign(['user_id']);
         });
         Schema::dropIfExists('iplaces__places');
     }

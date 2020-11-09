@@ -28,6 +28,6 @@ class CreateRelatedPlaceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('related_place');
+        Schema::dropIfExists('iplaces__related_place');
     }
 }
