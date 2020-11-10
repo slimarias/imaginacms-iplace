@@ -2,7 +2,7 @@
 
 namespace Modules\Iplaces\Entities;
 
-use Dimsav\Translatable\Translatable;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Iplaces\Entities\Category;
 use Modules\Iplaces\Entities\Schedule;
@@ -84,9 +84,9 @@ class Place extends Model
   {
 
     if (!empty($value)) {
-      $this->attributes['slug'] = str_slug($value, '-');
+      $this->attributes['slug'] = Str::slug($value, '-');
     } else {
-      $this->attributes['slug'] = str_slug($this->attributes['title'], '-');
+      $this->attributes['slug'] = Str::slug($this->attributes['title'], '-');
     }
 
   }

@@ -8,7 +8,7 @@
 
 namespace Modules\Iplaces\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Transformers\UserProfileTransformer;
 
 use Modules\Iplaces\Transformers\ZoneTransformer;
@@ -23,7 +23,7 @@ use Modules\Iplaces\Entities\StatusYN;
 use Modules\Iplaces\Transformers\CityTransformer;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
 
-class PlaceTransformer extends Resource
+class PlaceTransformer extends JsonResource
 {
 
   /**

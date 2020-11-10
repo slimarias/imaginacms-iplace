@@ -8,11 +8,11 @@
 
 namespace Modules\Iplaces\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Transformers\UserProfileTransformer;
 
 
-class ScheduleTransformer extends Resource
+class ScheduleTransformer extends JsonResource
 {
 
   public function toArray($request)

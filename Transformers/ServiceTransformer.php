@@ -3,12 +3,12 @@
 
 namespace Modules\Iplaces\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Transformers\UserProfileTransformer;
 use Modules\Iplaces\Events\ServiceWasCreated;
 use Modules\Iplaces\Entities\Servtype;
 
-class ServiceTransformer extends Resource
+class ServiceTransformer extends JsonResource
 {
 
     public function toArray($request)

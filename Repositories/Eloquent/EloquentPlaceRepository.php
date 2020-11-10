@@ -113,9 +113,9 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
       // dd($data);
       $place = $this->model->create($data);
       event(new PlaceWasCreated($place, $data));
-      $place->categories()->sync(array_get($data, 'categories', []));
-      $place->services()->sync(array_get($data, 'services', []));
-      $place->spaces()->sync(array_get($data, 'spaces', []));
+      $place->categories()->sync(Arr::get($data, 'categories', []));
+      $place->services()->sync(Arr::get($data, 'services', []));
+      $place->spaces()->sync(Arr::get($data, 'spaces', []));
       event(new CreateMedia($place,$data));
   }
 
@@ -138,7 +138,7 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
     $model = $query->where($field ?? 'id', $criteria)->first();
     if($model){
       $model->update((array)$data);
-      $model->categories()->sync(array_get($data, 'categories', []));
+      $model->categories()->sync(Arr::get($data, 'categories', []));
       event(new UpdateMedia($model,$data));
     }
 
@@ -168,9 +168,9 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
     {
 
         $model->update($data);
-        $model->categories()->sync(array_get($data, 'categories', []));
-        $model->services()->sync(array_get($data, 'services', []));
-        $model->spaces()->sync(array_get($data, 'spaces', []));
+        $model->categories()->sync(Arr::get($data, 'categories', []));
+        $model->services()->sync(Arr::get($data, 'services', []));
+        $model->spaces()->sync(Arr::get($data, 'spaces', []));
 
         return $model;
     }

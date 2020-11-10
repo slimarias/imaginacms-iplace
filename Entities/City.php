@@ -2,7 +2,7 @@
 
 namespace Modules\Iplaces\Entities;
 
-use Dimsav\Translatable\Translatable;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Ilocations\Entities\Province;
