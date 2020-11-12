@@ -251,7 +251,7 @@ class PlaceController extends AdminBaseController
             }
             $disk = 'publicmedia';
             $image = \Image::make($request->file('file'));
-            $name = str_slug(str_replace('.' . $extension, '', $original_filename), '-');
+            $name = Str::slug(str_replace('.' . $extension, '', $original_filename), '-');
 
             $image->resize(config('asgard.iplaces.config.imagesize.width'), config('asgard.iplaces.config.imagesize.height'), function ($constraint) {
                 $constraint->aspectRatio();

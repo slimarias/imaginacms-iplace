@@ -3,12 +3,12 @@
 
 namespace Modules\Iplaces\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Transformers\UserProfileTransformer;
 use Modules\Iplaces\Events\CategoryWasCreated;
 
 
-class CategoryTransformer extends Resource
+class CategoryTransformer extends JsonResource
 {
 
   public function toArray($request)

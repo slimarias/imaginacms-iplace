@@ -3,10 +3,10 @@
 
 namespace Modules\Iplaces\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Iplaces\Entities\Status;
 
-class SpaceTransformer extends Resource
+class SpaceTransformer extends JsonResource
 {
 
     public function toArray($request)
