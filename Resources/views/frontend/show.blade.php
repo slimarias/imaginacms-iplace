@@ -9,6 +9,9 @@
 @stop
 
 @section('content')
+    @php
+        $locale = \LaravelLocalization::setLocale() ?: App::getLocale();
+    @endphp
 
     <div class="page blog single-iplace">
         <div class="container">
@@ -18,8 +21,8 @@
                         <a class="text-primary" href="{{url('/')}}">Inicio</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a class="text-primary" href="{{url('/lugares')}}">
-                            Lugares
+                        <a class="text-primary" href="{{route($locale.'.iplaces.place.index')}}">
+                            {{ trans('iplaces::common.iplaces') }}
                         </a>
                     </li>
                     <li class="breadcrumb-item active text-gray-color" aria-current="page">
@@ -54,7 +57,7 @@
                     @else
                         <div class="img-gallery">
                             @if(isset($place->mainimage)&&!empty($place->mainimage))
-                                <img class="img-fluid w-100" src="{{url($place->mainimage)}}"
+                                <img class="img-fluid w-100" src="{{url($place->mainimage['path'])}}"
                                      alt="{{$place->title}}"/>
                             @endif
                         </div>
@@ -63,10 +66,9 @@
 
                     <div class="row mt-4 data-general">
                         <div class="col-6 col-sm-4 col-lg-2 d-flex my-3">
-                            <img class="d-inline-block mr-2" src="{{Theme::url('img/icon/ubicacion.png')}}">
                             <div class="d-inline-block">
-                                <h6>Ubicación:</h6>
-                                {{$place->city->translate('en')->name}}, {{$place->province->translate('en')->name}}
+                                <h6><i class="fa fa-map-marker"></i> Ubicación:</h6>
+                                {{$place->city->translate('es')->name}}, {{$place->province->translate('es')->name}}
                             </div>
                         </div>
                         <div class="col-6 col-sm-4 col-lg-2 d-flex my-3">
@@ -74,13 +76,12 @@
 
                             <div class="d-inline-block">
                                 <h6>Tipo Lugar:</h6>
-                                {{$place->zone->title}}
+                                {{$place->zone->title ?? ''}}
                             </div>
                         </div>
                         <div class="col-6 col-sm-4 col-lg-2 d-flex my-3">
-                            <img class="d-inline-block mr-2" src="{{Theme::url('img/icon/capacidad.png')}}">
                             <div class="d-inline-block">
-                                <h6>Capacidad:</h6>
+                                <h6><i class="fa fa-map-marker"></i> Capacidad:</h6>
                                 {{$place->quantity_person}} invitados
                             </div>
                         </div>
@@ -115,7 +116,7 @@
 
                     <div class="row pt-3">
                      <div class="col-lg-5 pb-2">
-                            @include('iplaces.widgets.gallery-videos')
+                            @includeFirst(['iplaces::frontend.widgets.gallery-videos','iplaces.widgets.gallery-videos'])
                         </div>
                         <div class="col pb-2">
                             <h3 class="mb-3">Descripción</h3>
@@ -142,11 +143,11 @@
 
 
 
-                    <div class="my-4">
+                    {{--<div class="my-4">
                         <h3>Sitios de referencia cercanos</h3>
                         <h5 class="text-primary my-2">{{$place->site->title}}</h5>
                         {!! $place->site->description!!}
-                    </div>
+                    </div>--}}
 
                     <hr>
                     @php
@@ -199,7 +200,7 @@
 
                 <aside class="col-xl-3">
 
-                    @include('iplaces.widgets.availability')
+                    @includeFirst(['iplaces::frontend.widgets.availability','iplaces.widgets.availability'])
 
                     <a class=" btn-rounded border border-primary text-primary mx-auto my-3" href=""><i
                                 class="fa fa-phone"></i> LLamar</a>
@@ -210,13 +211,15 @@
         </div>
 
 
-        @include('iplaces.partials.map')
+        {{--@includeFirst(['iplaces::frontend.partials.map','iplaces.partials.map'])--}}
 
-        @include('iplaces.partials.places')
+        @includeFirst(['iplaces::frontend.partials.places','iplaces.partials.places'])
 
+        {{--
         @include('partials.subscription')
 
         @include('partials.registration')
+        --}}
 
 
     </div>

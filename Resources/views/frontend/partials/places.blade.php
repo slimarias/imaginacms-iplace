@@ -11,13 +11,13 @@
                 <div id="otherplaces" class="owl-carousel owl-theme owl-places">
                     @foreach($otherplaces as $p)
                     <div class="item">
-                        <a href="{{url('/lugares/'.$p->category->slug.'/'.$p->slug)}}">
+                        <a href="{{ $p->url }}">
                             @if(isset($p->options->mainimage)&&!empty($p->options->mainimage))
                                 <img class="img-fluid w-100" src="{{url(str_replace('.jpg','_mediumThumb.jpg',$p->options->mainimage))}}"
                                      alt="{{$p->title}}"/>
                             @else
                                 <img class="img-fluid w-100"
-                                     src="{{url('modules/iblog/img/post/default.jpg')}}"
+                                     src="{{url('modules/iplaces/img/default.jpg')}}"
                                      alt="{{$p->title}}"/>
                             @endif
                             <hr class="border-primary">

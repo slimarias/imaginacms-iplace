@@ -194,8 +194,8 @@ class Place extends Model
 
   public function getUrlAttribute()
   {
-
-    return \URL::route('iplaces.place.show', [$this->category->slug, $this->slug]);
+    $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
+    return route($locale.'.iplaces.place.show', [$this->category->slug, $this->slug]);
   }
 
   public function getVideosAttribute()

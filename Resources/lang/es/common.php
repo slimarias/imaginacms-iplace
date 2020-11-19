@@ -1,7 +1,7 @@
 <?php
 return [
 
-    'iplaces' => 'Places',
+    'iplaces' => 'Lugares',
 
 
     'form' => [
