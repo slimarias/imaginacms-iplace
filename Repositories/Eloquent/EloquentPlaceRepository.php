@@ -2,6 +2,7 @@
 
 namespace Modules\Iplaces\Repositories\Eloquent;
 
+use Illuminate\Support\Arr;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\DeleteMedia;
@@ -36,6 +37,16 @@ class EloquentPlaceRepository extends EloquentBaseRepository implements PlaceRep
     /*== FILTERS ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;//Short filter
+
+      // add filter by Categories 1 or more than 1, in array
+      if (isset($filter->categories) && !empty($filter->categories)) {
+          is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
+          $query->where(function ($query) use ($filter) {
+              $query->whereHas('categories', function ($query) use ($filter) {
+                  $query->whereIn('iplaces__place_category.category_id', $filter->categories);
+              })->orWhereIn('category_id', $filter->categories);
+          });
+      }
 
       //Filter by date
       if (isset($filter->date)) {
