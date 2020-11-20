@@ -4,6 +4,7 @@ namespace Modules\Iplaces\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Modules\Iplaces\Entities\Category;
 use Modules\Iplaces\Entities\Place;
 use Modules\Iplaces\Http\Requests\CreatePlaceRequest;

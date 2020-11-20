@@ -4,6 +4,7 @@ namespace Modules\Iplaces\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Modules\Iplaces\Presenters\ServicePresenter;
 use Modules\Iplaces\Events\ServiceWasCreated;
 use Modules\Core\Traits\NamespacedEntity;

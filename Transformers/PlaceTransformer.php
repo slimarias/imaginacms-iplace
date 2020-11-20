@@ -8,7 +8,7 @@
 
 namespace Modules\Iplaces\Transformers;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Resource;
 use Modules\User\Transformers\UserProfileTransformer;
 
 use Modules\Iplaces\Transformers\ZoneTransformer;
@@ -23,7 +23,7 @@ use Modules\Iplaces\Entities\StatusYN;
 use Modules\Ilocations\Transformers\CityTransformer;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
 
-class PlaceTransformer extends JsonResource
+class PlaceTransformer extends Resource
 {
 
   /**
@@ -74,48 +74,15 @@ class PlaceTransformer extends JsonResource
       'categoryId' => $this->category_id,
       'options' => $this->options,
       'schedules' => $this->schedules,
+      'mediaFiles' => $this->mediaFiles(),
+      //Relations
+      'services' => ServiceTransformer::collection($this->whenLoaded('services')),
+      'category' => new CategoryTransformer($this->whenLoaded('category')),
       'categories' => CategoryTransformer::collection($this->whenLoaded('categories')),
-      'mediaFiles' => $this->mediaFiles()
-
+      'zone' => new ZoneTransformer($this->whenLoaded('zone')),
+      'province' => new ProvinceTransformer($this->whenLoaded('province')),
+      'city' => new CityTransformer($this->whenLoaded('city')),
     ];
-
-    /*Transform Relation Ships*/
-
-    if (in_array('services', $includes)) {
-      $data['servicies'] = ServiceTransformer::collection($this->services);
-    }
-
-    if (in_array('spaces', $includes)) {
-      $data['spaces'] = SpaceTransformer::collection($this->spaces);
-    }
-
-    if (in_array('schedule', $includes)) {
-      $data['schedule'] = new ScheduleTransformer($this->schedule);
-    }
-
-    if (in_array('schedules', $includes)) {
-      $data['schedules'] = ScheduleTransformer::collection($this->schedules);
-    }
-
-    if (in_array('category', $includes)) {
-      $data['category'] = new CategoryTransformer($this->category);
-    }
-
-    if (in_array('zone', $includes)) {
-      $data['zone'] = new ZoneTransformer($this->zone);
-    }
-
-    if (in_array('province', $includes)) {
-      $data['province'] = new ProvinceTransformer($this->province);
-    }
-
-    if (in_array('city', $includes)) {
-      $data['city'] = new CityTransformer($this->city);
-    }
-
-    if (in_array('categories', $includes)) {
-      $data['categories'] = CategoryTransformer::collection($this->categories);
-    }
 
 
     $filter = json_decode($request->filter);
