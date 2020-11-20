@@ -8,7 +8,7 @@
 
 namespace Modules\Iplaces\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Transformers\UserProfileTransformer;
 
 use Modules\Iplaces\Transformers\ZoneTransformer;
@@ -23,7 +23,7 @@ use Modules\Iplaces\Entities\StatusYN;
 use Modules\Ilocations\Transformers\CityTransformer;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
 
-class PlaceTransformer extends Resource
+class PlaceTransformer extends JsonResource
 {
 
   /**
@@ -49,9 +49,9 @@ class PlaceTransformer extends Resource
       'summary' => $this->summary,
       'description' => $this->description,
       'address' => $this->address,
-      'phone1' => $this->phone_1,
-      'phone2' => $this->phone_2,
-      'phone3' => $this->phone_3,
+      'phone1' => $this->when($this->options, $this->options->phone1 ?? ''),
+      'phone2' => $this->when($this->options, $this->options->phone2 ?? ''),
+      'phone3' => $this->when($this->options, $this->options->phone3 ?? ''),
       'mainImage' => $this->main_image,
       'gama' => $this->gama,
       'gamaNAME' => $gama->get($this->gama),

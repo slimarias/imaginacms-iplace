@@ -20,7 +20,7 @@
     <script type="text/javascript">
 
         function initialize(){
-          var map = L.map('map_canvas').setView([{{ $place->address->lat ?? '4.570868' }}, {{ $place->address->lng ?? '-74.297333' }}], 13);
+          var map = L.map('map_canvas').setView([{{ $place->address->lat ?? '4.570868' }}, {{ $place->address->lng ?? '-74.297333' }}], 18);
 
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
