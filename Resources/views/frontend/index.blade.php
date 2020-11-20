@@ -10,7 +10,7 @@
 @stop
 
 @section('title')
-  {{ $category->title ?? "Lugares" }} | @parent
+  {{ $category->title ?? trans('iplaces::common.iplaces') }} | @parent
 @stop
 
 
@@ -29,7 +29,7 @@
                         @if(isset($category->title) && !empty($category->title))
                             {{$category->title}}
                         @else
-                            Lugares
+                            {{ trans('iplaces::common.iplaces') }}
                         @endif
                     </li>
                 </ol>
@@ -41,7 +41,7 @@
                 @if(isset($category->title) && !empty($category->title))
                     {{$category->title}}
                 @else
-                    Lugares
+                    {{ trans('iplaces::common.iplaces') }}
                 @endif
             </h2>
         </div>
@@ -50,7 +50,7 @@
 
         <div class="container pl-lg-0">
             <div class="row">
-                <div class="col-xl-9 mb-5">
+                <div class="col-12 mb-5">
                     <div class="row places-grid">
                         @if (isset($places) && !empty($places))
                             @if(count($places) >= 1)
@@ -82,21 +82,14 @@
 
                                         <h3 class="place-title text-gray-dark mt-3">{{$place->title}}</h3>
 
-                                        <a class="btn-link text-white text-center bg-primary mt-1" href="{{$place->url}}">Ver más +</a>
+                                        <a class="btn-link text-white text-center bg-primary mt-1" href="{{$place->new_url}}">Ver más +</a>
                                     </div>
                                 @endforeach
-
-                                <!-- PAGINATION -->
-                                @if(!isset($categoriesPost)&&empty($categoriesPost))
-                                    <div class="col-12 mt-3">
-                                        {{$places->links('pagination::bootstrap-4')}}
-                                    </div>
-                                @endif
                             @else
 
                                 <div class="col-12">
                                     <h4 class="text-center">
-                                        No hay lugares con esta(s) categoría(s) <i class="fa fa-frown-o"></i>
+                                        {!! trans('iplaces::places.messages.notfound') !!}
                                     </h4>
                                 </div>
 
@@ -105,11 +98,11 @@
                     </div>
                 </div>
 
-                <aside class="col-xl-3">
+                {{--<aside class="col-xl-3">
 
                     @include('iplaces.partials.filters')
 
-                   {{--@include('iplaces.widgets.categories_new')--}}
+                   @include('iplaces.widgets.categories_new')
 
                     <div class="card card-registration border border-primary">
                         <div class="card-body text-gray-dark text-center p-0">
@@ -125,10 +118,11 @@
                             <a class="btn-sign-up text-white bg-primary mt-1 mx-auto" href="{{URL::to('/contacto')}}">Regístrate Gratis</a>
                         </div>
                     </div>
-                </aside>
+                </aside>--}}
             </div>
         </div>
 
+        {{--
         @include('partials.widgets.tourism')
 
         @include('partials.widgets.ideas-tips')
@@ -140,5 +134,6 @@
         @include('partials.map')
 
         @include('partials.registration')
+        --}}
     </div>
 @stop

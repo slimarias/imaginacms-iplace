@@ -62,7 +62,8 @@ return [
         'slug is required' => 'Slug is required',
         'slug is min 2' => 'Slug is min 2',
         'category is required' => 'Category is required',
-        'address is required' => 'Address is required'
+        'address is required' => 'Address is required',
+        'notfound' => 'No places found with these categories <i class="fa fa-frown-o"></i>'
     ],
     'validation' => [
     ],

@@ -83,9 +83,9 @@ class Category extends Model
 
     public function getUrlAttribute() {
 
-        // \URL::route(\LaravelLocalization::getCurrentLocale(
+        $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
 
-        return  \URL::route('iplaces.place.category', [$this->slug]);
+        return  \URL::route($locale.'.iplaces.place.category', [$this->slug]);
     }
 
   public function getOptionsAttribute($value)
