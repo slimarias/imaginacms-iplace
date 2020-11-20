@@ -74,7 +74,9 @@ class PlaceTransformer extends JsonResource
       'categoryId' => $this->category_id,
       'options' => $this->options,
       'schedules' => $this->schedules,
+      'categories' => CategoryTransformer::collection($this->whenLoaded('categories')),
       'mediaFiles' => $this->mediaFiles()
+
     ];
 
     /*Transform Relation Ships*/
@@ -97,7 +99,6 @@ class PlaceTransformer extends JsonResource
 
     if (in_array('category', $includes)) {
       $data['category'] = new CategoryTransformer($this->category);
-      $data['categories'] = CategoryTransformer::collection($this->categories);
     }
 
     if (in_array('zone', $includes)) {
