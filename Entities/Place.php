@@ -2,8 +2,10 @@
 
 namespace Modules\Iplaces\Entities;
 
+
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Modules\Iplaces\Entities\Category;
 use Modules\Iplaces\Entities\Schedule;
 use Modules\Iplaces\Entities\Zone;
