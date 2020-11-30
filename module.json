@@ -5,7 +5,7 @@
     "keywords": [],
     "version": "1.4.2",
     "active": 1,
-    "order": 1,
+    "priority": 1,
     "providers": [
         "Modules\\Iplaces\\Providers\\IplacesServiceProvider",
         "Modules\\Iplaces\\Providers\\RouteServiceProvider",
