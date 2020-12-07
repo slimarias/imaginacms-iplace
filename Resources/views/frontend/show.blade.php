@@ -211,7 +211,7 @@
         </div>
 
 
-        {{--@includeFirst(['iplaces::frontend.partials.map','iplaces.partials.map'])--}}
+        @includeFirst(['iplaces::frontend.partials.map','iplaces.partials.map'])
 
         @includeFirst(['iplaces::frontend.partials.places','iplaces.partials.places'])
 

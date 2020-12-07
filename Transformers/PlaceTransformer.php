@@ -8,13 +8,12 @@
 
 namespace Modules\Iplaces\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Transformers\UserProfileTransformer;
 
 use Modules\Iplaces\Transformers\ZoneTransformer;
 use Modules\Iplaces\Transformers\ServiceTransformer;
 use Modules\Iplaces\Transformers\ScheduleTransformer;
-use Modules\Iplaces\Transformers\CategoryTransformer;
 
 use Modules\Iplaces\Entities\Gama;
 use Modules\Iplaces\Entities\Weather;
@@ -51,9 +50,9 @@ class PlaceTransformer extends JsonResource
       'summary' => $this->summary,
       'description' => $this->description,
       'address' => $this->address,
-      'phone1' => $this->phone_1,
-      'phone2' => $this->phone_2,
-      'phone3' => $this->phone_3,
+      'phone1' => $this->when($this->options, $this->options->phone1 ?? ''),
+      'phone2' => $this->when($this->options, $this->options->phone2 ?? ''),
+      'phone3' => $this->when($this->options, $this->options->phone3 ?? ''),
       'mainImage' => $this->main_image,
       'gama' => $this->gama,
       'gamaNAME' => $gama->get($this->gama),
