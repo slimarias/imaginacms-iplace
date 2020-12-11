@@ -22,7 +22,6 @@ use Modules\Iplaces\Entities\StatusYN;
 
 use Modules\Ilocations\Transformers\CityTransformer;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlaceTransformer extends JsonResource
 {
@@ -70,7 +69,7 @@ class PlaceTransformer extends JsonResource
       'updatedAt' => ($this->updated_at),
       'cityId' => $this->city_id,
       'provinceId' => $this->province_id,
-      'zone' => $this->zone_id,
+      'zoneId' => $this->zone_id,
       'schedule' => $this->schedule_id,
       'categoryId' => $this->category_id,
       'options' => $this->options,
