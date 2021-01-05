@@ -22,7 +22,6 @@ use Modules\Iplaces\Entities\StatusYN;
 
 use Modules\Ilocations\Transformers\CityTransformer;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlaceTransformer extends JsonResource
 {
